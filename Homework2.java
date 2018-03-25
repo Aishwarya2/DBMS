@@ -88,21 +88,131 @@ public class Homework2 {
 								+"checkin_id int NOT NULL,PRIMARY KEY(staff_id, hotel_id, service_name, checkin_id),FOREIGN KEY (hotel_id, staff_id) REFERENCES Staffs(hotel_id, id) ON DELETE CASCADE,"
 								+"FOREIGN KEY(checkin_id) REFERENCES Checkins(id) ON DELETE CASCADE,FOREIGN KEY(service_name) REFERENCES Services(service_name) ON DELETE CASCADE)");
 			
-			statement.executeUpdate("INSERT INTO Students VALUES ('Todd', 'NC State'," + " 18, 16000, 30000, 'M')");
-			statement.executeUpdate("INSERT INTO Students VALUES ('Max', 'Stanford'," + " 21, 20000, 70000, 'M')");
-			statement.executeUpdate("INSERT INTO Students VALUES ('Alex', 'UNC'," + " 19, 8000, 40000, 'M')");
-			statement.executeUpdate("INSERT INTO Students VALUES ('Natasha', 'Harvard'," + " 22, 15000, 75000, 'F')");
-			statement.executeUpdate("INSERT INTO Students VALUES ('Kelly', 'UCLA'," + " 23, 2000, 50000, 'F')");
-			statement.executeUpdate("INSERT INTO Students VALUES ('Angela', 'NYU'," + "18, 8000, 45000, 'F')");
+statement.executeUpdate("INSERT INTO Locations VALUES ('27601', '500 Fayetteville St, Raleigh, NC', 47.5,'Raleigh')");
+		statement.executeUpdate("INSERT INTO Locations VALUES ('28202', '230 College St, Charlotte, NC', 99,'Charlotte')");
+		statement.executeUpdate("INSERT INTO Locations VALUES ('43017', '600 Metro Pl, Dublin, OH', 69,'Dublin')");
+		statement.executeUpdate("INSERT INTO Locations VALUES ('94559', '800 California Blvd, Napa, CA', 103,'Napa')");
+		statement.executeUpdate("INSERT INTO Locations VALUES ('27607', '2100 Hillsborough St, Raleigh, NC', 73,'Raleigh')");
+		statement.executeUpdate("INSERT INTO Locations VALUES ('33132', '146 Biscayne Blvd, Miami, FL', 65,'Miami')"); //63000
+        statement.executeUpdate("INSERT INTO Locations VALUES ('31419', '16 Gateway Blvd, Savannah, GA', 88,'Savannah')");
+		
+		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('Marriot', '9198331120', '27601')");
+		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('Holiday Inn', '9192381206', '28202')");
+		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('Crown Plaza', '6147641231', '43017')");
+		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('Spring Hill Suites', '7071205482', '94559')");
+		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('Red Roof', '9194712063', '27607')");
+		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('Conrad', '3055036500', '33132')"); // 56000
+		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('Hampton Inn', '912619734', '31419')");
+		
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(1, 'Robin Sam', '25 Brigadoon, Raleigh, NC', 29, '9451204444', 'Catering', 'Yes')");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(2, 'Kanya Took', ' 84, Oberlin Road, Raleigh, NC', 43, '4444444444', 'Catering', 'Yes')");
 
-			statement.executeUpdate("CREATE TABLE Schools (Name VARCHAR(10), Location VARCHAR(30), "
-					+ "TuitonFees INTEGER, LivingExpenses INTEGER)");
-			statement.executeUpdate("INSERT INTO Schools VALUES ('NC State', 'North Carolina', 24000, 20000)");
-			statement.executeUpdate("INSERT INTO Schools VALUES ('Stanford', 'California', 44000, 35000)");
-			statement.executeUpdate("INSERT INTO Schools VALUES ('UNC', 'North Carolina', 34000, 20000)");
-			statement.executeUpdate("INSERT INTO Schools VALUES ('Harvard', 'Massachusetts', 50000, 38000)");
-			statement.executeUpdate("INSERT INTO Schools VALUES ('UCLA', 'California', 36000, 30000)");
-			statement.executeUpdate("INSERT INTO Schools VALUES ('NYU', 'New York', 22000, 41000)");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(3, 'Seemant Shawn', 'Apt 63, 450 Oberlin Road, Raleigh, NC', 37, '5555555555', 'Laundry', 'Yes')");
+
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(4, 'Rick Gose',  'Apt 34, 103 Avent Ferry Road, Raleigh, NC', 42, '7266266267', 'Manager', 'No')");
+
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(5 , 'Huimin Joe' , '245, Fayetteville Road, Charlotte, NC', 45 , '7414115167',  ' Catering', 'No' )");
+
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(6 , 'Ross Packard' , '8974, Niton Road, Charlotte, NC', 45 , '7411115167',  'Room Service', 'Yes')");
+
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(7, 'Bihit Hans',  '103 Avent Ferry Road, Charolotte, NC', 42, '7216266267', 'Manager', 'Yes' )");
+
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(7, 'Hans Hubberman',  '64, 103 Avenue Road, Dublin, OH', 39, '2216266267', 'Manager', 'Yes' )");
+
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(7 , 'Ninoh Tu' , '24, Gollen drive, Napa', 45 , '7414111167',  ' Catering', 'Yes' )");
+
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(7, 'Naromi Nida',  '1790 Venue Drive, Miami, Florida', 25, '2216266267', 'Catering', 'Yes' )");
+		
+		statement.executeUpdate("INSERT INTO Managers VALUES (1, 1, MD5('qwerty') )");
+		statement.executeUpdate("INSERT INTO Managers VALUES (2, 2, MD5('password') )");
+		statement.executeUpdate("INSERT INTO Managers VALUES (3, 3, MD5('manager') )");
+		statement.executeUpdate("INSERT INTO Managers VALUES (4, 4, MD5('iamstarlord') )");
+		statement.executeUpdate("INSERT INTO Managers VALUES (5, 5, MD5('abc123') )");
+		statement.executeUpdate("INSERT INTO Managers VALUES (6, 6, MD5('admin123') )"); //63000
+        statement.executeUpdate("INSERT INTO Managers VALUES (7, 7, MD5('123456') )");
+		
+		statement.executeUpdate("INSERT INTO Frontdesk_rep VALUES (8, 7, MD5('iamstaff'))");
+		statement.executeUpdate("INSERT INTO Frontdesk_rep VALUES (9, 7, MD5('helloworld'))");
+		statement.executeUpdate("INSERT INTO Frontdesk_rep VALUES (10, 7, MD5('dummypswd'))");
+		
+		statement.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('Tony Stark', '1975-02-21', 'stark@gmail.com', '750123456')");
+		statement.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('Smith Brown', '1995-12-05', 'brown12@gmail.com', '9195820512')");
+		statement.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('Matt Newman', '2000-07-13', 'matt@gmail.com', '6509271048')");
+		statement.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('Judy Davis', '1990-08-31', 'jdy318@gmail.com', '9198310278')");
+		statement.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('Richard Charles', '1980-03-17', 'richard@gmail.com', '75')");
+		statement.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('Michael Halpert', '1992-05-30', 'mchalpert@gmail.com', '3053287420')"); //63000
+        statement.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('Pam Howard', '1980-11-14', 'pamhoward@gmail.com', '9124738930')");
+
+		statement.executeUpdate("INSERT INTO Billings(billing_address, SSN) VALUES ('2842 Avent Ferry Rd, Apt 402, Raleigh, NC, 27606')");
+		statement.executeUpdate("INSERT INTO Billings(billing_address, SSN) VALUES ('4423 Miami Blvd, Apt 103, Miami, FL, 33132')");
+		statement.executeUpdate("INSERT INTO Billings(billing_address, SSN) VALUES ('5454 Ontario Common, Fremont, CA, 94555')");
+		statement.executeUpdate("INSERT INTO Billings(billing_address, SSN) VALUES ('2715 Folsom Street, Apt 514, Charlotte, NC, 28202')");
+		statement.executeUpdate("INSERT INTO Billings(billing_address, SSN) VALUES ('99 West Camino Drive, Apt 402, San Francisco, CA, 9436')");
+		statement.executeUpdate("INSERT INTO Billings(billing_address, SSN) VALUES ('3288 Ivey Wood Lane, New York, NY, 10457')"); //63000
+        statement.executeUpdate("INSERT INTO Billings(billing_address, SSN) VALUES ('6349 Alderton St, Apt 203, Chicago, IL, 89271')");
+
+		statement.executeUpdate("INSERT INTO Cards VALUES (1234567891233456, 'Debit',0, '5761936104' )");
+statement.executeUpdate("INSERT INTO Cards VALUES  (8324567891233456, 'Credit',0,'7483819362' )");
+statement.executeUpdate("INSERT INTO Cards VALUES (1234567991233456, 'Hotel_Credit',0.05,'5139231046' )");
+statement.executeUpdate("INSERT INTO Cards VALUES (2234567891233456, 'Debit',0,'5769251047' )");
+statement.executeUpdate("INSERT INTO Cards VALUES (3234567891233456, 'Hotel_Credit',0.05,'5559361047' )");
+statement.executeUpdate("INSERT INTO Cards VALUES (4234567891233456, 'Credit',0,'4927518579' )");
+statement.executeUpdate("INSERT INTO Cards VALUES (5234567891233456, 'Hotel_Credit',0.05,'3938361047')");
+
+statement.executeUpdate("INSERT INTO Paid_through VALUES (6, 1234567991233456)");
+statement.executeUpdate("INSERT INTO Paid_through VALUES (4, 1234567891233456)");
+statement.executeUpdate("INSERT INTO Paid_through VALUES (7, 2234567891233456)");
+statement.executeUpdate("INSERT INTO Paid_through VALUES (5, 8324567891233456)");
+statement.executeUpdate("INSERT INTO Paid_through VALUES (2, 3234567891233456)");
+statement.executeUpdate("INSERT INTO Paid_through VALUES (1, 4234567891233456)");
+statement.executeUpdate("INSERT INTO Paid_through VALUES (3, 5234567891233456)");
+
+statement.executeUpdate("INSERT INTO Category VALUES('Deluxe', 100)");
+statement.executeUpdate("INSERT INTO Category VALUES('Presidential Suite', 220 )");
+statement.executeUpdate("INSERT INTO Category VALUES( 'Executive Suite', 150)");
+statement.executeUpdate("INSERT INTO Category VALUES( 'Economy', 75.55)");
+
+statement.executeUpdate("INSERT INTO Rooms VALUES(200, 1 ,4, 'Deluxe' )"); 
+statement.executeUpdate("INSERT INTO Rooms VALUES(201, 2, 2, 'Presidential Suite' )"); 
+statement.executeUpdate("INSERT INTO Rooms VALUES(202, 1, 4, 'Executive Suite' )"); 
+statement.executeUpdate("INSERT INTO Rooms VALUES(204, 2, 2, 'Deluxe' )"); 
+statement.executeUpdate("INSERT INTO Rooms VALUES(207, 4, 4, 'Deluxe' )"); 
+statement.executeUpdate("INSERT INTO Rooms VALUES(101, 4, 4, 'Presidential Suite' )"); 
+statement.executeUpdate("INSERT INTO Rooms VALUES(107, 4, 4, 'Deluxe' )"); 
+statement.executeUpdate("INSERT INTO Rooms VALUES(103, 3, 4, 'Economy' )");
+
+statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time  ) VALUES (0, '2018-07-05', '2018-08-05', 100,'08:00:00', '10:00:00')");
+statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time ) VALUES ( 4, '2018-07-08', '2018-07-10', 100, '11:30:45', '09:15:00')");
+statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time ) VALUES ( 2, '2017-12-30', '2018-01-02', 320, '10:00:00', '15:45:00')");
+statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time ) VALUES ( 1, '2018-08-31', '2018-09-02', 500, '12:20:00', '07:20:00')");
+statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time ) VALUES ( 3, '2018-05-07', '2018-05-10', 437, '04:00:00', '07:00:00')");
+statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time ) VALUES ( 2, '2018-10-02', '2018-10-06', 750, '10:25:00', '04:21:00')");
+statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time ) VALUES ( 5, '2018-03-10', '2018-03-12', 275, '07:30:00', '10:19:00')");
+statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time ) VALUES ( 5, '2018-03-10', '2018-03-12', 275, '07:30:00', NULL)");
+
+statement.executeUpdate("INSERT INTO Reservations VALUES( 200, 1, '2018-05-07', '2018-05-08' )");
+statement.executeUpdate("INSERT INTO Reservations VALUES( 201, 2, '2018-06-09', '2018-06-10' )");
+statement.executeUpdate("INSERT INTO Reservations VALUES( 202, 1, '2018-05-24', '2018-05-25' )");
+statement.executeUpdate("INSERT INTO Reservations VALUES( 103, 3, '2018-04-04', '2018-04-05' )");
+statement.executeUpdate("INSERT INTO Reservations VALUES( 107, 4, '2018-06-24', '2018-06-29' )");
+
+statement.executeUpdate("INSERT INTO Services VALUES('Laundry', 24.25 )");
+statement.executeUpdate("INSERT INTO Services VALUES('Food-Service', 12.25 )");
+statement.executeUpdate("INSERT INTO Services VALUES('Butler', 40 )");
+statement.executeUpdate("INSERT INTO Services VALUES('Housekeeping', 8.25 )");
+
+statement.executeUpdate("INSERT INTO Pricings values(4, 45.12,1, 201, 2, 'Laundry' )");
+statement.executeUpdate("INSERT INTO Pricings values(1, 55.12,2, 202, 1, 'Laundry')");
+statement.executeUpdate("INSERT INTO Pricings values(2, 35.12,3, 107, 4, 'Food-Service')");
+statement.executeUpdate("INSERT INTO Pricings values(1, 15.12,4, 200, 1, 'Housekeeping')");
+
+statement.executeUpdate("INSERT INTO Done_by VALUES (1, 1, 1)");
+statement.executeUpdate("INSERT INTO Done_by VALUES (2, 2, 2)");
+statement.executeUpdate("INSERT INTO Done_by VALUES (3, 3, 3)");
+statement.executeUpdate("INSERT INTO Done_by VALUES (4, 4, 4)");
+statement.executeUpdate("INSERT INTO Done_by VALUES (5, 7, 5)");
+statement.executeUpdate("INSERT INTO Done_by VALUES (6, 5, 6)");
+statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
