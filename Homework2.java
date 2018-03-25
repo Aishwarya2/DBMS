@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Homework2 {
-	static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/vsreeni";
+	static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/asundar2";
 	// Put your oracle ID and password here
 
 	private static Connection connection = null;
@@ -223,8 +223,8 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	private static void connectToDatabase() throws ClassNotFoundException, SQLException {
 		Class.forName("org.mariadb.jdbc.Driver");
 
-		String user = "vsreeni";
-		String password = "200205504";
+		String user = "asundar2";
+		String password = "200203826";
 
 		connection = DriverManager.getConnection(jdbcURL, user, password);
 		statement = connection.createStatement();
