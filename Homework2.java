@@ -15,42 +15,8 @@ public class Homework2 {
 	public static void main(String[] args) {
 
 		initialize();
-
-	// 	try {
-	// 		boolean canAfford = checkAbilityToStudy("Todd");
-	// 		// ************************************************************************
-
-	// 		connection.setAutoCommit(false);
-	// 		// modifyALittleBit1();
-	// 		modifyALittleBit2();
-
-	// 		boolean canAfford1 = checkAbilityToStudy("Angela");
-	// 		connection.commit();
-
-	// 		if (canAfford == canAfford1) {
-	// 			System.out.println("Success");				
-	// 		} else {
-	// 			System.out.println("Failure");
-	// 		}
-	// 	} catch (SQLException e) {
-	// 		e.printStackTrace();
-	// 		    try {
-	//                 System.err.print("Failure DB");
-	//                 connection.rollback();
-	//             } catch(SQLException excep) {
-	//                 excep.printStackTrace();
-	//             }
-	// 	}
-	// 	try {
-	// 		connection.setAutoCommit(true);
-	// 	} catch(SQLException e) {
-	// 		e.printStackTrace();
-	// 	}
-
-	// 	// ***********************************************************************
-	// 	close();
-	// }
-
+	}
+	
 	private static void initialize() {
 		try {
 			connectToDatabase();
@@ -154,10 +120,25 @@ public class Homework2 {
 		statement = connection.createStatement();
 
 		try {
-			statement.executeUpdate("DROP TABLE Students");
-			statement.executeUpdate("DROP TABLE Schools");
-		} catch (SQLException e) {
-		}
+		statement.executeUpdate("DROP TABLE Paid_through");
+		statement.executeUpdate("DROP TABLE Pricings");
+		statement.executeUpdate("DROP TABLE Done_by");
+		statement.executeUpdate("DROP TABLE Customers");
+		statement.executeUpdate("DROP TABLE Cards");
+		statement.executeUpdate("DROP TABLE Billings");
+		statement.executeUpdate("DROP TABLE Serves");
+		statement.executeUpdate("DROP TABLE Reservations");
+		statement.executeUpdate("DROP TABLE Rooms");
+		statement.executeUpdate("DROP TABLE Category");
+		statement.executeUpdate("DROP TABLE Frontdesk_rep");
+		statement.executeUpdate("DROP TABLE Managers");
+		statement.executeUpdate("DROP TABLE Staffs");
+		statement.executeUpdate("DROP TABLE Hotels");
+		statement.executeUpdate("DROP TABLE Locations");
+		statement.executeUpdate("DROP TABLE Services");
+		statement.executeUpdate("DROP TABLE Checkins");
+	} catch (SQLException e) {
+	}
 	}
 
 	private static void close() {
