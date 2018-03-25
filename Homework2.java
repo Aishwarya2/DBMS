@@ -84,8 +84,23 @@ private static void connectToDatabase() throws ClassNotFoundException, SQLExcept
 	statement = connection.createStatement();
 
 	try {
-		statement.executeUpdate("DROP TABLE Locations");
+		statement.executeUpdate("DROP TABLE Paid_through");
+		statement.executeUpdate("DROP TABLE Pricings");
+		statement.executeUpdate("DROP TABLE Done_by");
+		statement.executeUpdate("DROP TABLE Customers");
+		statement.executeUpdate("DROP TABLE Cards");
+		statement.executeUpdate("DROP TABLE Billings");
+		statement.executeUpdate("DROP TABLE Serves");
+		statement.executeUpdate("DROP TABLE Reservations");
+		statement.executeUpdate("DROP TABLE Rooms");
+		statement.executeUpdate("DROP TABLE Category");
+		statement.executeUpdate("DROP TABLE Frontdesk_rep");
+		statement.executeUpdate("DROP TABLE Managers");
+		statement.executeUpdate("DROP TABLE Staffs");
 		statement.executeUpdate("DROP TABLE Hotels");
+		statement.executeUpdate("DROP TABLE Locations");
+		statement.executeUpdate("DROP TABLE Services");
+		statement.executeUpdate("DROP TABLE Checkins");
 	} catch (SQLException e) {
 	}
 }
