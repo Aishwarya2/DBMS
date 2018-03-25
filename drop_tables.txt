@@ -1,0 +1,17 @@
+drop table Paid_through;
+drop table Pricings;
+drop table Done_by;
+drop table Customers;
+drop table Cards;
+drop table Billings;
+drop table Serves;
+drop table Reservations;
+drop table Rooms;
+drop table Category;
+drop table Frontdesk_rep;
+drop table Managers;
+drop table Staffs;
+drop table Hotels;
+drop table Locations;
+drop table Services;
+drop table Checkins;

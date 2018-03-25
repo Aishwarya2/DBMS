@@ -1,0 +1,160 @@
+create table Locations(
+zip_code char(5) PRIMARY KEY,
+address varchar(50) NOT NULL,
+rate float NOT NULL,
+city varchar(20) NOT NULL,
+CONSTRAINT chk_zipcode CHECK(zip_code not like '%[^0-9]%')
+);
+
+create table Hotels(
+id int PRIMARY KEY AUTO_INCREMENT,
+name varchar(30) NOT NULL,
+phone_number char(10) NOT NULL,
+zip_code char(5) NOT NULL,
+FOREIGN KEY (zip_code) REFERENCES Locations(zip_code) ON DELETE CASCADE
+);
+
+
+create table Staffs(
+id int NOT NULL AUTO_INCREMENT,
+hotel_id int NOT NULL, 
+name varchar(30) NOT NULL,
+address varchar(50) NOT NULL,
+age int NOT NULL,
+phone_number char(10) NOT NULL,
+job_title varchar(30) NOT NULL,
+availability varchar(5) NOT NULL,
+PRIMARY KEY (id, hotel_id),
+FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE,
+CONSTRAINT chk_phone_no CHECK(phone_number not like '%[^0-9]%'),
+CONSTRAINT chk_avail CHECK(availability='Yes' OR availability='No'),
+CONSTRAINT chk_avail CHECK(age>18 AND age<=60)
+);
+
+create table Managers(
+id int NOT NULL,
+hotel_id int NOT NULL, 
+password varchar(32) NOT NULL,
+PRIMARY KEY(id, hotel_id),
+FOREIGN KEY (id, hotel_id) REFERENCES Staffs(id,hotel_id) ON DELETE CASCADE,
+CONSTRAINT chk_pwd CHECK(lengthb(password)>6)
+);
+
+create table Frontdesk_rep(
+id int NOT NULL,
+hotel_id int NOT NULL, 
+password varchar(32) NOT NULL,
+PRIMARY KEY(id, hotel_id),
+FOREIGN KEY (id, hotel_id) REFERENCES Staffs(id,hotel_id) ON DELETE CASCADE,
+CONSTRAINT chk_pwd CHECK(lengthb(password)>6)
+);
+
+create table Customers(
+id int PRIMARY KEY AUTO_INCREMENT, 
+name varchar(30) NOT NULL,
+DOB date,
+email varchar(50) NOT NULL,
+phone_number char(10),
+CONSTRAINT chk_phone_no CHECK(phone_number not like '%[^0-9]%'),
+CONSTRAINT chk_email CHECK(email like '%@%.%')
+);
+
+create table Billings (
+transaction_id int PRIMARY KEY AUTO_INCREMENT,
+billing_address varchar(100) NOT NULL,
+);
+
+
+create table Cards(
+card_number char(16) PRIMARY KEY,
+payment_method varchar(20) NOT NULL,
+discount float NOT NULL,
+SSN char(10) NOT NULL,
+CONSTRAINT chk_card_no CHECK(card_number not like '%[^0-9]%'),
+CONSTRAINT chk_discount CHECK(discount in (0.05,1))
+);
+
+create table Paid_through (
+transaction_id int NOT NULL,
+card_number char(16) NOT NULL,
+PRIMARY KEY(transaction_id, card_number),
+FOREIGN KEY (transaction_id) REFERENCES Billings(transaction_id) ON DELETE CASCADE,
+FOREIGN KEY (card_number) REFERENCES Cards(card_number) ON DELETE CASCADE
+);
+
+create table Category(
+category_name varchar(30) PRIMARY KEY,
+rate float NOT NULL
+);
+
+create table Rooms(
+room_number int NOT NULL,
+hotel_id int NOT NULL, 
+max_occupancy int NOT NULL,
+category_name varchar(30),
+PRIMARY KEY (hotel_id,room_number),
+FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE,
+FOREIGN KEY (category_name) REFERENCES Category(category_name) ON DELETE CASCADE
+);
+
+
+create table Checkins(
+id int PRIMARY KEY AUTO_INCREMENT,
+number_of_guests int DEFAULT 0,
+start_date date NOT NULL,
+end_date date NOT NULL,
+amount float,
+checkin_time time(3) NOT NULL,
+checkout_time time(3),
+CONSTRAINT chk_date CHECK(start_date<end_date)
+);
+
+
+create table Reservations (
+room_number int NOT NULL,
+hotel_id int NOT NULL, 
+start_date date NOT NULL,
+end_date date NOT NULL,
+PRIMARY KEY(room_number, hotel_id, start_date, end_date),
+FOREIGN KEY(hotel_id, room_number) REFERENCES Rooms(hotel_id,room_number) ON DELETE CASCADE
+);
+
+create table Services (
+service_name varchar(20) PRIMARY KEY,
+rate float NOT NULL
+);
+
+create table Pricings(
+count int,
+nightly_rate float NOT NULL,
+checkin_id int NOT NULL,
+room_number int NOT NULL,
+hotel_id int NOT NULL, 
+service_name varchar(20) NOT NULL,
+PRIMARY KEY(checkin_id, room_number, hotel_id, service_name),
+FOREIGN KEY(hotel_id, room_number) REFERENCES Rooms(hotel_id, room_number) ON DELETE CASCADE,
+FOREIGN KEY(checkin_id) REFERENCES Checkins(id) ON DELETE CASCADE,
+FOREIGN KEY(service_name) REFERENCES Services(service_name) ON DELETE CASCADE
+);
+
+
+create table Done_by(
+checkin_id int NOT NULL,
+transaction_id int UNIQUE,
+customer_id int NOT NULL, 
+PRIMARY KEY(checkin_id, customer_id),
+FOREIGN KEY(transaction_id) REFERENCES Billings(transaction_id) ON DELETE CASCADE,
+FOREIGN KEY(checkin_id) REFERENCES Checkins(id) ON DELETE CASCADE,
+FOREIGN KEY(customer_id) REFERENCES Customers(id) ON DELETE CASCADE
+);
+
+create table Serves(
+staff_id int NOT NULL,
+hotel_id int NOT NULL,
+service_name varchar(20) NOT NULL,
+checkin_id int NOT NULL,
+PRIMARY KEY(staff_id, hotel_id, service_name, checkin_id),
+FOREIGN KEY (hotel_id, staff_id) REFERENCES Staffs(hotel_id, id) ON DELETE CASCADE,
+FOREIGN KEY(checkin_id) REFERENCES Checkins(id) ON DELETE CASCADE,
+FOREIGN KEY(service_name) REFERENCES Services(service_name) ON DELETE CASCADE
+);
