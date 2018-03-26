@@ -22,8 +22,13 @@ public class Functionality {
 		//Delete tables operation hotel,rooms,staffs,customers
 		
 		//Check if room and room type requested are available
-		
+		verifyUserPreference('1','200','2018-05-03');
+		//Find available rooms of a particular category on a particular day
+		findCategoryPreference('1','200','2018-05-03','Deluxe');
+		//Find availability of rooms by using room number
+		findRoomAvailable('200','1');
 		//Assign rooms to customers by request
+       
 
         //Release rooms
 		
@@ -83,5 +88,34 @@ public class Functionality {
 				e.printStackTrace();
 			}
 		}
+	}
+	private static void verifyUserPreference(int hotel_id,int room_number,Date start_date)
+	{
+		try {
+		result=statement.executeQuery("SELECT * FROM Rooms WHERE (room_number, hotel_id) NOT IN (SELECT ' "+room_number, hotel_id+"%' from Reservations WHERE '"+start_date+"%' <= CURDATE())");
+
+
+		throw new RuntimeException("Parameters of this function cannot be found.");
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	}
+		private static void findCategoryPreference(int hotel_id,int room_number,Date start_date, String Category)
+	{
+		try {
+		result=statement.executeQuery("SELECT * FROM Rooms WHERE (room_number, hotel_id) NOT IN (SELECT ' "+room_number, hotel_id+" 'from Reservations WHERE ' "+start_date+"' <= CURDATE()) AND category_name LIKE '"+Category+"");
+		throw new RuntimeException("Parameters of this function cannot be found.");
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	}
+			private static void findRoomAvailable(int room_number,int hotel_id)
+	{
+		try {
+		result=statement.executeQuery("SELECT * FROM Rooms WHERE (room_number, hotel_id) NOT IN (SELECT '"+room_number, hotel_id+"' from Reservations WHERE start_date <= CURDATE()) AND room_number = '"+room_number"' AND hotel_id = '"+hotel_id+"");
+		throw new RuntimeException("Parameters of this function cannot be found.");
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
 	}
 }
