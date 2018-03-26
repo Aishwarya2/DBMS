@@ -51,14 +51,12 @@ public class Functionality {
 		//Find available rooms of a particular category on a particular day
 		findCategoryPreference('1','200','2018-05-03','Deluxe');
 		//Find availability of rooms by using room number
-		findRoomAvailable('200','1');
-
-	
+		findRoomAvailable('200','1');	
 		//Assign rooms to customers by request
        
 
         //Release rooms
-		
+		releaserooms(checkout_time,customer_id,checkin_id);
 		//Maintain billing account
 		
 		//Itemized receipt
@@ -226,6 +224,18 @@ public class Functionality {
 	{
 		try {
 		result=statement.executeQuery("SELECT * FROM Rooms WHERE (room_number, hotel_id) NOT IN (SELECT '"+room_number, hotel_id+"' from Reservations WHERE start_date <= CURDATE()) AND room_number = '"+room_number"' AND hotel_id = '"+hotel_id+"");
+		throw new RuntimeException("Parameters of this function cannot be found.");
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	}
+				private static void releaserooms(Time checkout_time,int customer_id,int checkin_id)
+	{
+		try {
+			//Update checkout time in timeins
+		result=statement.executeUpdate("UPDATE Checkins SET checkout_time=CURRENT_TIME() where id in(select d.checkin_id from Done_by d where d.customer_id='"+customer_id+"')");
+		    //Update amount in checkins table
+		result1=statement.executeUpdate("UPDATE Checkins SET amount=( select SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id=3 group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id=3)group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id='"+customer_id+"')group by checkin_id))UNION ALL  select l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id=3)group by checkin_id))Item) where id in (select d.checkin_id from Done_by d where d.customer_id='"+customer_id+"')");
 		throw new RuntimeException("Parameters of this function cannot be found.");
 	} catch (SQLException e) {
 		e.printStackTrace();
