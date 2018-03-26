@@ -81,16 +81,14 @@ public class Functionality {
 		//Details about Occupancy
 		
 		//Report Total Occupancy
-		
+		reportTotalOccupancy();
 		//Report percentage of rooms occupied
-		
+		reportPercentageOfRoomsOccupied();
 		//Information on number of Staffs grouped by their role
-		
+		getStaffGroupedByRoles();
 		//Display Staff  details for every customer stay
 		
 		//Generate revenue earned by a given hotel during a given date range
-		
-		
 		close();
 	}
 	
@@ -324,7 +322,8 @@ public class Functionality {
 	}
 
 	private static int insertIntoCheckins(number_of_guests,startDate, endDate){
-		statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time ) VALUES ("+number_of_guests+", '"+startDate+"', '"+endDate+"', 0,CURDATE(), NULL");
+		statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time )"
+							   +"VALUES ("+number_of_guests+", '"+startDate+"', '"+endDate+"', 0,CURDATE(), NULL");
 		return 0;
 	}
 
@@ -340,7 +339,6 @@ public class Functionality {
 	private static void reportOccupancyByHotel() {
 		try {
 			result=statement.executeQuery("SELECT count(*) from Reservations  group by hotel_id");
-			throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 				e.printStackTrace();
 		}
@@ -350,7 +348,6 @@ public class Functionality {
 		try {
 			result=statement.executeQuery("SELECT count(*) from Reservations r, Rooms R, Category c where r.room_number=R.room_number"
 										 +" and R.category_name = c.category_name group by c.category_name");
-			throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 				e.printStackTrace();
 		}
@@ -359,7 +356,6 @@ public class Functionality {
 	private static void reportOccupancyByDateRange() {
 		try {
 			result=statement.executeQuery("Select count(*) from Reservations group by start_date, end_date");
-			throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 				e.printStackTrace();
 		}
@@ -369,10 +365,37 @@ public class Functionality {
 		try {
 			result=statement.executeQuery("SELECT count(*) from Reservations r, Hotels h, Locations l where r.hotel_id=h.id"
 										 +" and h.zip_code=l.zip_code group by l.city");
-			throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 				e.printStackTrace();
 		}
 	}
 
+
+	//Report total occupancy
+	private static void reportTotalOccupancy() {
+		try {
+			result=statement.executeQuery("SELECT count(*) from Reservations");
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+	}
+
+	//Report percentage of rooms Occupied
+	private static void reportPercentageOfRoomsOccupied() {
+		try {
+			result=statement.executeQuery("SELECT (a.total/count(*))*100 as percentage_occupancy from (select count(*) as"
+										 +" total from Reservations) a, Rooms");
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+	}
+
+	//Staff Grouped by their roles
+	private static void getStaffGroupedByRoles() {
+		try {
+			result=statement.executeQuery("SELECT job_title,count(*) from Staffs group by job_title");
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}	
+	}
 }
