@@ -53,8 +53,8 @@ public class Functionality {
 		//Find availability of rooms by using room number
 		findRoomAvailable('200','1');	
 		//Assign rooms to customers by request
-       	// assignRoomsByRequest(hotel_id, category_name, start_date, end_date, city)
-       	assignRoomsByRequest(hotel_id, customer_id, category_name, start_date, end_date, city, number_of_guests);
+       	// assignRoomsByRequest(hotel_id, customer_id, category_name, start_date, end_date, city, number_of_guests);
+       	assignRoomsByRequest(1, 1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh",4);
 
         //Release rooms
 		releaserooms(checkout_time,customer_id,checkin_id);
@@ -67,8 +67,17 @@ public class Functionality {
 		
 		//Itemized receipt
 		
-		//Report occupancy by hotel , room_type, date range and city
+		//Report occupancy by hotel
+		reportOccupancyByHotel();
+		//Report occupancy by room_type
+		reportOccupancyByRoomType();
+		//Report occupancy by date range
+		reportOccupancyByDateRange();
+		//Report occupancy by city
+		reportOccupancyByCity();
 		
+
+
 		//Details about Occupancy
 		
 		//Report Total Occupancy
@@ -275,6 +284,7 @@ public class Functionality {
 		reportOccupancyBasedOnRequest(hotelID, category_name, startDate, endDate,city);
 		//If needed
 		// insertIntoCustomers("Tony Stark", "750123456","1975-02-21", "stark@gmail.com");	
+		try {
 		insertIntoReservations(room_number, hotelID, startDate, endDate);
 		// insertIntoCheckins(number_of_guests,start_date, end_date, amount, checkin_time, checkout_time);
 
@@ -286,7 +296,11 @@ public class Functionality {
 			insertIntoServes(staffID, hotelID, "HouseKeeping",checkinID);
 			insertIntoServes(staffID, hotelID, "Catering",checkinID);
 			statement.executeQuery("UPDATE Staffs SET availability='No' where id = "+staffID+" and hotel_id="+hotelID);
-		}	
+		}
+		throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	}
 
 	private static void reportOccupancyBasedOnRequest(int hotelID, String category_name, String startDate,String endDate,String city) {
@@ -321,4 +335,44 @@ public class Functionality {
 	private static void insertIntoDoneBy(int staffID, int hotelID, String serviceName, int checkinID) {
 			statement.executeUpdate("INSERT INTO Serves VALUES("+staffID+","+hotelID+", '"+serviceName+"',"+checkinID+")");
 	}
+
+	//Report Occupancy
+	private static void reportOccupancyByHotel() {
+		try {
+			result=statement.executeQuery("SELECT count(*) from Reservations  group by hotel_id");
+			throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+	}
+
+	private static void reportOccupancyByRoomType() {
+		try {
+			result=statement.executeQuery("SELECT count(*) from Reservations r, Rooms R, Category c where r.room_number=R.room_number"
+										 +" and R.category_name = c.category_name group by c.category_name");
+			throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+	}
+
+	private static void reportOccupancyByDateRange() {
+		try {
+			result=statement.executeQuery("Select count(*) from Reservations group by start_date, end_date");
+			throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+	}
+
+	private static void reportOccupancyByCity() {
+		try {
+			result=statement.executeQuery("SELECT count(*) from Reservations r, Hotels h, Locations l where r.hotel_id=h.id"
+										 +" and h.zip_code=l.zip_code group by l.city");
+			throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+	}
+
 }
