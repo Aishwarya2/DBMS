@@ -57,6 +57,11 @@ public class Functionality {
 
         //Release rooms
 		releaserooms(checkout_time,customer_id,checkin_id);
+		
+		//Maintain Service records
+		updatePricings(1, 45.12, 3, 107,4,'Laundry');
+        //UPDATE Pricings SET count = count+1 WHERE (service_name like 'Laundry' AND checkin_id = 3 AND hotel_id = 4 AND room_number = 107);
+        		
 		//Maintain billing account
 		
 		//Itemized receipt
@@ -206,6 +211,17 @@ public class Functionality {
 		result=statement.executeQuery("SELECT * FROM Rooms WHERE (room_number, hotel_id) NOT IN (SELECT ' "+room_number, hotel_id+"%' from Reservations WHERE '"+start_date+"%' <= CURDATE())");
 
 
+		throw new RuntimeException("Parameters of this function cannot be found.");
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	}
+		private static void updatePricings(int count,int nightly_rate,int checkin_id,int room_number,int hotel_id,String service_name)
+	{
+		try {
+		result=statement.executeQuery("INSERT INTO Pricings VALUES("+count+", "+nightly_rate+" ,"+checkin_id+", "+room_number+","+hotel_id+",'"+service_name+"' )");
+		result1=statement.executeQuery("UPDATE Pricings SET count = count+1 WHERE (service_name like '"+service_name+"' AND checkin_id = "+checkin_id+" AND hotel_id = "+hotel_id+" AND room_number = "+room_number+")");
+		
 		throw new RuntimeException("Parameters of this function cannot be found.");
 	} catch (SQLException e) {
 		e.printStackTrace();
