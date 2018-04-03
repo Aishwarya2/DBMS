@@ -42,7 +42,29 @@ public class Homework2 {
 		insertIntoCustomers("Tony Stark", "750123456","1975-02-21", "stark@gmail.com");
 	
 		//Updates
+		try{
+		connection.setAutoCommit(false);
 		updateHotels("New Updated Marriot", "501 Fayetteville St, Raleigh, NC", "9198331122", 1,"27601");
+		connection.commit();
+		}
+		catch(SQLException ex){
+			ex.printStackTrace();
+			if(connection!=null){
+				try{
+					System.out.println("Transaction is being rolled back");
+					connection.rollback();
+				}
+				catch(SQLException excep){
+					excep.printStackTrace();
+				}
+			}
+		}
+		try{
+			connection.setAutoCommit(true);
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
 		updateRooms(1, 200, "Executive Suite", 3);
 		updateStaffs("No","New Updated Robin Sam", "25 Brigadoon, Raleigh, NC", 39, "Laundry","9191211111",1);
 		updateCustomers("Updated Tony Stark", "750123456","1975-02-21", "stark@gmail.com", 1);
@@ -57,7 +79,29 @@ public class Homework2 {
 		verifyUserPreference(1,200,"2018-05-03");
 		
 		//Maintain service records
+		try{
+		connection.setAutoCommit(false);
 		updatePricings(1, 45.12, 3, 107,4,"Laundry");
+		connection.commit();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			if(connection!=null){
+				try{
+					System.out.println("Transaction is being rolled back");
+					connection.rollback();
+				}
+				catch(SQLException excep){
+					e.printStackTrace();
+				}
+			}
+		}
+		try{
+			connection.setAutoCommit(true);
+		}
+		catch(SQLException ex){
+			ex.printStackTrace();
+		}
 		
 		//Find available rooms of a particular category on a particular day
 		findCategoryPreference(1,200,"2018-05-03","Deluxe");
