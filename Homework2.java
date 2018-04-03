@@ -46,6 +46,12 @@ public class Homework2 {
 		updateRooms(1, 200, "Executive Suite", 3);
 		updateStaffs("No","New Updated Robin Sam", "25 Brigadoon, Raleigh, NC", 39, "Laundry","9191211111",1);
 		updateCustomers("Updated Tony Stark", "750123456","1975-02-21", "stark@gmail.com", 1);
+	
+	    //Deletes
+		deleteFromHotels(2);
+		deleteFromRooms(1, 202);
+		deleteFromStaffs(2);
+		deleteFromCustomers(2);
 	}
 	
 	private static void initialize() {
@@ -330,6 +336,42 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 		try{
 			statement.executeUpdate(String.format("UPDATE Customers SET name='%s', phone_number='%s', dob='%s', email='%s' WHERE id ='%d'",name,phone_number,dob,emailID,customer_id));	
 			//throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+	private static void deleteFromHotels(int hotelID) {
+		try{
+			statement.executeUpdate("DELETE from Hotels where id="+hotelID);
+			//throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+	private static void deleteFromRooms(int hotelID,int room_number){
+		try{
+			statement.executeUpdate("DELETE from Rooms where hotel_id="+hotelID+" and room_number="+room_number);
+			//throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+	private static void deleteFromStaffs(int staffID) {
+		try{
+			statement.executeUpdate("DELETE from Staffs where id="+staffID);
+			//throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+	private static void deleteFromCustomers(int customerID) {
+		try{
+			statement.executeUpdate("DELETE from Customers where id="+customerID);	
+			throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
