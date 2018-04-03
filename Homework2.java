@@ -64,6 +64,32 @@ public class Homework2 {
 		
 		//Find availability of rooms by using room number
 		findRoomAvailable(200,1);
+		
+		//Report occupancy by hotel
+		reportOccupancyByHotel(0);
+		
+		//Report occupancy by room_type
+		reportOccupancyByRoomType();
+		
+		//Report occupancy by date range
+		reportOccupancyByDateRange();
+		
+		//Report occupancy by city
+		reportOccupancyByCity();
+		
+		//Report Total Occupancy
+		reportTotalOccupancy();
+		
+		//Report percentage of rooms occupied
+		reportPercentageOfRoomsOccupied();
+		
+		//Information on number of Staffs grouped by their role
+		getStaffGroupedByRoles();
+		
+		//Display Staff  details for every customer stay
+		
+       	// assignRoomsByRequest(hotel_id, customer_id, category_name, start_date, end_date, city, number_of_guests);
+       //	assignRoomsByRequest(1, 1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh",4);
 	}
 	
 	private static void initialize() {
@@ -450,6 +476,88 @@ while(result.next())
 e.printStackTrace();
 }
 }
+	//Report Occupancy
+	private static void reportOccupancyByHotel(int count) {
+		try {
+			result=statement.executeQuery("SELECT count(*) as count,hotel_id from Reservations  group by hotel_id");
+			while(result.next())
+			{
+				System.out.println(result.getInt("count")+"occupied in"+result.getInt("hotel_id"));
+			}
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+	}
+	
+	private static void reportOccupancyByRoomType() {
+		try {
+			result=statement.executeQuery("SELECT count(*) as count,c.category_name from Reservations r, Rooms R, Category c where r.room_number=R.room_number"
+										 +" and R.category_name = c.category_name group by c.category_name");
+		    while(result.next()){
+		    	System.out.println(result.getInt("count")+"occupied of type"+result.getString("c.category_name"));
+		    }
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+	}
+	private static void reportOccupancyByDateRange() {
+		try {
+			result=statement.executeQuery("Select count(*) as count,start_date,end_date from Reservations group by start_date, end_date");
+		    while(result.next()){
+		    	System.out.println(result.getInt("count")+"occupied in date range"+result.getString("start_date")+","+result.getString("end_date"));
+		    }
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+	}
+	
+	private static void reportOccupancyByCity() {
+		try {
+			result=statement.executeQuery("SELECT count(*) as count,l.city from Reservations r, Hotels h, Locations l where r.hotel_id=h.id"
+										 +" and h.zip_code=l.zip_code group by l.city");
+		    while(result.next()){
+		    	System.out.println(result.getInt("count")+"occupied in city"+result.getString("l.city"));
+		    }
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+	}
+	//Report total occupancy
+	private static void reportTotalOccupancy() {
+		try {
+			result=statement.executeQuery("SELECT count(*) as count from Reservations");
+		    while(result.next()){
+		    	System.out.println(result.getInt("count")+"occupied in the entire hotel chain ");
+		    }
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+	}
+	
+	//Report percentage of rooms Occupied
+	private static void reportPercentageOfRoomsOccupied() {
+		try {
+			result=statement.executeQuery("SELECT (a.total/count(*))*100 as percentage_occupancy from (select count(*) as"
+										 +" total from Reservations) a, Rooms");
+		    while(result.next()){
+		    	System.out.println(result.getInt("percentage_occupancy")+"percentage occupied in the entire hotel chain ");
+		    }
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+	}
+	
+	//Staff Grouped by their roles
+	private static void getStaffGroupedByRoles() {
+		try {
+			result=statement.executeQuery("SELECT job_title,count(*) as count from Staffs group by job_title");
+		    while(result.next()){
+		    	System.out.println("Number of staffs in"+result.getString("job_title")+"is"+result.getInt("count"));
+		    }
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}	
+	}
 	
 		
 }
