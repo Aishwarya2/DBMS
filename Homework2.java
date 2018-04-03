@@ -132,7 +132,11 @@ public class Homework2 {
 		
        	// assignRoomsByRequest(hotel_id, customer_id, category_name, start_date, end_date, city, number_of_guests);
        	assignRoomsByRequest(1, 1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh",4);
-		//int[]result=reportOccupancyBasedOnRequest(1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh");
+		
+       	//generate bill
+       	generatebill(1);
+       	
+       	//int[]result=reportOccupancyBasedOnRequest(1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh");
        	//System.out.println("room"+result[0]+"in hotel"+result[1]);
 		//Display Staff  details for every customer stay
 		
@@ -617,7 +621,9 @@ e.printStackTrace();
 		}
 		//If needed
 		// insertIntoCustomers("Tony Stark", "750123456","1975-02-21", "stark@gmail.com");	
+		
 		try {
+			
 		insertIntoReservations(roomhotel[0], roomhotel[1], startDate, endDate);
 		// insertIntoCheckins(number_of_guests,start_date, end_date, amount, checkin_time, checkout_time);
 
@@ -731,5 +737,15 @@ e.printStackTrace();
 		}
 		return s;
 		}
-		
+	private static void generatebill(int customer_id){
+		try{
+			result=statement.executeQuery("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+" group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id="+customer_id+")group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))Item");
+		while(result.next()){
+			System.out.println("The total bill is"+result.getInt("Total"));
+		}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
 }
