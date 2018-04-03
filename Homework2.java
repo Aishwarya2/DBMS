@@ -136,6 +136,15 @@ public class Homework2 {
        	//generate bill
        	generatebill(1);
        	
+       	//generate itemized receipt
+       	generateitemizedreceipt(1);
+       	
+       	//display staff for every customer stay
+       	displaystaffforeverycustomerstay();
+       	
+       	//Generate revenue earned by a given hotel during a given date range
+       	generaterevenuebyhoteldate(1,"2018-04-02","2018-04-05");
+       	
        	//int[]result=reportOccupancyBasedOnRequest(1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh");
        	//System.out.println("room"+result[0]+"in hotel"+result[1]);
 		//Display Staff  details for every customer stay
@@ -590,7 +599,7 @@ e.printStackTrace();
 	private static void reportPercentageOfRoomsOccupied() {
 		try {
 			result=statement.executeQuery("SELECT (a.total/count(*))*100 as percentage_occupancy from (select count(*) as"
-										 +" total from Reservations) a, Rooms");
+										 +" total from Reservations) a, Rooms group by hotel_id");
 		    while(result.next()){
 		    	System.out.println(result.getInt("percentage_occupancy")+"percentage occupied in the entire hotel chain ");
 		    }
@@ -742,6 +751,41 @@ e.printStackTrace();
 			result=statement.executeQuery("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+" group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id="+customer_id+")group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))Item");
 		while(result.next()){
 			System.out.println("The total bill is"+result.getInt("Total"));
+		}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	private static void generateitemizedreceipt(int customer_id){
+		try{
+			result=statement.executeQuery("select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+" group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id="+customer_id+")group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id)");
+		while(result.next()){
+			System.out.println("The bill split is"+result.getInt("rates"));
+		}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	
+	private static void displaystaffforeverycustomerstay(){
+		try{
+			result=statement.executeQuery("SELECT * from Staffs where id in (select Serves.staff_id from Serves where (Serves.service_name,Serves.hotel_id) in (select service_name,hotel_id from Pricings group by checkin_id))");
+		while(result.next()){
+			System.out.println("The staff id is"+result.getInt("id")+"from hotel"+result.getInt("hotel_id")+"job_title is"+result.getString("job_title"));
+		}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	private static void generaterevenuebyhoteldate(int hotel_id,String start_date,String end_date){
+		try{
+			result=statement.executeQuery("SELECT sum(Checkins.amount) as revenue,hotel_id from Checkins, Pricings where Pricings.checkin_id=Checkins.id and Pricings.hotel_id="+hotel_id+" and Checkins.id in (select id from Checkins where start_date>='"+start_date+"' and end_date<='"+end_date+"')");
+		while(result.next()){
+			System.out.println(result.getInt("revenue")+"is the revenue earned by"+result.getInt("hotel_id")+"in the given date range");
 		}
 		}
 		catch(SQLException e){
