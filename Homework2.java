@@ -3,6 +3,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 public class Homework2 {
 	private static final String jdbcURL = "jdbc:mysql://mydbinstance.ca6owdm4itco.us-east-1.rds.amazonaws.com:3306/";
@@ -652,7 +653,33 @@ e.printStackTrace();
 		}
 		//If needed
 		// insertIntoCustomers("Tony Stark", "750123456","1975-02-21", "stark@gmail.com");	
+		try{
+		result=statement.executeQuery("select id from Customers where id="+customerID+"");
 		
+		if(!result.next())
+		{   Scanner s=new Scanner(System.in);
+		    System.out.println("Enter the customer's name:");
+			String name=s.next();
+			System.out.println("Enter the customer's dob:");
+			String dob=s.next();
+			System.out.println("Enter the customer's email:");
+			String emailID=s.next();
+			System.out.println("Enter the customer's phone_number:");
+			String phone_number=s.next();
+			try{
+			statement.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('"+name+"','"+dob+"','"+emailID+"', '"+phone_number+"')");
+			}
+			catch(SQLException ed){
+				ed.printStackTrace();
+			}
+		 }
+		else {
+			System.out.println("Customer already exists in the DB");
+		}
+		}
+		catch(SQLException er){
+			er.printStackTrace();
+		}
 		try {
 			
 		insertIntoReservations(roomhotel[0], roomhotel[1], startDate, endDate);
