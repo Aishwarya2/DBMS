@@ -131,8 +131,30 @@ public class Homework2 {
 		getStaffGroupedByRoles();
 		
        	// assignRoomsByRequest(hotel_id, customer_id, category_name, start_date, end_date, city, number_of_guests);
-       	assignRoomsByRequest(1, 1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh",4);
-		
+       	try{
+       	connection.setAutoCommit(false);
+		assignRoomsByRequest(1, 1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh",4);
+       	connection.commit();
+       	}
+       	catch(SQLException e){
+       		e.printStackTrace();
+       		try{
+       		if(connection!=null){
+       			System.out.println("Transaction is being rolled back");
+       			connection.rollback();
+       		}
+       		}
+       		catch(SQLException excep){
+       			excep.printStackTrace();
+       		}
+       	}
+       	try{
+       		connection.setAutoCommit(true);
+       	}
+       	catch(SQLException exc){
+       		exc.printStackTrace();
+       	}
+       	
        	//generate bill
        	generatebill(1);
        	
