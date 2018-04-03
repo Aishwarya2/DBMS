@@ -43,6 +43,9 @@ public class Homework2 {
 	
 		//Updates
 		updateHotels("New Updated Marriot", "501 Fayetteville St, Raleigh, NC", "9198331122", 1,"27601");
+		updateRooms(1, 200, "Executive Suite", 3);
+		updateStaffs("No","New Updated Robin Sam", "25 Brigadoon, Raleigh, NC", 39, "Laundry","9191211111",1);
+		updateCustomers("Updated Tony Stark", "750123456","1975-02-21", "stark@gmail.com", 1);
 	}
 	
 	private static void initialize() {
@@ -305,6 +308,32 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	private static void updateRooms(int hotelID, int room_number, String category_name, int max_occupancy) {
+		try{
+			statement.executeUpdate(String.format("UPDATE Rooms SET category_name='%s', max_occupancy='%d' WHERE hotel_id ='%d' and room_number='%d'",category_name,max_occupancy,hotelID,room_number));
+			//throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	private static void updateStaffs(String availability, String name,String address,int age,String job_title,String phone_number, int staffID){
+		try{
+			statement.executeUpdate(String.format("UPDATE Staffs SET availability='%s', name='%s', address='%s', age='%d', job_title='%s', phone_number='%s' WHERE id ='%d'",availability,name,address,age,job_title,phone_number,staffID));
+			//throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+	private static void updateCustomers(String name,String phone_number,String dob,String emailID,int customer_id){
+		try{
+			statement.executeUpdate(String.format("UPDATE Customers SET name='%s', phone_number='%s', dob='%s', email='%s' WHERE id ='%d'",name,phone_number,dob,emailID,customer_id));	
+			//throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 		
 }
