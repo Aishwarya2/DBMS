@@ -52,6 +52,9 @@ public class Homework2 {
 		deleteFromRooms(1, 202);
 		deleteFromStaffs(2);
 		deleteFromCustomers(2);
+		
+		//verify user preferences
+		verifyUserPreference(1,200,"2018-05-03");
 	}
 	
 	private static void initialize() {
@@ -371,11 +374,27 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	private static void deleteFromCustomers(int customerID) {
 		try{
 			statement.executeUpdate("DELETE from Customers where id="+customerID);	
-			throw new RuntimeException("Parameters of this function cannot be found.");
+			//throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
+	}
+	
+	private static void verifyUserPreference(int hotel_id,int room_number,String start_date)
+	{
+		try {
+		result=statement.executeQuery(String.format("SELECT * FROM Rooms WHERE (room_number, hotel_id) NOT IN (SELECT '%d','%d' from Reservations WHERE '%s' <= CURDATE())",room_number,hotel_id,start_date));
+        //throw new RuntimeException("Parameters of this function cannot be found.");
+        while(result.next()){
+        	int rno=result.getInt("room_number");
+        	int hotelid=result.getInt("hotel_id");
+        	System.out.println("room number"+rno+"is available in hotel"+hotelid);
+        }
+        
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
 	}
 		
 }
