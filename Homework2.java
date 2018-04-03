@@ -55,6 +55,15 @@ public class Homework2 {
 		
 		//verify user preferences
 		verifyUserPreference(1,200,"2018-05-03");
+		
+		//Maintain service records
+		updatePricings(1, 45.12, 3, 107,4,"Laundry");
+		
+		//Find available rooms of a particular category on a particular day
+		findCategoryPreference(1,200,"2018-05-03","Deluxe");
+		
+		//Find availability of rooms by using room number
+		findRoomAvailable(200,1);
 	}
 	
 	private static void initialize() {
@@ -396,5 +405,51 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 		e.printStackTrace();
 	}
 	}
+	
+	private static void updatePricings(int count,double nightly_rate,int checkin_id,int room_number,int hotel_id,String service_name)
+{
+	try {
+	statement.executeUpdate("INSERT INTO Pricings VALUES("+count+", "+nightly_rate+" ,"+checkin_id+", "+room_number+","+hotel_id+",'"+service_name+"' )");
+	statement.executeUpdate(String.format("UPDATE Pricings SET count = count+1 WHERE service_name like '%s' AND checkin_id ='%d' AND hotel_id = '%d' AND room_number = '%d'",service_name,checkin_id,hotel_id,room_number));
+	
+	//throw new RuntimeException("Parameters of this function cannot be found.");
+} catch (SQLException e) {
+	e.printStackTrace();
+}
+}
+	private static void findCategoryPreference(int hotel_id,int room_number,String start_date, String Category)
+{
+	try {
+	result=statement.executeQuery(String.format("SELECT * FROM Rooms WHERE (room_number, hotel_id) NOT IN (SELECT '%d','%d'from Reservations WHERE '%s' <= CURDATE()) AND category_name LIKE '%s'",room_number,hotel_id,start_date,Category));
+	//throw new RuntimeException("Parameters of this function cannot be found.");
+	while(result.next()){
+		int rno=result.getInt("room_number");
+		int hotelid=result.getInt("hotel_id");
+		System.out.println("Catagory"+Category+"in room_number"+rno+"of hotel"+hotelid);
+	}
+} catch (SQLException e) {
+	e.printStackTrace();
+}
+}
+	private static void findRoomAvailable(int room_number1,int hotel_id1)
+{
+try {
+result=statement.executeQuery(String.format("SELECT * FROM Rooms WHERE (room_number, hotel_id) NOT IN (SELECT '%d','%d' from Reservations WHERE start_date <= CURDATE()) AND room_number = '%d' AND hotel_id = '%d'",room_number1,hotel_id1,room_number1,hotel_id1));
+//throw new RuntimeException("Parameters of this function cannot be found.");
+while(result.next())
+{
+	int rno=result.getInt("room_number");
+	int hotelid=result.getInt("hotel_id");
+	if(rno==room_number1 && hotelid==hotel_id1)
+		System.out.println("The room is available");
+	else
+		System.out.println("The room is not available");
+	
+}
+} catch (SQLException e) {
+e.printStackTrace();
+}
+}
+	
 		
 }
