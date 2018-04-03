@@ -5,11 +5,37 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Homework2 {
-	
+	private static final String jdbcURL = "jdbc:mysql://mydbinstance.ca6owdm4itco.us-east-1.rds.amazonaws.com:3306/";
+	// Put your oracle ID and password here
+    private static final String username="aishwaryassr";
+	private static final String password="Macrohard.123";
+	private static final String dbName="dbname";	
+	private static Connection connection = null;
+	private static Statement statement = null;
+	private static ResultSet result = null;
 
 	public static void main(String[] args) {
 
-		initialize();
+		
+
+		//String driver="com.mysql.jdbc.Driver";
+		try{
+		Class.forName("com.mysql.jdbc.Driver");
+		}
+		catch(ClassNotFoundException e){
+			e.printStackTrace();
+		}
+		try{
+		connection=DriverManager.getConnection(jdbcURL+dbName,username,password);
+		
+			connection = DriverManager.getConnection(jdbcURL+dbName,username,password);
+ 			statement = connection.createStatement();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+			initialize();	
+		insertIntoHotels("New Marriot1", "9198331120","500 Fayetteville St, Raleigh, NC", 47.5,"27666","Raleigh");
 	}
 	
 	private static void initialize() {
@@ -19,25 +45,7 @@ public class Homework2 {
         
 		//String user = "asundar2";
 		//String password = "200203826";
-	String jdbcURL = "jdbc:mysql://mydbinstance.ca6owdm4itco.us-east-1.rds.amazonaws.com:3306/";
-	// Put your oracle ID and password here
-    String username="aishwaryassr";
-	String password="########";
-	String dbName="dbname";
-	String driver="com.mysql.jdbc.Driver";
-	try{
-	Class.forName("com.mysql.jdbc.Driver");
-	}
-	catch(ClassNotFoundException e){
-		e.printStackTrace();
-	}
-	Connection connection = null;
-	connection=DriverManager.getConnection(jdbcURL+dbName,username,password);
-	Statement statement = null;
-	ResultSet result = null;
 
-		connection = DriverManager.getConnection(jdbcURL+dbName,username,password);
-		statement = connection.createStatement();
 
 		
 		try {
@@ -247,4 +255,14 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 			e.printStackTrace();
 		}
 	}
+	private static void insertIntoHotels(String name, String phone_number, String address, double rate, String zipcode,String city) {
+	try{
+		statement.executeUpdate("INSERT INTO Locations VALUES ('"+zipcode+"', '"+address+"', "+rate+",'"+city+"')");
+		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('"+name+"', '"+phone_number+"', '"+zipcode+"')");
+	}
+	catch(SQLException e){
+		e.printStackTrace();
+	}
+	}
+		
 }
