@@ -34,8 +34,15 @@ public class Homework2 {
 		catch(SQLException e){
 			e.printStackTrace();
 		}
-			initialize();	
+			initialize();
+		//Insert	
 		insertIntoHotels("New Marriot1", "9198331120","500 Fayetteville St, Raleigh, NC", 47.5,"27666","Raleigh");
+		insertIntoRooms(7,200, "Deluxe", 4);
+		insertIntoStaffs(1,"Yes", "New Robin Sam", "25 Brigadoon, Raleigh, NC", 29, "Catering","9451204444");
+		insertIntoCustomers("Tony Stark", "750123456","1975-02-21", "stark@gmail.com");
+	
+		//Updates
+		updateHotels("New Updated Marriot", "501 Fayetteville St, Raleigh, NC", "9198331122", 1,"27601");
 	}
 	
 	private static void initialize() {
@@ -255,6 +262,14 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 			e.printStackTrace();
 		}
 	}
+	private static void insertIntoRooms(int hotelID, int room_number, String category_name,int max_occupancy) {
+		try{
+		statement.executeUpdate("INSERT INTO Rooms VALUES("+room_number+", "+hotelID+" ,"+max_occupancy+", '"+category_name+"' )"); 
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
 	private static void insertIntoHotels(String name, String phone_number, String address, double rate, String zipcode,String city) {
 	try{
 		statement.executeUpdate("INSERT INTO Locations VALUES ('"+zipcode+"', '"+address+"', "+rate+",'"+city+"')");
@@ -263,6 +278,33 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	catch(SQLException e){
 		e.printStackTrace();
 	}
+	}
+	private static void insertIntoStaffs(int hotelID, String availability, String name, String  address, int age, String  job_title, String phone_number) {
+		try{
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values("+hotelID+", '"+name+"','"+ address+"',"+age+", '"+phone_number+"', '"+job_title+"', '"+availability+"')");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		}
+	private static void insertIntoCustomers(String name, String phone_number,String dob,String emailID) {
+	try{
+		statement.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('"+name+"','"+dob+"','"+emailID+"', '"+phone_number+"')");	
+	}
+	catch(SQLException e){
+		e.printStackTrace();
+	}
+	}
+	private static void updateHotels(String name,String address,String phone_number,int hotelID,String zipcode) {
+		try{
+			//statement.executeUpdate("UPDATE Hotels SET name='"+name+"',phone_number='"+phone_number+"' WHERE id ='"+hotelID+"')");
+			statement.executeUpdate(String.format("UPDATE Hotels set name='%s',phone_number='%s' where id='%s'",name,phone_number,hotelID));
+			statement.executeUpdate(String.format("UPDATE Locations set address='%s' where zip_code ='%s'",address,zipcode));
+			//throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 		
 }
