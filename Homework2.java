@@ -130,6 +130,10 @@ public class Homework2 {
 		//Information on number of Staffs grouped by their role
 		getStaffGroupedByRoles();
 		
+       	// assignRoomsByRequest(hotel_id, customer_id, category_name, start_date, end_date, city, number_of_guests);
+       	assignRoomsByRequest(1, 1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh",4);
+		//int[]result=reportOccupancyBasedOnRequest(1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh");
+       	//System.out.println("room"+result[0]+"in hotel"+result[1]);
 		//Display Staff  details for every customer stay
 		
        	// assignRoomsByRequest(hotel_id, customer_id, category_name, start_date, end_date, city, number_of_guests);
@@ -603,5 +607,129 @@ e.printStackTrace();
 		}	
 	}
 	
+	//assign rooms to customers as per request
+	private static void assignRoomsByRequest(int hotelID,int customerID, String categoryName,String startDate,String endDate,String city, int number_of_guests) {
+		int[] roomhotel=reportOccupancyBasedOnRequest(hotelID, categoryName, startDate, endDate,city);
+		if(roomhotel[0]==-1)
+		{
+			System.out.println("room not available while checkin");
+			return;
+		}
+		//If needed
+		// insertIntoCustomers("Tony Stark", "750123456","1975-02-21", "stark@gmail.com");	
+		try {
+		insertIntoReservations(roomhotel[0], roomhotel[1], startDate, endDate);
+		// insertIntoCheckins(number_of_guests,start_date, end_date, amount, checkin_time, checkout_time);
+
+		int checkinID = insertIntoCheckins(number_of_guests,hotelID, startDate, endDate);
+		
+		insertIntoDoneBy(checkinID, customerID);
+        
+		int[]staffs=findavailablestaffs(hotelID);
+		if(staffs[0]==-1)
+		{
+		  System.out.println("Staffs not available");
+		  return;
+		}
+		//if category name = Presidential Suite
+		if(categoryName == "Presidential Suite") {
+			insertIntoServes(staffs[0], hotelID, "HouseKeeping",checkinID);
+			insertIntoServes(staffs[1], hotelID, "Catering",checkinID);
+			statement.executeQuery("UPDATE Staffs SET availability='No' where id in ("+staffs[0]+","+staffs[1]+") and hotel_id="+hotelID+"");
+		}
+		//throw new RuntimeException("Parameters of this function cannot be found.");
+		} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	private static int[] reportOccupancyBasedOnRequest(int hotelID, String category_name, String startDate,String endDate,String city) {
+		int[]answer=new int[2];
+		try {
+				result=statement.executeQuery("SELECT * FROM Reservations r, Hotels h where r.hotel_id="+hotelID+" and r. room_number in"
+											 +"(select room_number from Rooms where category_name='"+category_name+"' and hotel_id="+hotelID+" )"
+											 +"and r.start_date>='"+startDate+"' and r.end_Date<='"+endDate+"' and h.zip_code in "
+											 +"(select zip_code from Locations where city='"+city+"')");
+				if(result.next()){
+					int rno=result.getInt("room_number");
+					int hotelid=result.getInt("hotel_id");
+					answer[0]=rno;
+					answer[1]=hotelid;
+				}
+				else
+				{
+					System.out.println("ROOMS not available");
+					answer[0]=-1;
+					answer[1]=-1;
+				}
+			
+				//throw new RuntimeException("Parameters of this function cannot be found.");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return answer;
+	}
+	private static void insertIntoReservations(int room_number,int hotelID, String startDate,String endDate) {
+		try{
+		result=statement.executeQuery("SELECT * from Rooms where room_number="+room_number+" and hotel_id="+hotelID+"");
+		if(result.next())
+		statement.executeUpdate("INSERT INTO Reservations VALUES ("+room_number+", "+hotelID+", '"+startDate+"','"+endDate+"')");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		}
+
+	private static int insertIntoCheckins(int number_of_guests,int hotel_id, String startDate,String endDate) {
+		int cid=0;
+		try{
+		statement.executeUpdate("INSERT INTO Checkins(number_of_guests,start_date,end_date,checkin_time) VALUES ("+number_of_guests+", '"+startDate+"','"+endDate+"',TIME(NOW()))");
+		 result = statement.executeQuery("SELECT LAST_INSERT_ID()");
+		 while(result.next()){
+			 cid=result.getInt(1);
+		 }
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return cid;
+		}
+
+	private static void insertIntoServes(int staffid,int hotelid,String job_title,int checkinid) {
+		try{
+		statement.executeUpdate("INSERT INTO Serves VALUES ("+staffid+","+hotelid+",'"+job_title+"',"+checkinid+")");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		}
+	private static void insertIntoDoneBy(int checkinID, int customerID) {
+		try{
+		statement.executeUpdate("INSERT INTO Done_by VALUES ("+checkinID+",NULL, "+customerID+")");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		}
+	private static int[] findavailablestaffs(int hotelID) {
+		int count=0;
+		int[]s=new int[2];
+		try{
+		result=statement.executeQuery("SELECT id from Staffs WHERE hotel_id="+hotelID+"");
+		while(result.next()&&count<2){
+             s[count]=result.getInt("id");
+             count++;
+		}
+		if(count==0)
+			{
+			s[0]=-1;
+			s[1]=-1;
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return s;
+		}
 		
 }
