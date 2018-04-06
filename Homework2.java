@@ -157,16 +157,16 @@ public class Homework2 {
        	}
        	
        	//generate bill
-       	generatebill(1);
+       	generateBill(1);
        	
        	//generate itemized receipt
-       	generateitemizedreceipt(1);
+       	generateItemizedReceipt(1);
        	
        	//display staff for every customer stay
-       	displaystaffforeverycustomerstay();
+       	displayStaffForEveryCustomerStay();
        	
        	//Generate revenue earned by a given hotel during a given date range
-       	generaterevenuebyhoteldate(1,"2018-04-02","2018-04-05");
+       	generateRevenueByHotelDate(1,"2018-04-02","2018-04-05");
        	
        	//int[]result=reportOccupancyBasedOnRequest(1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh");
        	//System.out.println("room"+result[0]+"in hotel"+result[1]);
@@ -178,13 +178,10 @@ public class Homework2 {
 	
 	private static void initialize() {
 		try {
-			//connectToDatabase();
-					//Class.forName("org.mariadb.jdbc.Driver");
-        
+		//connectToDatabase();
+		//Class.forName("org.mariadb.jdbc.Driver");
 		//String user = "asundar2";
 		//String password = "200203826";
-
-
 		
 		try {
 			statement.executeUpdate("DROP TABLE Paid_through");
@@ -429,10 +426,8 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	}
 	private static void updateHotels(String name,String address,String phone_number,int hotelID,String zipcode) {
 		try{
-			//statement.executeUpdate("UPDATE Hotels SET name='"+name+"',phone_number='"+phone_number+"' WHERE id ='"+hotelID+"')");
 			statement.executeUpdate(String.format("UPDATE Hotels set name='%s',phone_number='%s' where id='%s'",name,phone_number,hotelID));
 			statement.executeUpdate(String.format("UPDATE Locations set address='%s' where zip_code ='%s'",address,zipcode));
-			//throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -440,7 +435,6 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	private static void updateRooms(int hotelID, int room_number, String category_name, int max_occupancy) {
 		try{
 			statement.executeUpdate(String.format("UPDATE Rooms SET category_name='%s', max_occupancy='%d' WHERE hotel_id ='%d' and room_number='%d'",category_name,max_occupancy,hotelID,room_number));
-			//throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -448,7 +442,6 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	private static void updateStaffs(String availability, String name,String address,int age,String job_title,String phone_number, int staffID){
 		try{
 			statement.executeUpdate(String.format("UPDATE Staffs SET availability='%s', name='%s', address='%s', age='%d', job_title='%s', phone_number='%s' WHERE id ='%d'",availability,name,address,age,job_title,phone_number,staffID));
-			//throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -457,7 +450,6 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	private static void updateCustomers(String name,String phone_number,String dob,String emailID,int customer_id){
 		try{
 			statement.executeUpdate(String.format("UPDATE Customers SET name='%s', phone_number='%s', dob='%s', email='%s' WHERE id ='%d'",name,phone_number,dob,emailID,customer_id));	
-			//throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -466,7 +458,6 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	private static void deleteFromHotels(int hotelID) {
 		try{
 			statement.executeUpdate("DELETE from Hotels where id="+hotelID);
-			//throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -475,7 +466,6 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	private static void deleteFromRooms(int hotelID,int room_number){
 		try{
 			statement.executeUpdate("DELETE from Rooms where hotel_id="+hotelID+" and room_number="+room_number);
-			//throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -484,7 +474,6 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	private static void deleteFromStaffs(int staffID) {
 		try{
 			statement.executeUpdate("DELETE from Staffs where id="+staffID);
-			//throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -493,7 +482,6 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	private static void deleteFromCustomers(int customerID) {
 		try{
 			statement.executeUpdate("DELETE from Customers where id="+customerID);	
-			//throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -504,7 +492,6 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	{
 		try {
 		result=statement.executeQuery(String.format("SELECT * FROM Rooms WHERE (room_number, hotel_id) NOT IN (SELECT '%d','%d' from Reservations WHERE '%s' <= CURDATE())",room_number,hotel_id,start_date));
-        //throw new RuntimeException("Parameters of this function cannot be found.");
         while(result.next()){
         	int rno=result.getInt("room_number");
         	int hotelid=result.getInt("hotel_id");
@@ -521,8 +508,6 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	try {
 	statement.executeUpdate("INSERT INTO Pricings VALUES("+count+", "+nightly_rate+" ,"+checkin_id+", "+room_number+","+hotel_id+",'"+service_name+"' )");
 	statement.executeUpdate(String.format("UPDATE Pricings SET count = count+1 WHERE service_name like '%s' AND checkin_id ='%d' AND hotel_id = '%d' AND room_number = '%d'",service_name,checkin_id,hotel_id,room_number));
-	
-	//throw new RuntimeException("Parameters of this function cannot be found.");
 } catch (SQLException e) {
 	e.printStackTrace();
 }
@@ -531,7 +516,6 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 {
 	try {
 	result=statement.executeQuery(String.format("SELECT * FROM Rooms WHERE (room_number, hotel_id) NOT IN (SELECT '%d','%d'from Reservations WHERE '%s' <= CURDATE()) AND category_name LIKE '%s'",room_number,hotel_id,start_date,Category));
-	//throw new RuntimeException("Parameters of this function cannot be found.");
 	while(result.next()){
 		int rno=result.getInt("room_number");
 		int hotelid=result.getInt("hotel_id");
@@ -544,8 +528,7 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 	private static void findRoomAvailable(int room_number1,int hotel_id1)
 {
 try {
-result=statement.executeQuery(String.format("SELECT * FROM Rooms WHERE (room_number, hotel_id) NOT IN (SELECT '%d','%d' from Reservations WHERE start_date <= CURDATE()) AND room_number = '%d' AND hotel_id = '%d'",room_number1,hotel_id1,room_number1,hotel_id1));
-//throw new RuntimeException("Parameters of this function cannot be found.");
+result=statement.executeQuery(String.format("SELECT * FROM Rooms WHERE (room_number, hotel_id) NOT IN (SELECT room_number, hotel_id from Reservations WHERE start_date <= CURDATE()) AND room_number = '%d' AND hotel_id = '%d'",room_number1,hotel_id1));
 while(result.next())
 {
 	int rno=result.getInt("room_number");
@@ -554,7 +537,6 @@ while(result.next())
 		System.out.println("The room is available");
 	else
 		System.out.println("The room is not available");
-	
 }
 } catch (SQLException e) {
 e.printStackTrace();
@@ -578,7 +560,7 @@ e.printStackTrace();
 			result=statement.executeQuery("SELECT count(*) as count,c.category_name from Reservations r, Rooms R, Category c where r.room_number=R.room_number"
 										 +" and R.category_name = c.category_name group by c.category_name");
 		    while(result.next()){
-		    	System.out.println(result.getInt("count")+"occupied of type"+result.getString("c.category_name"));
+		    	System.out.println(result.getInt("count")+" occupied of type "+result.getString("c.category_name"));
 		    }
 		} catch (SQLException e) {
 				e.printStackTrace();
@@ -588,7 +570,7 @@ e.printStackTrace();
 		try {
 			result=statement.executeQuery("Select count(*) as count,start_date,end_date from Reservations group by start_date, end_date");
 		    while(result.next()){
-		    	System.out.println(result.getInt("count")+"occupied in date range"+result.getString("start_date")+","+result.getString("end_date"));
+		    	System.out.println(result.getInt("count")+" occupied in date range "+result.getString("start_date")+", "+result.getString("end_date"));
 		    }
 		} catch (SQLException e) {
 				e.printStackTrace();
@@ -600,7 +582,7 @@ e.printStackTrace();
 			result=statement.executeQuery("SELECT count(*) as count,l.city from Reservations r, Hotels h, Locations l where r.hotel_id=h.id"
 										 +" and h.zip_code=l.zip_code group by l.city");
 		    while(result.next()){
-		    	System.out.println(result.getInt("count")+"occupied in city"+result.getString("l.city"));
+		    	System.out.println(result.getInt("count")+" occupied in city "+result.getString("l.city"));
 		    }
 		} catch (SQLException e) {
 				e.printStackTrace();
@@ -611,7 +593,7 @@ e.printStackTrace();
 		try {
 			result=statement.executeQuery("SELECT count(*) as count from Reservations");
 		    while(result.next()){
-		    	System.out.println(result.getInt("count")+"occupied in the entire hotel chain ");
+		    	System.out.println(result.getInt("count")+" occupied in the entire hotel chain ");
 		    }
 		} catch (SQLException e) {
 				e.printStackTrace();
@@ -624,7 +606,7 @@ e.printStackTrace();
 			result=statement.executeQuery("SELECT (a.total/count(*))*100 as percentage_occupancy from (select count(*) as"
 										 +" total from Reservations) a, Rooms group by hotel_id");
 		    while(result.next()){
-		    	System.out.println(result.getInt("percentage_occupancy")+"percentage occupied in the entire hotel chain ");
+		    	System.out.println(result.getInt("percentage_occupancy")+" percentage occupied in the entire hotel chain.");
 		    }
 		} catch (SQLException e) {
 				e.printStackTrace();
@@ -636,7 +618,7 @@ e.printStackTrace();
 		try {
 			result=statement.executeQuery("SELECT job_title,count(*) as count from Staffs group by job_title");
 		    while(result.next()){
-		    	System.out.println("Number of staffs in"+result.getString("job_title")+"is"+result.getInt("count"));
+		    	System.out.println("Number of staffs in "+result.getString("job_title")+" is "+result.getInt("count"));
 		    }
 		} catch (SQLException e) {
 				e.printStackTrace();
@@ -645,10 +627,10 @@ e.printStackTrace();
 	
 	//assign rooms to customers as per request
 	private static void assignRoomsByRequest(int hotelID,int customerID, String categoryName,String startDate,String endDate,String city, int number_of_guests) {
-		int[] roomhotel=reportOccupancyBasedOnRequest(hotelID, categoryName, startDate, endDate,city);
+		int[] roomhotel = reportOccupancyBasedOnRequest(hotelID, categoryName, startDate, endDate,city);
 		if(roomhotel[0]==-1)
 		{
-			System.out.println("room not available while checkin");
+			System.out.println("Room not available while checkin");
 			return;
 		}
 		//If needed
@@ -683,25 +665,21 @@ e.printStackTrace();
 		try {
 			
 		insertIntoReservations(roomhotel[0], roomhotel[1], startDate, endDate);
-		// insertIntoCheckins(number_of_guests,start_date, end_date, amount, checkin_time, checkout_time);
-
 		int checkinID = insertIntoCheckins(number_of_guests,hotelID, startDate, endDate);
-		
 		insertIntoDoneBy(checkinID, customerID);
         
-		int[]staffs=findavailablestaffs(hotelID);
-		if(staffs[0]==-1)
-		{
-		  System.out.println("Staffs not available");
-		  return;
-		}
-		//if category name = Presidential Suite
 		if(categoryName == "Presidential Suite") {
+			int[]staffs=findAvailableStaffs(hotelID);
+			if(staffs[0]==-1)
+			{
+			  System.out.println("Staffs not available");
+			  return;
+			}
+			
 			insertIntoServes(staffs[0], hotelID, "HouseKeeping",checkinID);
 			insertIntoServes(staffs[1], hotelID, "Catering",checkinID);
 			statement.executeQuery("UPDATE Staffs SET availability='No' where id in ("+staffs[0]+","+staffs[1]+") and hotel_id="+hotelID+"");
 		}
-		//throw new RuntimeException("Parameters of this function cannot be found.");
 		} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -726,18 +704,17 @@ e.printStackTrace();
 					answer[0]=-1;
 					answer[1]=-1;
 				}
-			
-				//throw new RuntimeException("Parameters of this function cannot be found.");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		return answer;
 	}
+
 	private static void insertIntoReservations(int room_number,int hotelID, String startDate,String endDate) {
 		try{
 		result=statement.executeQuery("SELECT * from Rooms where room_number="+room_number+" and hotel_id="+hotelID+"");
 		if(result.next())
-		statement.executeUpdate("INSERT INTO Reservations VALUES ("+room_number+", "+hotelID+", '"+startDate+"','"+endDate+"')");
+			statement.executeUpdate("INSERT INTO Reservations VALUES ("+room_number+", "+hotelID+", '"+startDate+"','"+endDate+"')");
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -775,7 +752,7 @@ e.printStackTrace();
 			e.printStackTrace();
 		}
 		}
-	private static int[] findavailablestaffs(int hotelID) {
+	private static int[] findAvailableStaffs(int hotelID) {
 		int count=0;
 		int[]s=new int[2];
 		try{
@@ -795,22 +772,22 @@ e.printStackTrace();
 		}
 		return s;
 		}
-	private static void generatebill(int customer_id){
+	private static void generateBill(int customer_id){
 		try{
 			result=statement.executeQuery("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+" group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id="+customer_id+")group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))Item");
 		while(result.next()){
-			System.out.println("The total bill is"+result.getInt("Total"));
+			System.out.println("The total bill is "+result.getInt("Total"));
 		}
 		}
 		catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
-	private static void generateitemizedreceipt(int customer_id){
+	private static void generateItemizedReceipt(int customer_id){
 		try{
 			result=statement.executeQuery("select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+" group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id="+customer_id+")group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id)");
 		while(result.next()){
-			System.out.println("The bill split is"+result.getInt("rates"));
+			System.out.println("The bill split is "+result.getInt("rates"));
 		}
 		}
 		catch(SQLException e){
@@ -819,22 +796,22 @@ e.printStackTrace();
 	}
 	
 	
-	private static void displaystaffforeverycustomerstay(){
+	private static void displayStaffForEveryCustomerStay(){
 		try{
 			result=statement.executeQuery("SELECT * from Staffs where id in (select Serves.staff_id from Serves where (Serves.service_name,Serves.hotel_id) in (select service_name,hotel_id from Pricings group by checkin_id))");
 		while(result.next()){
-			System.out.println("The staff id is"+result.getInt("id")+"from hotel"+result.getInt("hotel_id")+"job_title is"+result.getString("job_title"));
+			System.out.println("The staff id is "+result.getInt("id")+" from hotel "+result.getInt("hotel_id")+" job_title is "+result.getString("job_title"));
 		}
 		}
 		catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
-	private static void generaterevenuebyhoteldate(int hotel_id,String start_date,String end_date){
+	private static void generateRevenueByHotelDate(int hotel_id,String start_date,String end_date){
 		try{
 			result=statement.executeQuery("SELECT sum(Checkins.amount) as revenue,hotel_id from Checkins, Pricings where Pricings.checkin_id=Checkins.id and Pricings.hotel_id="+hotel_id+" and Checkins.id in (select id from Checkins where start_date>='"+start_date+"' and end_date<='"+end_date+"')");
 		while(result.next()){
-			System.out.println(result.getInt("revenue")+"is the revenue earned by"+result.getInt("hotel_id")+"in the given date range");
+			System.out.println(result.getInt("revenue")+" is the revenue earned by "+result.getInt("hotel_id")+" in the given date range");
 		}
 		}
 		catch(SQLException e){
