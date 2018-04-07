@@ -64,6 +64,7 @@ public static void getStaffGroupedByRoles() {
 	}
 
 //check if room and room type requested are available
+//Query to be changed (end date to be taken into consideration)
 public static void verifyUserPreference(int hotel_id,int room_number,String start_date)
 {
 	try {
