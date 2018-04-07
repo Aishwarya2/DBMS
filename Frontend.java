@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -7,9 +8,61 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JOptionPane;
 
-public class Frontend extends JPanel {
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+public class Frontend
+{
+	private static final String jdbcURL = "jdbc:mysql://mydbinstance.ca6owdm4itco.us-east-1.rds.amazonaws.com:3306/";
+	// Put your oracle ID and password here
+    private static final String username="aishwaryassr";
+	private static final String password="Macrohard.123";
+	private static final String dbName="dbname";	
+	private static Connection connection = null;
+	private static Statement statement = null;
+	private static ResultSet result = null;
+public static void main(String[] args) {
 
-  public Frontend() {
+		
+		//String driver="com.mysql.jdbc.Driver";
+		try{
+		Class.forName("com.mysql.jdbc.Driver");
+		}
+		catch(ClassNotFoundException e){
+			e.printStackTrace();
+		}
+		try{
+		connection=DriverManager.getConnection(jdbcURL+dbName,username,password);
+		
+			//connection = DriverManager.getConnection(jdbcURL+dbName,username,password);
+ 			statement = connection.createStatement();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		Frontend1 f=new Frontend1();
+		f.display();
+}
+public static void getStaffGroupedByRoles() {
+
+		try {
+			result=statement.executeQuery("SELECT job_title,count(*) as count from Staffs group by job_title");
+		    while(result.next()){
+		    	System.out.println("Number of staffs in"+result.getString("job_title")+"is"+result.getInt("count"));
+		    }
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}	
+	}
+	
+}
+
+class Frontend1 extends JPanel {
+
+  public Frontend1() {
 
     JButton btn1 = new JButton("Frontdesk-representative");
     btn1.addActionListener(new ButtonListener());
@@ -21,9 +74,9 @@ public class Frontend extends JPanel {
 
   }
 
-  public static void main(String[] args) {
+  public void display() {
     JFrame frame = new JFrame();
-    frame.getContentPane().add(new Frontend());
+    frame.getContentPane().add(new Frontend1());
 
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setSize(1000, 1000);
@@ -127,9 +180,10 @@ class ButtonListener extends JPanel implements ActionListener {
     if (e.getActionCommand().equals("Return staff info grouped by role")) {
         //System.out.println("Frontdesk representative has been clicked");
       	this.setVisible(false);
-      	new Groupedstaff().setVisible(true);
+      	//new Groupedstaff().setVisible(true);
+      	//new Groupedstaff(new Frontend()).getStaffGroupedByRoles();
       	//new Frontdesk().setVisible(true);
-      	
+      	new Groupedstaff(new Frontend());
       }//Staff info for every stay
     if (e.getActionCommand().equals("Staff info for every stay")) {
         //System.out.println("Frontdesk representative has been clicked");
@@ -145,7 +199,7 @@ class ButtonListener extends JPanel implements ActionListener {
       	//new Frontdesk().setVisible(true);
       	
       }
-    else if(e.getActionCommand().equals("Manager")){
+    if(e.getActionCommand().equals("Manager")){
     	//System.out.println("Manager is clicked");
     	this.setVisible(false);
     	new Login("Manager").setVisible(true);
@@ -299,9 +353,20 @@ class ReportPercOccupancy extends JPanel{
 
 //Groupedstaff
 class Groupedstaff extends JPanel{
-	public Groupedstaff(){
-		System.out.println("Groupedstaff");
+
+	public Groupedstaff(Frontend f){
+
+
+	    JFrame frame = new JFrame();
+	    frame.getContentPane().add(this);
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.setSize(1000, 1000);
+	    frame.setVisible(true);
+	    
+	    f.getStaffGroupedByRoles();
+	    
 	}
+
 }//StaffforEveryStay
 
 class StaffforEveryStay extends JPanel{
