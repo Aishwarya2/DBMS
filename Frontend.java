@@ -8,6 +8,7 @@ import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextField;
 import javax.swing.JOptionPane;
@@ -18,8 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
-public class Frontend
-{
+public class Frontend{
 	private static final String jdbcURL = "jdbc:mysql://mydbinstance.ca6owdm4itco.us-east-1.rds.amazonaws.com:3306/";
 	// Put your oracle ID and password here
     private static final String username="aishwaryassr";
@@ -28,6 +28,7 @@ public class Frontend
 	private static Connection connection = null;
 	private static Statement statement = null;
 	private static ResultSet result = null;
+	
 public static void main(String[] args) {
 
 		
@@ -81,25 +82,32 @@ public static void verifyUserPreference(int hotel_id,int room_number,String star
 }
 }
 //REPORT OCCUPANCY
-public static void reportOccupancyByHotel() {
+public static void reportOccupancyByHotel(JTextArea output) {
 	try {
 		result=statement.executeQuery("SELECT count(*) as count,hotel_id from Reservations  group by hotel_id");
-		while(result.next())
-		{
+		String resultStr="";
+		while(result.next()){	
+			resultStr += "\n"+result.getInt("count")+"occupied in"+result.getInt("hotel_id");
 			System.out.println(result.getInt("count")+"occupied in"+result.getInt("hotel_id"));
 		}
+		output.setText(resultStr);
+    	output.setVisible(true);
 	} catch (SQLException e) {
 			e.printStackTrace();
 	}
 }
 
-public static void reportOccupancyByCity() {
+public static void reportOccupancyByCity(JTextArea output) {
 	try {
 		result=statement.executeQuery("SELECT count(*) as count,l.city from Reservations r, Hotels h, Locations l where r.hotel_id=h.id"
 									 +" and h.zip_code=l.zip_code group by l.city");
-	    while(result.next()){
+		String resultStr = "";
+		while(result.next()){
+			resultStr="\n"+result.getInt("count")+"occupied in city"+result.getString("l.city");	    	
 	    	System.out.println(result.getInt("count")+"occupied in city"+result.getString("l.city"));
 	    }
+		output.setText(resultStr);
+    	output.setVisible(true);
 	} catch (SQLException e) {
 			e.printStackTrace();
 	}
@@ -120,7 +128,8 @@ public static void generatebill(int customer_id){
 public static void generateitemizedreceipt(int customer_id){
 	try{
 		result=statement.executeQuery("select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+" group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id="+customer_id+")group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id)");
-	while(result.next()){
+
+		while(result.next()){
 		System.out.println("The bill split is"+result.getInt("rates"));
 	}
 	}
@@ -129,24 +138,37 @@ public static void generateitemizedreceipt(int customer_id){
 	}
 }
 
-public static void reportOccupancyByDateRange() {
+public static void reportOccupancyByDateRange(JTextArea output) {
 	try {
 		result=statement.executeQuery("Select count(*) as count,start_date,end_date from Reservations group by start_date, end_date");
-	    while(result.next()){
-	    	System.out.println(result.getInt("count")+"occupied in date range"+result.getString("start_date")+","+result.getString("end_date"));
+	    String resultStr = "";
+		while(result.next()){
+			resultStr+="\n"+result.getInt("count")+"occupied in date range"+result.getString("start_date")+","+result.getString("end_date");
+			System.out.println(result.getInt("count")+"occupied in date range"+result.getString("start_date")+","+result.getString("end_date"));
 	    }
+		
+		output.setText(resultStr);
+    	output.setVisible(true);
+    	
 	} catch (SQLException e) {
 			e.printStackTrace();
 	}
 }
 
-public static void reportOccupancyByRoomType() {
+public static void reportOccupancyByRoomType(JTextArea output) {
 	try {
+		
 		result=statement.executeQuery("SELECT count(*) as count,c.category_name from Reservations r, Rooms R, Category c where r.room_number=R.room_number"
 									 +" and R.category_name = c.category_name group by c.category_name");
-	    while(result.next()){
+	    String resultStr = "";
+		while(result.next()){
+			resultStr+= "\n"+result.getInt("count")+"occupied of type"+result.getString("c.category_name");
 	    	System.out.println(result.getInt("count")+"occupied of type"+result.getString("c.category_name"));
 	    }
+	    
+	    output.setText("Roomtype");
+    	output.setVisible(true);
+    	
 	} catch (SQLException e) {
 			e.printStackTrace();
 	}
@@ -163,6 +185,18 @@ public static void reportTotalOccupancy() {
 	}
 }
 
+//REPORT PERCENTAGE ROOM OCCUPANCY
+public static void reportPercentageOfRoomsOccupied() {
+	try {
+		result=statement.executeQuery("SELECT (a.total/count(*))*100 as percentage_occupancy from (select count(*) as"
+									 +" total from Reservations) a, Rooms group by hotel_id");
+	    while(result.next()){
+	    	System.out.println(result.getInt("percentage_occupancy")+" percentage occupied in the entire hotel chain.");
+	    }
+	} catch (SQLException e) {
+			e.printStackTrace();
+	}
+}
 //GENERATE REVENUE BY GIVEN HOTEL AND DATE RANGE
 public static void generaterevenuebyhoteldate(int hotel_id,String start_date,String end_date){
 	try{
@@ -220,7 +254,6 @@ class Frontend1 extends JPanel {
   public void display() {
     JFrame frame = new JFrame();
     frame.getContentPane().add(new Frontend1());
-
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setSize(1000, 1000);
     frame.setVisible(true);
@@ -228,14 +261,16 @@ class Frontend1 extends JPanel {
 }
 
 class ButtonListener extends JPanel implements ActionListener {
-  ButtonListener() {
-	  
+  
+	ButtonListener() {	  
   }
 
+  
   public void actionPerformed(ActionEvent e) {
     if (e.getActionCommand().equals("Frontdesk-representative")) {
       //System.out.println("Frontdesk representative has been clicked");
     	this.setVisible(false);
+    	
     	new Login("Frontdesk").setVisible(true);
     	//new Frontdesk().setVisible(true);
     	
@@ -295,7 +330,7 @@ class ButtonListener extends JPanel implements ActionListener {
         //System.out.println("Frontdesk representative has been clicked");
       	this.setVisible(false);
       	//new Login("Frontdesk").setVisible(true);
-      	new ReportPercOccupancy().setVisible(true);
+      	new ReportPercOccupancy(new Frontend()).setVisible(true);
       	//new Frontdesk().setVisible(true);
       	
     }
@@ -520,8 +555,14 @@ class GenerateBills extends JPanel{
 	}
 }
 class AssignStaff extends JPanel{
-	public AssignStaff(){
-		System.out.println("Assign staff by Manager");
+	public AssignStaff(Frontend f){
+		System.out.println("Assign Staff");
+	    JFrame frame = new JFrame();
+	    frame.getContentPane().add(this);
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.setSize(1000, 1000);
+	    frame.setVisible(true);
+//	    f.assignStaff();
 	}
 }//ReportOccupancy
 class ReportOccupancy extends JPanel{
@@ -535,24 +576,32 @@ class ReportOccupancy extends JPanel{
 		add(bydaterange);
 		JButton byroomtype=new JButton("Report Occupancy By RoomType");
 		add(byroomtype);
+		JTextArea tfOutput=new JTextArea(10,10);  
+	    tfOutput.setBounds(200,200, 100,50);  
+	    tfOutput.setLineWrap(true);
+	    tfOutput.setVisible(false);
+	    add(tfOutput);
+	   
+		
 		byhotel.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				f.reportOccupancyByHotel();
+				
+				f.reportOccupancyByHotel(tfOutput);
 			}
 		});
 		bycity.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				f.reportOccupancyByCity();
+				f.reportOccupancyByCity(tfOutput);
 			}
 		});
 		bydaterange.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				f.reportOccupancyByDateRange();
+				f.reportOccupancyByDateRange(tfOutput);
 			}
 		});
 		bydaterange.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				f.reportOccupancyByRoomType();
+				f.reportOccupancyByRoomType(tfOutput);
 			}
 		});
 		
@@ -577,8 +626,15 @@ class ReportTotalOccupancy extends JPanel{
 	}
 }
 class ReportPercOccupancy extends JPanel{
-	public ReportPercOccupancy(){
-		System.out.println("ReportPercOccupancy");
+	public ReportPercOccupancy(Frontend f){
+		System.out.println("Report Total precentage Occupancy");
+	    JFrame frame = new JFrame();
+	    frame.getContentPane().add(this);
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.setSize(1000, 1000);
+	    frame.setVisible(true);
+	    f.reportPercentageOfRoomsOccupied();
+	    
 	}
 }
 
@@ -586,7 +642,12 @@ class ReportPercOccupancy extends JPanel{
 class Groupedstaff extends JPanel{
 
 	public Groupedstaff(Frontend f){
-
+		JTextArea tfOutput=new JTextArea(10,10);  
+	    tfOutput.setBounds(200,200, 100,50);  
+	    tfOutput.setLineWrap(true);
+	    tfOutput.setVisible(false);
+	    add(tfOutput);
+	   
 
 	    JFrame frame = new JFrame();
 	    frame.getContentPane().add(this);
