@@ -105,6 +105,7 @@ public class Manager extends JFrame {
 		panel.add(btnOccupancyByHotel, gbc_btnOccupancyByHotel);
 		
 		btnOccupancyByDate = new JButton("Occupancy by Date Range");
+		
 		GridBagConstraints gbc_btnOccupancyByDate = new GridBagConstraints();
 		gbc_btnOccupancyByDate.insets = new Insets(0, 0, 5, 5);
 		gbc_btnOccupancyByDate.gridx = 3;
@@ -119,6 +120,7 @@ public class Manager extends JFrame {
 		panel.add(btnOccupancyByRoom, gbc_btnOccupancyByRoom);
 		
 		btnTotalOccupancy = new JButton("Total Occupancy");
+		
 		GridBagConstraints gbc_btnTotalOccupancy = new GridBagConstraints();
 		gbc_btnTotalOccupancy.insets = new Insets(0, 0, 5, 5);
 		gbc_btnTotalOccupancy.gridx = 1;
@@ -126,6 +128,7 @@ public class Manager extends JFrame {
 		panel.add(btnTotalOccupancy, gbc_btnTotalOccupancy);
 		
 		btnOccupancyByCity = new JButton("Occupancy by City");
+		
 		GridBagConstraints gbc_btnOccupancyByCity = new GridBagConstraints();
 		gbc_btnOccupancyByCity.insets = new Insets(0, 0, 5, 5);
 		gbc_btnOccupancyByCity.gridx = 3;
@@ -293,7 +296,100 @@ public class Manager extends JFrame {
 			}
 		});
 		
+		btnOccupancyByDate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					result=smt.executeQuery("Select count(*) as count,start_date,end_date from Reservations group by start_date, end_date");
+				    String resultStr = "";
+					while(result.next()){
+						resultStr+="\n"+result.getInt("count")+"occupied in date range"+result.getString("start_date")+","+result.getString("end_date");
+						System.out.println(result.getInt("count")+"occupied in date range"+result.getString("start_date")+","+result.getString("end_date"));
+				    }
+					
+					reportOccupancyTA.setText(resultStr);
+					reportOccupancyTA.setVisible(true);
+			    	
+				} catch (SQLException ex) {
+						ex.printStackTrace();
+				}
+			}
+		});
 		
+
+		btnOccupancyByRoom.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					
+					result=smt.executeQuery("SELECT count(*) as count,c.category_name from Reservations r, Rooms R, Category c where r.room_number=R.room_number"
+												 +" and R.category_name = c.category_name group by c.category_name");
+				    String resultStr = "";
+					while(result.next()){
+						resultStr+= "\n"+result.getInt("count")+"occupied of type"+result.getString("c.category_name");
+				    	System.out.println(result.getInt("count")+"occupied of type"+result.getString("c.category_name"));
+				    }
+				    
+				    reportOccupancyTA.setText(resultStr);
+				    reportOccupancyTA.setVisible(true);
+			    	
+				} catch (SQLException ex) {
+						ex.printStackTrace();
+				}
+			}
+		});
+		
+		btnTotalOccupancy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					result=smt.executeQuery("SELECT count(*) as count from Reservations");
+					String resultStr = "";
+					while(result.next()){
+						resultStr+="\n"+result.getInt("count")+"occupied in the entire hotel chain ";
+				    	System.out.println(result.getInt("count")+"occupied in the entire hotel chain ");
+					}
+				    reportOccupancyTA.setText(resultStr);
+					reportOccupancyTA.setVisible(true);
+				} catch (SQLException ex) {
+						ex.printStackTrace();
+				}
+			}
+		});
+		
+		btnOccupancyByCity.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					result=smt.executeQuery("SELECT count(*) as count,l.city from Reservations r, Hotels h, Locations l where r.hotel_id=h.id"
+												 +" and h.zip_code=l.zip_code group by l.city");
+					String resultStr = "";
+					while(result.next()){
+						resultStr+="\n"+result.getInt("count")+"occupied in city"+result.getString("l.city");	    	
+				    	System.out.println(result.getInt("count")+"occupied in city"+result.getString("l.city"));
+				    }
+					reportOccupancyTA.setText(resultStr);
+					reportOccupancyTA.setVisible(true);
+				} catch (SQLException ex) {
+						ex.printStackTrace();
+				}
+			}
+		});
+		
+		btnTotalPercentageOccupancy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					result=smt.executeQuery("SELECT (count(*)/a.total)*100 as percentage_occupancy from (select count(*) as"
+												 +" total from Reservations) a, Rooms group by hotel_id");
+					String resultStr = "";
+					while(result.next()){
+						resultStr+="\n"+result.getInt("percentage_occupancy")+" percentage occupied in the entire hotel chain.";
+				    	System.out.println(result.getInt("percentage_occupancy")+" percentage occupied in the entire hotel chain.");
+
+					}
+				    reportOccupancyTA.setText(resultStr);
+					reportOccupancyTA.setVisible(true);
+				} catch (SQLException ex) {
+						ex.printStackTrace();
+				}
+			}
+		});
 		try {
 			result=smt.executeQuery("SELECT job_title,count(*) as count from Staffs group by job_title");
 		    while(result.next()){
