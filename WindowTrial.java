@@ -166,6 +166,9 @@ public class WindowTrial {
 				btnFrontDeskRep.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						lblUser.setText("Front Desk Rep");
+						FrontDeskRep f = new FrontDeskRep(smt);
+						f.setVisible(true);
+						
 						btnFrontDeskRep.setVisible(false);
 						lblUser.setVisible(true);
 						btnManager.setVisible(false);
@@ -188,6 +191,9 @@ public class WindowTrial {
 				//Manager Login
 				btnManager.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						Manager m = new Manager(smt);
+						m.setVisible(true);
+						
 						lblUser.setText("Manager");
 						lblUser.setVisible(true);
 						btnManager.setVisible(false);
@@ -202,7 +208,7 @@ public class WindowTrial {
 				//Login
 				btnLogin.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						Manager m = new Manager();
+						Manager m = new Manager(smt);
 						m.setVisible(true);
 					}
 				});
