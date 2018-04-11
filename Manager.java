@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,36 +5,48 @@ import java.sql.Statement;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
-import java.awt.FlowLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JButton;
-import java.awt.GridLayout;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Insets;
-import javax.swing.JToolBar;
+
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 
 public class Manager extends JFrame {
 	private Statement smt = null;
 	private ResultSet result = null;
-	private JTextField textField;
+	
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
-
+	
+	private JTextArea reportOccupancyTA;
+	private JTextArea staffTA;
+	private JTextArea revenueTA;
+	
+	private JButton btnOccupancyByHotel;
+	private JButton btnOccupancyByDate;
+	private JButton btnOccupancyByRoom;
+	private JButton btnTotalOccupancy;
+	private JButton btnOccupancyByCity;
+	private JButton btnTotalPercentageOccupancy;
+	private JButton btnAssignStaffs;
+	private JButton btnGroupStaffsBy;
+	private JButton btnStaffInfoFor;
+	private JButton btnGenerateRevenue;
+	
+	private JTabbedPane tabbedPane ;
 	/**
+	 * 
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
@@ -71,7 +82,7 @@ public class Manager extends JFrame {
 		setBounds(100, 100, 734, 481);
 		getContentPane().setLayout(null);
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 669, 412);
 		getContentPane().add(tabbedPane);
 		
@@ -85,56 +96,58 @@ public class Manager extends JFrame {
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
-		JButton btnOccupancyByHotel = new JButton("Occupancy by Hotel");
+		btnOccupancyByHotel = new JButton("Occupancy by Hotel");
+		
 		GridBagConstraints gbc_btnOccupancyByHotel = new GridBagConstraints();
 		gbc_btnOccupancyByHotel.insets = new Insets(0, 0, 5, 5);
 		gbc_btnOccupancyByHotel.gridx = 1;
 		gbc_btnOccupancyByHotel.gridy = 1;
 		panel.add(btnOccupancyByHotel, gbc_btnOccupancyByHotel);
 		
-		JButton btnOccupancyByDate = new JButton("Occupancy by Date Range");
+		btnOccupancyByDate = new JButton("Occupancy by Date Range");
 		GridBagConstraints gbc_btnOccupancyByDate = new GridBagConstraints();
 		gbc_btnOccupancyByDate.insets = new Insets(0, 0, 5, 5);
 		gbc_btnOccupancyByDate.gridx = 3;
 		gbc_btnOccupancyByDate.gridy = 1;
 		panel.add(btnOccupancyByDate, gbc_btnOccupancyByDate);
 		
-		JButton btnOccupancyByRoom = new JButton("Occupancy by Room type");
+		btnOccupancyByRoom = new JButton("Occupancy by Room type");
 		GridBagConstraints gbc_btnOccupancyByRoom = new GridBagConstraints();
 		gbc_btnOccupancyByRoom.insets = new Insets(0, 0, 5, 5);
 		gbc_btnOccupancyByRoom.gridx = 4;
 		gbc_btnOccupancyByRoom.gridy = 1;
 		panel.add(btnOccupancyByRoom, gbc_btnOccupancyByRoom);
 		
-		JButton btnTotalOccupancy = new JButton("Total Occupancy");
+		btnTotalOccupancy = new JButton("Total Occupancy");
 		GridBagConstraints gbc_btnTotalOccupancy = new GridBagConstraints();
 		gbc_btnTotalOccupancy.insets = new Insets(0, 0, 5, 5);
 		gbc_btnTotalOccupancy.gridx = 1;
 		gbc_btnTotalOccupancy.gridy = 3;
 		panel.add(btnTotalOccupancy, gbc_btnTotalOccupancy);
 		
-		JButton btnOccupancyByCity = new JButton("Occupancy by City");
+		btnOccupancyByCity = new JButton("Occupancy by City");
 		GridBagConstraints gbc_btnOccupancyByCity = new GridBagConstraints();
 		gbc_btnOccupancyByCity.insets = new Insets(0, 0, 5, 5);
 		gbc_btnOccupancyByCity.gridx = 3;
 		gbc_btnOccupancyByCity.gridy = 3;
 		panel.add(btnOccupancyByCity, gbc_btnOccupancyByCity);
 		
-		JButton btnTotalPercentageOccupancy = new JButton("Total Percentage Occupancy");
+		btnTotalPercentageOccupancy = new JButton("Total Percentage Occupancy");
 		GridBagConstraints gbc_btnTotalPercentageOccupancy = new GridBagConstraints();
 		gbc_btnTotalPercentageOccupancy.insets = new Insets(0, 0, 5, 5);
 		gbc_btnTotalPercentageOccupancy.gridx = 4;
 		gbc_btnTotalPercentageOccupancy.gridy = 3;
 		panel.add(btnTotalPercentageOccupancy, gbc_btnTotalPercentageOccupancy);
 		
-		JTextArea textArea_2 = new JTextArea();
+		reportOccupancyTA = new JTextArea();
 		GridBagConstraints gbc_textArea_2 = new GridBagConstraints();
 		gbc_textArea_2.gridwidth = 4;
 		gbc_textArea_2.insets = new Insets(0, 0, 0, 5);
 		gbc_textArea_2.fill = GridBagConstraints.BOTH;
 		gbc_textArea_2.gridx = 1;
 		gbc_textArea_2.gridy = 6;
-		panel.add(textArea_2, gbc_textArea_2);
+		panel.add(reportOccupancyTA, gbc_textArea_2);
+		reportOccupancyTA.setVisible(false);
 		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Operation on Staffs", null, panel_1, null);
@@ -145,28 +158,28 @@ public class Manager extends JFrame {
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
-		JButton btnAssignStaffs = new JButton("Assign Staffs");
+		btnAssignStaffs = new JButton("Assign Staffs");
 		GridBagConstraints gbc_btnAssignStaffs = new GridBagConstraints();
 		gbc_btnAssignStaffs.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAssignStaffs.gridx = 1;
 		gbc_btnAssignStaffs.gridy = 1;
 		panel_1.add(btnAssignStaffs, gbc_btnAssignStaffs);
 		
-		JButton btnGroupStaffsBy = new JButton("Group Staffs by Role");
+		btnGroupStaffsBy = new JButton("Group Staffs by Role");
 		GridBagConstraints gbc_btnGroupStaffsBy = new GridBagConstraints();
 		gbc_btnGroupStaffsBy.insets = new Insets(0, 0, 5, 5);
 		gbc_btnGroupStaffsBy.gridx = 2;
 		gbc_btnGroupStaffsBy.gridy = 1;
 		panel_1.add(btnGroupStaffsBy, gbc_btnGroupStaffsBy);
 		
-		JButton btnStaffInfoFor = new JButton("Staff info for every Customer stay");
+		btnStaffInfoFor = new JButton("Staff info for every Customer stay");
 		GridBagConstraints gbc_btnStaffInfoFor = new GridBagConstraints();
 		gbc_btnStaffInfoFor.insets = new Insets(0, 0, 5, 5);
 		gbc_btnStaffInfoFor.gridx = 3;
 		gbc_btnStaffInfoFor.gridy = 1;
 		panel_1.add(btnStaffInfoFor, gbc_btnStaffInfoFor);
 		
-		JTextArea textArea_1 = new JTextArea();
+		staffTA = new JTextArea();
 		GridBagConstraints gbc_textArea_1 = new GridBagConstraints();
 		gbc_textArea_1.insets = new Insets(0, 0, 5, 0);
 		gbc_textArea_1.gridheight = 3;
@@ -174,7 +187,8 @@ public class Manager extends JFrame {
 		gbc_textArea_1.fill = GridBagConstraints.BOTH;
 		gbc_textArea_1.gridx = 1;
 		gbc_textArea_1.gridy = 4;
-		panel_1.add(textArea_1, gbc_textArea_1);
+		panel_1.add(staffTA, gbc_textArea_1);
+		staffTA.setVisible(false);
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Generate Revenue", null, panel_2, null);
@@ -244,23 +258,42 @@ public class Manager extends JFrame {
 		panel_2.add(textField_2, gbc_textField_2);
 		textField_2.setColumns(10);
 		
-		JButton btnGenerateRevenue = new JButton("Generate revenue ");
+		btnGenerateRevenue = new JButton("Generate revenue ");
 		GridBagConstraints gbc_btnGenerateRevenue = new GridBagConstraints();
 		gbc_btnGenerateRevenue.insets = new Insets(0, 0, 5, 0);
 		gbc_btnGenerateRevenue.gridx = 1;
 		gbc_btnGenerateRevenue.gridy = 7;
 		panel_2.add(btnGenerateRevenue, gbc_btnGenerateRevenue);
 		
-		JTextArea textArea = new JTextArea();
+		revenueTA = new JTextArea();
 		GridBagConstraints gbc_textArea = new GridBagConstraints();
 		gbc_textArea.fill = GridBagConstraints.BOTH;
 		gbc_textArea.gridx = 1;
 		gbc_textArea.gridy = 9;
-		panel_2.add(textArea, gbc_textArea);
+		panel_2.add(revenueTA, gbc_textArea);
+		revenueTA.setVisible(false);
 		
 	}
 
 	private void initEvents(){
+		btnOccupancyByHotel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					result=smt.executeQuery("SELECT count(*) as count,hotel_id from Reservations  group by hotel_id");
+					String resultStr="";
+					while(result.next()){	
+						resultStr += "\n"+result.getInt("count")+"occupied in"+result.getInt("hotel_id");
+						System.out.println(result.getInt("count")+"occupied in"+result.getInt("hotel_id"));
+					}
+					reportOccupancyTA.setText(resultStr);
+					reportOccupancyTA.setVisible(true);
+				} catch (SQLException e) {
+						e.printStackTrace();
+				}
+			}
+		});
+		
+		
 		try {
 			result=smt.executeQuery("SELECT job_title,count(*) as count from Staffs group by job_title");
 		    while(result.next()){
