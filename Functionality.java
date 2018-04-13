@@ -64,6 +64,7 @@ public class Functionality {
         //UPDATE Pricings SET count = count+1 WHERE (service_name like 'Laundry' AND checkin_id = 3 AND hotel_id = 4 AND room_number = 107);
         		
 		//Maintain billing account
+		generatebillingaccount(1);
 		
 		//Itemized receipt
 		

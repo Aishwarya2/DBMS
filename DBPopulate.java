@@ -761,16 +761,20 @@ e.printStackTrace();
 		}
 		return s;
 		}
-	private static void generateBill(int customer_id){
+	private static int generateBill(int customer_id){
+		int amount=0;
 		try{
 			result=statement.executeQuery("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+" group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id="+customer_id+")group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))Item");
 		while(result.next()){
 			System.out.println("The total bill is "+result.getInt("Total"));
+			amount=result.getInt("Total");
 		}
+		
 		}
 		catch(SQLException e){
 			e.printStackTrace();
 		}
+		return amount;
 	}
 	private static void generateItemizedReceipt(int customer_id){
 		try{
@@ -783,7 +787,40 @@ e.printStackTrace();
 			e.printStackTrace();
 		}
 	}
-	
+	private static void releaserooms(int hotelID,int customerID, int checkinid,String payment_method,String card_number,String SSN,String billing_address){
+		int tid=0;
+		//retrieve customer id
+		try{
+		result=statement.executeQuery(String.format("select customer_id from Done_by where checkin_id='%s'",checkinid));
+		customerID=result.getInt('customer_id');
+		//get the final amount
+		int bill= generateBill(customerID);
+		//update this amount in checkins
+		statement.executeUpdate(String.format("update checkins set amount='%d' where id='%d'",bill,checkinid)); 
+	    //Delete from reservations
+		statement.executeUpdate(String.format("Delete from Reservations where hotel_id,room_number in (select hotel_id,room_number from Pricings where checkin_id='%d')",checkinid));
+		//check if card_number already exists in card table
+		result=statement.executeQuery(String.format("select card_number from Cards where card_number='%d'",card_number));
+		if(!result.next())
+		statement.executeUpdate(String.format("Insert into Cards values('%s','%s','%f')",card_number,payment_method,0.05));
+		//Assume that he/she has made the payment 
+		//insert into billings and get transaction id
+		statement.executeUpdate(String.format("Insert into Billings('billing_address','SSN') values('%s','%s')",billing_address,SSN));
+	    result = statement.executeQuery("SELECT LAST_INSERT_ID()");
+		 while(result.next()){
+			 tid=result.getInt(1);
+		 }
+		 //insert cardnumber,tid in paid through
+		 statement.executeUpdate(String.format("Insert into Paid_through('transaction_id','card_number')values('%d','%s')",tid,card_number)); 
+		//Update tid in Done_by
+		statement.executeUpdate(String.format("Update Done_by set transaction_id='%d' where checkin_id='%d'",tid,checkinid)); 
+	    //Set availability of staffs to Yes in staffs table
+		statement.executeUpdate(String.format("Update Staffs set availability='Yes' where id in (select id from Serves where checkin_id='%d')",checkinid));
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
 	
 	private static void displayStaffForEveryCustomerStay(){
 		try{
