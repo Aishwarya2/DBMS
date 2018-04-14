@@ -1,0 +1,87 @@
+Insert into Locations values('27606', '21 ABC St, Raleigh NC 27', 100.0, 'Raleigh');
+Insert into Locations values('54608', '25 XYZ St, Rochester NY0 54', 101.0, 'Rochester');
+Insert into Locations values('27607', '29 PQR St, Greensboro NC 27', 90.0, 'Greensboro');
+Insert into Locations values('32001', '28 GHW St, Raleigh NC 32', 102.0, 'Raleigh');
+
+insert into Hotels (name, phone_number, zip_code) values ('Hotel A', '919', '27606');
+insert into Hotels (name, phone_number, zip_code) values ('Hotel B', '718', '54608');
+insert into Hotels (name, phone_number, zip_code) values ('Hotel C', '984', '27607');
+insert into Hotels (name, phone_number, zip_code) values ('Hotel D', '920', '32001');
+
+insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0001, 'Mary', '90 ABC St, Raleigh NC 27', 40, '654', 'Manager', 'Yes', 'Management');
+insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0002, 'John', '798 XYZ St, Rochester NY 54', 45, '564', 'Manager', 'Yes', 'Management');
+insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0003, 'Carol', '351 MH St, Greensboro NC 27', 55, '546', 'Manager', 'Yes', 'Management');
+insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0001, 'Emma', '49 ABC St, Raleigh NC 27', 55, '546', 'Front Desk Staff', 'Yes', 'Management');
+insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0001, 'Ava', '425 RG St, Raleigh NC 27', 55, '777', 'Catering Staff', 'Yes', 'Management');
+insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0004, 'Peter', '475 RG St, Raleigh NC 27', 52, '724', 'Manager', 'Yes', 'Management');
+insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0004, 'Olivia', '325 PD St, Raleigh NC 27', 27, '799', 'Front Desk Staff', 'Yes', 'Management');
+
+insert into Managers values (100, 0001, 'password');
+insert into Managers values (101, 0002, 'password');
+insert into Managers values (102, 0003, 'password');
+insert into Managers values (105, 0004, 'password');
+
+insert into Frontdesk_rep values (103, 0001, 'password');
+insert into Frontdesk_rep values (106, 0004, 'password');
+
+insert into Category values ('Economy', 100);
+insert into Category values ('Deluxe', 200);
+insert into Category values ('Executive', 1000);
+insert into Category values ('Presidential', 5000);
+
+insert into Rooms values (01, 0001, 1, 'Economy');
+insert into Rooms values (02, 0001, 2, 'Deluxe');
+insert into Rooms values (03, 0002, 1, 'Economy');
+insert into Rooms values (02, 0003, 3, 'Executive');
+insert into Rooms values (01, 0004, 4, 'Presidential');
+insert into Rooms values (05, 0001, 2, 'Deluxe');
+
+Insert into Customers(name, DOB, email, phone_number) values ('David','1980-01-30', 'david@gmail.com','123');
+Insert into Customers(name, DOB, email, phone_number) values ('Sarah','1971-01-30', 'sarah@gmail.com','456');
+Insert into Customers(name, DOB, email, phone_number) values ('Joseph','1987-01-30', 'joseph@gmail.com','789');
+Insert into Customers(name, DOB, email, phone_number) values ('Lucy','1985-01-30', 'lucy@gmail.com','213');
+
+
+insert into Services values ('phone bills',5);
+insert into Services values ('dry cleaning',16);
+insert into Services values ('gyms',15);
+insert into Services values ('room service',10);
+insert into Services values ('special requests',20);
+
+
+
+
+insert into Checkins(number_of_guests, start_date, end_date, amount, checkin_time, checkout_time) values (1,'2017-05-10', '2017-05-13', 100, '15:17:00', '10:22:00');
+insert into Reservations values (01, 0001, '2017-05-10', '2017-05-13');
+insert into Pricings values (1,1,01,0001,'dry cleaning');
+insert into Pricings values (2,1,01,0001,'gyms');
+insert into Billings values (1,'980 TRT St, Raleigh NC', '5939846');
+insert into Cards values ('1052','credit',0);
+insert into Done_by values (1,1,1001);
+insert into Paid_through values (1,'1052');
+
+
+insert into Checkins(number_of_guests, start_date, end_date, amount, checkin_time, checkout_time) values (2,'2017-05-10', '2017-05-13', 200, '16:11:00', '9:27:00');
+insert into Reservations values (02, 0001, '2017-05-10', '2017-05-13');
+insert into Pricings values (1,2,02,0001,'gyms');
+insert into Billings values (2,'7720 MHT St, Greensboro NC', '7778352');
+insert into Cards values ('3020','hotel credit',0.05);
+insert into Done_by values (2,2,1002);
+insert into Paid_through values (2,'3020');
+
+insert into Checkins(number_of_guests, start_date, end_date, amount, checkin_time, checkout_time) values (1,'2016-05-10', '2017-05-14', 100, '15:45:00', '11:10:00');
+insert into Reservations values (03, 0002, '2016-05-10', '2017-05-14');
+insert into Pricings values (1,3,03,0002,'room service');
+insert into Billings values (3,'231 DRY St, Rochester NY 78', '8589430');
+insert into Cards values ('2497','credit',0);
+insert into Done_by values (3,3,1003);
+insert into Paid_through values (3,'2497');
+
+
+insert into Checkins(number_of_guests, start_date, end_date, amount, checkin_time, checkout_time) values (2,'2018-05-10', '2018-05-12', 1000, '14:30:00', '10:00:00');
+insert into Reservations values (02, 0003, '2018-05-10', '2018-05-12');
+insert into Pricings values (1,4,02,0003,'phone bills');
+insert into Billings values (4,'24 BST Dr, Dallas TX 14', '4409328');
+insert into Cards values ('cash','cash',0);
+insert into Done_by values (4,4,1004);
+insert into Paid_through values (4,'cash');
