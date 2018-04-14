@@ -262,17 +262,7 @@ public class Manager extends JFrame {
 		textField_2.setColumns(10);
 		
 		btnGenerateRevenue = new JButton("Generate revenue ");
-		btnGenerateRevenue.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String hotel_id = textField_1.getText();
-				String start_date = textField_2.getText();
-				String end_date = textField_3.getText();
-				
-				revenueTA.setText("");
-				revenueTA.setVisible(true);
-				
-			}
-		});
+		
 		GridBagConstraints gbc_btnGenerateRevenue = new GridBagConstraints();
 		gbc_btnGenerateRevenue.insets = new Insets(0, 0, 5, 0);
 		gbc_btnGenerateRevenue.gridx = 1;
@@ -437,6 +427,28 @@ public class Manager extends JFrame {
 				}
 			}
 		});
+		
+		btnGenerateRevenue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String hotel_id = textField_1.getText();
+				String start_date = textField_3.getText();
+				String end_date = textField_2.getText();
+				try{
+					result=smt.executeQuery("SELECT sum(Checkins.amount) as revenue,hotel_id from Checkins, Pricings where Pricings.checkin_id=Checkins.id and Pricings.hotel_id="+hotel_id+" and Checkins.id in (select id from Checkins where start_date>='"+start_date+"' and end_date<='"+end_date+"')");
+					String resultStr = "";
+					while(result.next()){
+					resultStr+="\n"+result.getInt("revenue")+" is the revenue earned by "+result.getInt("hotel_id")+" in the given date range";
+					System.out.println(result.getInt("revenue")+" is the revenue earned by "+result.getInt("hotel_id")+" in the given date range");
+				}
+				revenueTA.setText(resultStr);
+				revenueTA.setVisible(true);
+				}
+				catch(SQLException ex){
+					ex.printStackTrace();
+				}
+			}
+		});
+		
 		try {
 			result=smt.executeQuery("SELECT job_title,count(*) as count from Staffs group by job_title");
 		    while(result.next()){
