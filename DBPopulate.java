@@ -6,11 +6,17 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 public class DBPopulate {
-	private static final String jdbcURL = "jdbc:mysql://mydbinstance.ca6owdm4itco.us-east-1.rds.amazonaws.com:3306/";
-	// Put your oracle ID and password here
-    private static final String username="aishwaryassr";
-	private static final String password="Macrohard.123";
-	private static final String dbName="dbname";	
+//	private static final String jdbcURL = "jdbc:mysql://mydbinstance.ca6owdm4itco.us-east-1.rds.amazonaws.com:3306/";
+//	// Put your oracle ID and password here
+//    private static final String username="aishwaryassr";
+//	private static final String password="Macrohard.123";
+//	private static final String dbName="dbname";
+	private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/";
+	private static final String username = "ID";
+	private static final String password = "PASSWORD";
+	private static final String dbName="YOUR_DB";
+	
+	
 	private static Connection connection = null;
 	private static Statement statement = null;
 	private static ResultSet result = null;
@@ -21,7 +27,8 @@ public class DBPopulate {
 
 		//String driver="com.mysql.jdbc.Driver";
 		try{
-		Class.forName("com.mysql.jdbc.Driver");
+		//Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("org.mariadb.jdbc.Driver");
 		}
 		catch(ClassNotFoundException e){
 			e.printStackTrace();
@@ -792,7 +799,7 @@ e.printStackTrace();
 		//retrieve customer id
 		try{
 		result=statement.executeQuery(String.format("select customer_id from Done_by where checkin_id='%s'",checkinid));
-		customerID=result.getInt('customer_id');
+		customerID=result.getInt("customer_id");
 		//get the final amount
 		int bill= generateBill(customerID);
 		//update this amount in checkins

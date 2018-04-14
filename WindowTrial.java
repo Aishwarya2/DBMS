@@ -25,14 +25,16 @@ import javax.swing.JTextField;
 
 public class WindowTrial {
 
-	private static final String jdbcURL = "jdbc:mysql://mydbinstance.ca6owdm4itco.us-east-1.rds.amazonaws.com:3306/";
-	// Put your oracle ID and password here
-    private static final String username="aishwaryassr";
-	private static final String password="Macrohard.123";
-	private static final String dbName="dbname";	
+	private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/";
+	private static final String username = "pjain15";
+	private static final String password = "PASSWORD";
+	private static final String dbName="pjain15";
+	
+	
 	private static Connection connection = null;
 	private static Statement statement = null;
-	private static ResultSet result = null;
+	private static ResultSet result = null;	
+
 	
 	public Statement smt=null;
 	private JFrame frame;
@@ -49,7 +51,7 @@ public class WindowTrial {
 	 */
 	public static void main(String[] args) {
 		try{
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("org.mariadb.jdbc.Driver");
 			}
 			catch(ClassNotFoundException e){
 				e.printStackTrace();
