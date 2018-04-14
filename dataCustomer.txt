@@ -1,0 +1,9 @@
+Insert into Customers(name, DOB, email, phone_number) values ('David','1980-01-30', 'david@gmail.com','123');
+
+Insert into Customers(name, DOB, email, phone_number) values ('Sarah','1971-01-30', 'sarah@gmail.com','456');
+
+Insert into Customers(name, DOB, email, phone_number) values ('Joseph','1987-01-30', 'joseph@gmail.com','789');
+
+Insert into Customers(name, DOB, email, phone_number) values ('Lucy','1985-01-30', 'lucy@gmail.com','213');
+
+

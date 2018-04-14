@@ -36,6 +36,8 @@ public class FrontDeskRep extends JFrame {
 	private JTextField textField_14;
 	private JTextField textField_13;
 	private JTextField textField_15;
+	private JTextField textField_16;
+	private JTextField textField_17;
 
 	/**
 	 * Launch the application.
@@ -173,9 +175,9 @@ public class FrontDeskRep extends JFrame {
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Checkout", null, panel_1, null);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0};
+		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_1.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
@@ -195,18 +197,34 @@ public class FrontDeskRep extends JFrame {
 		
 		textField_9 = new JTextField();
 		GridBagConstraints gbc_textField_9 = new GridBagConstraints();
-		gbc_textField_9.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_9.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_9.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_9.gridx = 3;
 		gbc_textField_9.gridy = 3;
 		panel_1.add(textField_9, gbc_textField_9);
 		textField_9.setColumns(10);
 		
-		JLabel lblPayment = new JLabel("Payment");
+		JLabel lblHotelid = new JLabel("HotelID");
+		GridBagConstraints gbc_lblHotelid = new GridBagConstraints();
+		gbc_lblHotelid.insets = new Insets(0, 0, 5, 5);
+		gbc_lblHotelid.gridx = 1;
+		gbc_lblHotelid.gridy = 4;
+		panel_1.add(lblHotelid, gbc_lblHotelid);
+		
+		textField_16 = new JTextField();
+		GridBagConstraints gbc_textField_16 = new GridBagConstraints();
+		gbc_textField_16.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_16.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_16.gridx = 3;
+		gbc_textField_16.gridy = 4;
+		panel_1.add(textField_16, gbc_textField_16);
+		textField_16.setColumns(10);
+		
+		JLabel lblPayment = new JLabel("Payment:");
 		GridBagConstraints gbc_lblPayment = new GridBagConstraints();
 		gbc_lblPayment.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPayment.gridx = 1;
-		gbc_lblPayment.gridy = 5;
+		gbc_lblPayment.gridy = 6;
 		panel_1.add(lblPayment, gbc_lblPayment);
 		
 		JLabel lblPaymentMethod = new JLabel("Payment Method");
@@ -218,7 +236,7 @@ public class FrontDeskRep extends JFrame {
 		
 		textField_10 = new JTextField();
 		GridBagConstraints gbc_textField_10 = new GridBagConstraints();
-		gbc_textField_10.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_10.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_10.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_10.gridx = 3;
 		gbc_textField_10.gridy = 7;
@@ -234,7 +252,7 @@ public class FrontDeskRep extends JFrame {
 		
 		textField_11 = new JTextField();
 		GridBagConstraints gbc_textField_11 = new GridBagConstraints();
-		gbc_textField_11.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_11.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_11.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_11.gridx = 3;
 		gbc_textField_11.gridy = 8;
@@ -250,7 +268,7 @@ public class FrontDeskRep extends JFrame {
 		
 		textField_12 = new JTextField();
 		GridBagConstraints gbc_textField_12 = new GridBagConstraints();
-		gbc_textField_12.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_12.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_12.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_12.gridx = 3;
 		gbc_textField_12.gridy = 9;
@@ -259,9 +277,26 @@ public class FrontDeskRep extends JFrame {
 		
 		JButton btnCheckout = new JButton("Pay & Checkout");
 		GridBagConstraints gbc_btnCheckout = new GridBagConstraints();
-		gbc_btnCheckout.gridx = 3;
-		gbc_btnCheckout.gridy = 11;
+		gbc_btnCheckout.insets = new Insets(0, 0, 5, 0);
+		gbc_btnCheckout.gridx = 5;
+		gbc_btnCheckout.gridy = 9;
 		panel_1.add(btnCheckout, gbc_btnCheckout);
+		
+		JLabel lblBillingAddressif = new JLabel("Billing Address (if new card)");
+		GridBagConstraints gbc_lblBillingAddressif = new GridBagConstraints();
+		gbc_lblBillingAddressif.insets = new Insets(0, 0, 5, 5);
+		gbc_lblBillingAddressif.gridx = 1;
+		gbc_lblBillingAddressif.gridy = 10;
+		panel_1.add(lblBillingAddressif, gbc_lblBillingAddressif);
+		
+		textField_17 = new JTextField();
+		GridBagConstraints gbc_textField_17 = new GridBagConstraints();
+		gbc_textField_17.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_17.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_17.gridx = 3;
+		gbc_textField_17.gridy = 10;
+		panel_1.add(textField_17, gbc_textField_17);
+		textField_17.setColumns(10);
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Generate Bill", null, panel_2, null);
