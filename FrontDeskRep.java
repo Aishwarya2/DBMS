@@ -32,9 +32,6 @@ public class FrontDeskRep extends JFrame {
 	private ResultSet result = null;
 	private Connection connection = null;
 	private JPanel contentPane;
-	
-	private JTextField textField;
-	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
@@ -52,14 +49,18 @@ public class FrontDeskRep extends JFrame {
 	private JTextField textField_15;
 	private JTextField textField_16;
 	private JTextField textField_17;
-
-	private JButton btnCheckin;
-	
-	private JTextArea checkinTA;
 	private JTextField textField_18;
 	private JTextField textField_19;
 	private JTextField textField_20;
 	
+	
+	private JButton btnCheckin;
+	private JButton btnGenerateBill;
+	private JButton btnCheckAvailability;
+	
+	private JTextArea checkinTA;
+	private JTextArea textArea_1;
+	private JTextArea textArea;
 	
 	/**
 	 * Launch the application.
@@ -354,6 +355,10 @@ public class FrontDeskRep extends JFrame {
 		textField_12.setColumns(10);
 		
 		JButton btnCheckout = new JButton("Pay & Checkout");
+		btnCheckout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		GridBagConstraints gbc_btnCheckout = new GridBagConstraints();
 		gbc_btnCheckout.insets = new Insets(0, 0, 5, 0);
 		gbc_btnCheckout.gridx = 5;
@@ -379,9 +384,9 @@ public class FrontDeskRep extends JFrame {
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Generate Bill", null, panel_2, null);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_panel_2.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_2.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel_2.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_2.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_2.setLayout(gbl_panel_2);
 		
@@ -402,14 +407,22 @@ public class FrontDeskRep extends JFrame {
 		
 		textField_4 = new JTextField();
 		GridBagConstraints gbc_textField_4 = new GridBagConstraints();
-		gbc_textField_4.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_4.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_4.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_4.gridx = 2;
 		gbc_textField_4.gridy = 3;
 		panel_2.add(textField_4, gbc_textField_4);
 		textField_4.setColumns(10);
 		
-		JTextArea textArea_1 = new JTextArea();
+		btnGenerateBill = new JButton("Generate bill");
+		
+		GridBagConstraints gbc_btnGenerateBill = new GridBagConstraints();
+		gbc_btnGenerateBill.insets = new Insets(0, 0, 5, 5);
+		gbc_btnGenerateBill.gridx = 3;
+		gbc_btnGenerateBill.gridy = 3;
+		panel_2.add(btnGenerateBill, gbc_btnGenerateBill);
+		
+		textArea_1 = new JTextArea();
 		GridBagConstraints gbc_textArea_1 = new GridBagConstraints();
 		gbc_textArea_1.gridwidth = 2;
 		gbc_textArea_1.insets = new Insets(0, 0, 0, 5);
@@ -434,39 +447,6 @@ public class FrontDeskRep extends JFrame {
 		gbc_lblCheckRoomAvailability.gridy = 1;
 		panel_3.add(lblCheckRoomAvailability, gbc_lblCheckRoomAvailability);
 		
-		JLabel lblHotelId = new JLabel("Hotel ID:");
-		GridBagConstraints gbc_lblHotelId = new GridBagConstraints();
-		gbc_lblHotelId.anchor = GridBagConstraints.EAST;
-		gbc_lblHotelId.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHotelId.gridx = 1;
-		gbc_lblHotelId.gridy = 3;
-		panel_3.add(lblHotelId, gbc_lblHotelId);
-		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 3;
-		gbc_textField.gridy = 3;
-		panel_3.add(textField, gbc_textField);
-		textField.setColumns(10);
-		
-		JLabel lblRoomNumberoption = new JLabel("Room number (option):");
-		GridBagConstraints gbc_lblRoomNumberoption = new GridBagConstraints();
-		gbc_lblRoomNumberoption.insets = new Insets(0, 0, 5, 5);
-		gbc_lblRoomNumberoption.gridx = 1;
-		gbc_lblRoomNumberoption.gridy = 4;
-		panel_3.add(lblRoomNumberoption, gbc_lblRoomNumberoption);
-		
-		textField_1 = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 3;
-		gbc_textField_1.gridy = 4;
-		panel_3.add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
-		
 		JLabel lblStartDate = new JLabel("Start Date:");
 		GridBagConstraints gbc_lblStartDate = new GridBagConstraints();
 		gbc_lblStartDate.anchor = GridBagConstraints.EAST;
@@ -484,7 +464,8 @@ public class FrontDeskRep extends JFrame {
 		panel_3.add(textField_2, gbc_textField_2);
 		textField_2.setColumns(10);
 		
-		JButton btnCheckAvailability = new JButton("Check Availability");
+		btnCheckAvailability = new JButton("Check Availability");
+		
 		GridBagConstraints gbc_btnCheckAvailability = new GridBagConstraints();
 		gbc_btnCheckAvailability.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCheckAvailability.gridx = 5;
@@ -508,7 +489,7 @@ public class FrontDeskRep extends JFrame {
 		panel_3.add(textField_3, gbc_textField_3);
 		textField_3.setColumns(10);
 		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		GridBagConstraints gbc_textArea = new GridBagConstraints();
 		gbc_textArea.gridheight = 2;
 		gbc_textArea.gridwidth = 5;
@@ -652,6 +633,50 @@ public class FrontDeskRep extends JFrame {
 			       	
 				checkinTA.setText("Successfully checked you in!");
 				checkinTA.setVisible(true);
+			}
+		});
+		
+		btnGenerateBill.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String customerID = textField_4.getText();
+				String resultStr="";
+				try{
+					result=smt.executeQuery("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customerID+" group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id="+customerID+")group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customerID+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customerID+")group by checkin_id))Item");
+				while(result.next()){
+					resultStr+="\n"+"The total bill is "+result.getInt("Total");
+					System.out.println("The total bill is "+result.getInt("Total"));
+				}
+
+				textArea_1.setText(resultStr);
+				}
+				catch(SQLException ex){
+					ex.printStackTrace();
+				}
+			}
+		});
+		
+		btnCheckAvailability.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+//				
+//				int hotelID = Integer.parseInt(textField.getText());
+//				int room_number = Integer.parseInt(textField_1.getText());
+				String start_date= textField_2.getText();
+				String end_date = textField_3.getText();
+				String resultStr="";
+				try {
+					result=smt.executeQuery(String.format("SELECT * FROM Rooms WHERE (room_number, hotel_id) NOT IN (SELECT room_number, hotel_id from Reservations WHERE '%s' <= CURDATE() or '%s' >= CURDATE() )",start_date,end_date));
+			        while(result.next()){
+			  
+			        	int rno=result.getInt("room_number");
+			        	int hotelid=result.getInt("hotel_id");
+						resultStr+="\n"+"Room number "+rno+" is available in hotel "+hotelid;
+			        	System.out.println("Room number "+rno+" is available in hotel "+hotelid);
+			        }
+			        textArea.setText(resultStr);
+				} catch (SQLException ex) {
+					ex.printStackTrace();
+				}
+				
 			}
 		});
 	}

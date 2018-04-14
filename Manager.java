@@ -45,6 +45,14 @@ public class Manager extends JFrame {
 	private JButton btnGenerateRevenue;
 	
 	private JTabbedPane tabbedPane ;
+	private JLabel lblHotelid;
+	private JLabel lblRoomNumber;
+	private JLabel lblCheckinId;
+	private JLabel lblServiceName;
+	private JTextField textField;
+	private JTextField textField_4;
+	private JTextField textField_5;
+	private JTextField textField_6;
 	/**
 	 * 
 	 * Launch the application.
@@ -157,11 +165,12 @@ public class Manager extends JFrame {
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_1.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
 		btnAssignStaffs = new JButton("Assign Staffs");
+		
 		GridBagConstraints gbc_btnAssignStaffs = new GridBagConstraints();
 		gbc_btnAssignStaffs.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAssignStaffs.gridx = 1;
@@ -182,14 +191,80 @@ public class Manager extends JFrame {
 		gbc_btnStaffInfoFor.gridy = 1;
 		panel_1.add(btnStaffInfoFor, gbc_btnStaffInfoFor);
 		
+		lblHotelid = new JLabel("HotelID:");
+		GridBagConstraints gbc_lblHotelid = new GridBagConstraints();
+		gbc_lblHotelid.anchor = GridBagConstraints.EAST;
+		gbc_lblHotelid.insets = new Insets(0, 0, 5, 5);
+		gbc_lblHotelid.gridx = 1;
+		gbc_lblHotelid.gridy = 2;
+		panel_1.add(lblHotelid, gbc_lblHotelid);
+		
+		textField = new JTextField();
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.insets = new Insets(0, 0, 5, 5);
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.gridx = 2;
+		gbc_textField.gridy = 2;
+		panel_1.add(textField, gbc_textField);
+		textField.setColumns(10);
+		
+		lblRoomNumber = new JLabel("Room number");
+		GridBagConstraints gbc_lblRoomNumber = new GridBagConstraints();
+		gbc_lblRoomNumber.anchor = GridBagConstraints.EAST;
+		gbc_lblRoomNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRoomNumber.gridx = 1;
+		gbc_lblRoomNumber.gridy = 3;
+		panel_1.add(lblRoomNumber, gbc_lblRoomNumber);
+		
+		textField_4 = new JTextField();
+		GridBagConstraints gbc_textField_4 = new GridBagConstraints();
+		gbc_textField_4.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_4.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_4.gridx = 2;
+		gbc_textField_4.gridy = 3;
+		panel_1.add(textField_4, gbc_textField_4);
+		textField_4.setColumns(10);
+		
+		lblCheckinId = new JLabel("Checkin ID");
+		GridBagConstraints gbc_lblCheckinId = new GridBagConstraints();
+		gbc_lblCheckinId.anchor = GridBagConstraints.EAST;
+		gbc_lblCheckinId.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCheckinId.gridx = 1;
+		gbc_lblCheckinId.gridy = 4;
+		panel_1.add(lblCheckinId, gbc_lblCheckinId);
+		
+		textField_5 = new JTextField();
+		GridBagConstraints gbc_textField_5 = new GridBagConstraints();
+		gbc_textField_5.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_5.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_5.gridx = 2;
+		gbc_textField_5.gridy = 4;
+		panel_1.add(textField_5, gbc_textField_5);
+		textField_5.setColumns(10);
+		
+		lblServiceName = new JLabel("Service name");
+		GridBagConstraints gbc_lblServiceName = new GridBagConstraints();
+		gbc_lblServiceName.anchor = GridBagConstraints.EAST;
+		gbc_lblServiceName.insets = new Insets(0, 0, 5, 5);
+		gbc_lblServiceName.gridx = 1;
+		gbc_lblServiceName.gridy = 5;
+		panel_1.add(lblServiceName, gbc_lblServiceName);
+		
+		textField_6 = new JTextField();
+		GridBagConstraints gbc_textField_6 = new GridBagConstraints();
+		gbc_textField_6.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_6.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_6.gridx = 2;
+		gbc_textField_6.gridy = 5;
+		panel_1.add(textField_6, gbc_textField_6);
+		textField_6.setColumns(10);
+		
 		staffTA = new JTextArea();
 		GridBagConstraints gbc_textArea_1 = new GridBagConstraints();
-		gbc_textArea_1.insets = new Insets(0, 0, 5, 0);
-		gbc_textArea_1.gridheight = 3;
 		gbc_textArea_1.gridwidth = 5;
 		gbc_textArea_1.fill = GridBagConstraints.BOTH;
 		gbc_textArea_1.gridx = 1;
-		gbc_textArea_1.gridy = 4;
+		gbc_textArea_1.gridy = 6;
 		panel_1.add(staffTA, gbc_textArea_1);
 		staffTA.setVisible(false);
 		
@@ -449,6 +524,17 @@ public class Manager extends JFrame {
 			}
 		});
 		
+		btnAssignStaffs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int hotel_id = Integer.parseInt(textField.getText());
+				int room_number = Integer.parseInt(textField_4.getText());
+				int checkinid = Integer.parseInt(textField_5.getText());
+				String service_name = textField_6.getText();
+				
+				assignstaff(hotel_id,room_number, checkinid,service_name);
+			}
+		});
+		
 		try {
 			result=smt.executeQuery("SELECT job_title,count(*) as count from Staffs group by job_title");
 		    while(result.next()){
@@ -457,5 +543,29 @@ public class Manager extends JFrame {
 		} catch (SQLException ex) {
 				ex.printStackTrace();
 		}
+	}
+	
+	private void assignstaff(int hotel_id,int room_number,int checkinid,String service_name)
+	{
+		 try{
+			//check if the service has already been availed by the room
+			result=smt.executeQuery(String.format("select service_name from Pricings where checkin_id='%d' and room_number='%d'",checkinid,room_number));
+			//If not
+			if(!result.next()) {
+				// find available staff and insert into serves and Pricings table
+				result=smt.executeQuery("Select id from Staffs where availability='Yes' limit 1");
+				int staff_id=0;
+				if (result.next())
+					staff_id = result.getInt("id"); 
+				smt.executeUpdate(String.format("Insert into Serves values('%d','%d','%s','%d')",  staff_id,hotel_id,service_name,result.getInt("id")));
+				smt.executeUpdate(String.format("Insert into Pricings values('%d','%d','%d','%d','%s')",  1,checkinid,room_number,hotel_id,service_name));
+			} else {
+				//Update count in pricings
+				smt.executeUpdate(String.format("Update Pricings set count=count+1 where checkin_id='%d' and room_number='%d'",checkinid,room_number));
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 }
