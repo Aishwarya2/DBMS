@@ -262,6 +262,17 @@ public class Manager extends JFrame {
 		textField_2.setColumns(10);
 		
 		btnGenerateRevenue = new JButton("Generate revenue ");
+		btnGenerateRevenue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String hotel_id = textField_1.getText();
+				String start_date = textField_2.getText();
+				String end_date = textField_3.getText();
+				
+				revenueTA.setText("");
+				revenueTA.setVisible(true);
+				
+			}
+		});
 		GridBagConstraints gbc_btnGenerateRevenue = new GridBagConstraints();
 		gbc_btnGenerateRevenue.insets = new Insets(0, 0, 5, 0);
 		gbc_btnGenerateRevenue.gridx = 1;
@@ -302,8 +313,8 @@ public class Manager extends JFrame {
 					result=smt.executeQuery("Select count(*) as count,start_date,end_date from Reservations group by start_date, end_date");
 				    String resultStr = "";
 					while(result.next()){
-						resultStr+="\n"+result.getInt("count")+"occupied in date range"+result.getString("start_date")+","+result.getString("end_date");
-						System.out.println(result.getInt("count")+"occupied in date range"+result.getString("start_date")+","+result.getString("end_date"));
+						resultStr+="\n"+result.getInt("count")+" occupied in date range "+result.getString("start_date")+","+result.getString("end_date");
+						System.out.println(result.getInt("count")+" occupied in date range "+result.getString("start_date")+","+result.getString("end_date"));
 				    }
 					
 					reportOccupancyTA.setText(resultStr);
@@ -387,6 +398,42 @@ public class Manager extends JFrame {
 					reportOccupancyTA.setVisible(true);
 				} catch (SQLException ex) {
 						ex.printStackTrace();
+				}
+			}
+		});
+		
+		btnGroupStaffsBy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					result=smt.executeQuery("SELECT job_title,count(*) as count from Staffs group by job_title");
+					String resultStr = "";
+					while(result.next()){
+						resultStr+="\n"+"Number of staffs in"+result.getString("job_title")+"is"+result.getInt("count");
+				    	System.out.println("Number of staffs in"+result.getString("job_title")+"is"+result.getInt("count"));
+				    }
+					staffTA.setText(resultStr);
+					staffTA.setVisible(true);
+				} catch (SQLException ex) {
+						ex.printStackTrace();
+				}	
+
+			}
+		});
+		
+		btnStaffInfoFor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try{
+					result=smt.executeQuery("SELECT * from Staffs where id in (select Serves.staff_id from Serves where (Serves.service_name,Serves.hotel_id) in (select service_name,hotel_id from Pricings group by checkin_id))");
+					String resultStr = "";
+					while(result.next()){
+					resultStr+="\n"+"The staff id is "+result.getInt("id")+" from hotel "+result.getInt("hotel_id")+"job_title is"+result.getString("job_title");
+					System.out.println("The staff id is "+result.getInt("id")+" from hotel "+result.getInt("hotel_id")+"job_title is"+result.getString("job_title"));
+				}
+				staffTA.setText(resultStr);
+				staffTA.setVisible(true);
+				}
+				catch(SQLException ex){
+					ex.printStackTrace();
 				}
 			}
 		});
