@@ -65,7 +65,7 @@ public class WindowTrial {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					WindowTrial window = new WindowTrial(statement);
+					WindowTrial window = new WindowTrial(statement, connection);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -77,8 +77,9 @@ public class WindowTrial {
 	/**
 	 * Create the application.
 	 */
-	public WindowTrial(Statement smt) {
+	public WindowTrial(Statement smt, Connection connection) {
 		this.smt = smt;
+		this.connection = connection;
 		initialize();
 	}
 
@@ -166,7 +167,7 @@ public class WindowTrial {
 				btnFrontDeskRep.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						lblUser.setText("Front Desk Rep");
-						FrontDeskRep f = new FrontDeskRep(smt);
+						FrontDeskRep f = new FrontDeskRep(smt, connection);
 						f.setVisible(true);
 						
 						btnFrontDeskRep.setVisible(false);

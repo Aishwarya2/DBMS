@@ -1,24 +1,38 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTabbedPane;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 
 public class FrontDeskRep extends JFrame {
 
-	private JPanel contentPane;
 	private Statement smt=null;
+	private ResultSet result = null;
+	private Connection connection = null;
+	private JPanel contentPane;
+	
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -39,6 +53,14 @@ public class FrontDeskRep extends JFrame {
 	private JTextField textField_16;
 	private JTextField textField_17;
 
+	private JButton btnCheckin;
+	
+	private JTextArea checkinTA;
+	private JTextField textField_18;
+	private JTextField textField_19;
+	private JTextField textField_20;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -64,8 +86,9 @@ public class FrontDeskRep extends JFrame {
 		initEvents();
 	}
 
-	public FrontDeskRep(Statement smt) {
+	public FrontDeskRep(Statement smt, Connection connection) {
 		this.smt = smt;
+		this.connection = connection;
 		initComponents();
 		initEvents();
 	}
@@ -86,9 +109,9 @@ public class FrontDeskRep extends JFrame {
 		tabbedPane.addTab("Check-in", null, panel, null);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 0, 0, 0};
-		gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
 		JLabel lblCheckinCustomerStay = new JLabel("Checkin Customer stay");
@@ -156,6 +179,8 @@ public class FrontDeskRep extends JFrame {
 		gbc_lblHotelId_1.gridx = 1;
 		gbc_lblHotelId_1.gridy = 6;
 		panel.add(lblHotelId_1, gbc_lblHotelId_1);
+		checkinTA = new JTextArea();
+		checkinTA.setVisible(false);
 		
 		textField_8 = new JTextField();
 		GridBagConstraints gbc_textField_8 = new GridBagConstraints();
@@ -166,10 +191,63 @@ public class FrontDeskRep extends JFrame {
 		panel.add(textField_8, gbc_textField_8);
 		textField_8.setColumns(10);
 		
-		JButton btnCheckin = new JButton("Checkin");
+		JLabel lblRoomType = new JLabel("Room Type");
+		GridBagConstraints gbc_lblRoomType = new GridBagConstraints();
+		gbc_lblRoomType.anchor = GridBagConstraints.EAST;
+		gbc_lblRoomType.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRoomType.gridx = 1;
+		gbc_lblRoomType.gridy = 7;
+		panel.add(lblRoomType, gbc_lblRoomType);
+		
+		textField_18 = new JTextField();
+		GridBagConstraints gbc_textField_18 = new GridBagConstraints();
+		gbc_textField_18.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_18.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_18.gridx = 2;
+		gbc_textField_18.gridy = 7;
+		panel.add(textField_18, gbc_textField_18);
+		textField_18.setColumns(10);
+		
+		JLabel lblCity = new JLabel("City");
+		GridBagConstraints gbc_lblCity = new GridBagConstraints();
+		gbc_lblCity.anchor = GridBagConstraints.EAST;
+		gbc_lblCity.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCity.gridx = 1;
+		gbc_lblCity.gridy = 8;
+		panel.add(lblCity, gbc_lblCity);
+		
+		textField_19 = new JTextField();
+		GridBagConstraints gbc_textField_19 = new GridBagConstraints();
+		gbc_textField_19.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_19.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_19.gridx = 2;
+		gbc_textField_19.gridy = 8;
+		panel.add(textField_19, gbc_textField_19);
+		textField_19.setColumns(10);
+		
+		JLabel lblCapacity = new JLabel("Capacity");
+		GridBagConstraints gbc_lblCapacity = new GridBagConstraints();
+		gbc_lblCapacity.anchor = GridBagConstraints.EAST;
+		gbc_lblCapacity.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCapacity.gridx = 1;
+		gbc_lblCapacity.gridy = 9;
+		panel.add(lblCapacity, gbc_lblCapacity);
+		
+		textField_20 = new JTextField();
+		GridBagConstraints gbc_textField_20 = new GridBagConstraints();
+		gbc_textField_20.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_20.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_20.gridx = 2;
+		gbc_textField_20.gridy = 9;
+		panel.add(textField_20, gbc_textField_20);
+		textField_20.setColumns(10);
+		
+		
+		btnCheckin = new JButton("Checkin");
+		
 		GridBagConstraints gbc_btnCheckin = new GridBagConstraints();
 		gbc_btnCheckin.gridx = 2;
-		gbc_btnCheckin.gridy = 9;
+		gbc_btnCheckin.gridy = 10;
 		panel.add(btnCheckin, gbc_btnCheckin);
 		
 		JPanel panel_1 = new JPanel();
@@ -537,6 +615,187 @@ public class FrontDeskRep extends JFrame {
 	}
 
 	private void initEvents() {
+		btnCheckin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String customerID = textField_5.getText();
+				String start_date = textField_6.getText();
+				String end_date =textField_7.getText();
+				String hotelID = textField_8.getText();
+				String type = textField_18.getText();
+				String city = textField_19.getText();
+				String capacity= textField_20.getText();
+				
+				
+				try{
+			       	connection.setAutoCommit(false);
+					assignRoomsByRequest(Integer.parseInt(hotelID), Integer.parseInt(customerID), type, start_date, end_date, city,Integer.parseInt(capacity));
+			       	connection.commit();
+			       	}
+			       	catch(SQLException ex){
+			       		ex.printStackTrace();
+			       		try{
+			       		if(connection!=null){
+			       			System.out.println("Transaction is being rolled back");
+			       			connection.rollback();
+			       		}
+			       		}
+			       		catch(SQLException excep){
+			       			excep.printStackTrace();
+			       		}
+			       	}
+			       	try{
+			       		connection.setAutoCommit(true);
+			       	}
+			       	catch(SQLException exc){
+			       		exc.printStackTrace();
+			       	}
+			       	
+				checkinTA.setText("Successfully checked you in!");
+				checkinTA.setVisible(true);
+			}
+		});
+	}
+	
+	private void assignRoomsByRequest(int hotelID,int customerID, String categoryName,String startDate,String endDate,String city, int number_of_guests) throws SQLException {
+		int[] roomhotel = reportOccupancyBasedOnRequest(hotelID, categoryName, startDate, endDate,city);
+		if(roomhotel[0]==-1)
+		{
+			System.out.println("Room not available while checkin");
+			return;
+		}
+		//If needed
+		// insertIntoCustomers("Tony Stark", "750123456","1975-02-21", "stark@gmail.com");	
+		try{
+		result=smt.executeQuery("select id from Customers where id="+customerID+"");
+		
+		if(!result.next())
+		{   Scanner s=new Scanner(System.in);
+		    System.out.println("Enter the customer's name:");
+			String name=s.next();
+			System.out.println("Enter the customer's dob:");
+			String dob=s.next();
+			System.out.println("Enter the customer's email:");
+			String emailID=s.next();
+			System.out.println("Enter the customer's phone_number:");
+			String phone_number=s.next();
+			try{
+			smt.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('"+name+"','"+dob+"','"+emailID+"', '"+phone_number+"')");
+			}
+			catch(SQLException ed){
+				ed.printStackTrace();
+			}
+		 }
+		else {
+			System.out.println("Customer already exists in the DB");
+		}
+		}
+		catch(SQLException er){
+			er.printStackTrace();
+		}
+			
+		insertIntoReservations(roomhotel[0], roomhotel[1], startDate, endDate);
+		int checkinID = insertIntoCheckins(number_of_guests,hotelID, startDate, endDate);
+		insertIntoDoneBy(checkinID, customerID);
+        
+		if(categoryName == "Presidential Suite") {
+			int[]staffs=findAvailableStaffs(hotelID);
+			if(staffs[0]==-1)
+			{
+			  System.out.println("Staffs not available");
+			  return;
+			}
+			
+			insertIntoServes(staffs[0], hotelID, "HouseKeeping",checkinID);
+			insertIntoServes(staffs[1], hotelID, "Catering",checkinID);
+			smt.executeQuery("UPDATE Staffs SET availability='No' where id in ("+staffs[0]+","+staffs[1]+") and hotel_id="+hotelID+"");
+		}
 		
 	}
+	
+	private int[] reportOccupancyBasedOnRequest(int hotelID, String category_name, String startDate,String endDate,String city) {
+		int[]answer=new int[2];
+		try {
+				result=smt.executeQuery("SELECT * FROM Reservations r, Hotels h where r.hotel_id="+hotelID+" and r. room_number in"
+											 +"(select room_number from Rooms where category_name='"+category_name+"' and hotel_id="+hotelID+" )"
+											 +"and r.start_date>='"+startDate+"' and r.end_Date<='"+endDate+"' and h.zip_code in "
+											 +"(select zip_code from Locations where city='"+city+"')");
+				if(result.next()){
+					int rno=result.getInt("room_number");
+					int hotelid=result.getInt("hotel_id");
+					answer[0]=rno;
+					answer[1]=hotelid;
+				}
+				else
+				{
+					System.out.println("ROOMS not available");
+					answer[0]=-1;
+					answer[1]=-1;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return answer;
+	}
+
+	private void insertIntoReservations(int room_number,int hotelID, String startDate,String endDate) {
+		try{
+		result=smt.executeQuery("SELECT * from Rooms where room_number="+room_number+" and hotel_id="+hotelID+"");
+		if(result.next())
+			smt.executeUpdate("INSERT INTO Reservations VALUES ("+room_number+", "+hotelID+", '"+startDate+"','"+endDate+"')");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		}
+
+	private int insertIntoCheckins(int number_of_guests,int hotel_id, String startDate,String endDate) throws SQLException {
+		int cid=0;
+//		statement.executeUpdate("INSERT INTO Checkins(number_of_guests,start_date,end_date,checkin_time) VALUES ('"+"233232332323232"+"', '"+startDate+"','"+endDate+"',TIME(NOW()))");
+		smt.executeUpdate("INSERT INTO Checkins(number_of_guests,start_date,end_date,checkin_time) VALUES ("+number_of_guests+", '"+startDate+"','"+endDate+"',TIME(NOW()))");
+		
+		result = smt.executeQuery("SELECT LAST_INSERT_ID()");
+		 while(result.next()){
+			 cid=result.getInt(1);
+		 }
+		 System.out.println("Checkin: " + cid);
+		return cid;
+		}
+
+	private void insertIntoServes(int staffid,int hotelid,String job_title,int checkinid) {
+		try{
+		smt.executeUpdate("INSERT INTO Serves VALUES ("+staffid+","+hotelid+",'"+job_title+"',"+checkinid+")");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		}
+	private void insertIntoDoneBy(int checkinID, int customerID) {
+		try{
+		smt.executeUpdate("INSERT INTO Done_by VALUES ("+checkinID+",NULL, "+customerID+")");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		}
+	private int[] findAvailableStaffs(int hotelID) {
+		int count=0;
+		int[]s=new int[2];
+		try{
+		result=smt.executeQuery("SELECT id from Staffs WHERE hotel_id="+hotelID+"");
+		while(result.next()&&count<2){
+             s[count]=result.getInt("id");
+             count++;
+		}
+		if(count==0)
+			{
+			s[0]=-1;
+			s[1]=-1;
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return s;
+		}
+
 }
