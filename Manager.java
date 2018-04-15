@@ -530,42 +530,38 @@ public class Manager extends JFrame {
 				int room_number = Integer.parseInt(textField_4.getText());
 				int checkinid = Integer.parseInt(textField_5.getText());
 				String service_name = textField_6.getText();
-				
-				assignstaff(hotel_id,room_number, checkinid,service_name);
+				assignstaff(hotel_id, room_number, checkinid, service_name);
+				System.out.println(hotel_id);
+				System.out.println(room_number);
+				System.out.println(checkinid);
+				System.out.println(service_name);
 			}
 		});
-		
-		try {
-			result=smt.executeQuery("SELECT job_title,count(*) as count from Staffs group by job_title");
-		    while(result.next()){
-		    	System.out.println("Number of staffs in"+result.getString("job_title")+"is"+result.getInt("count"));
-		    }
-		} catch (SQLException ex) {
-				ex.printStackTrace();
-		}
 	}
 	
 	private void assignstaff(int hotel_id,int room_number,int checkinid,String service_name)
 	{
 		 try{
 			//check if the service has already been availed by the room
-			result=smt.executeQuery(String.format("select service_name from Pricings where checkin_id='%d' and room_number='%d'",checkinid,room_number));
+			result = smt.executeQuery(String.format("select service_name from Pricings where checkin_id='%d' and room_number='%d' and hotel_id='%d' and service_name='%s'",checkinid,room_number,hotel_id, service_name));
 			//If not
 			if(!result.next()) {
 				// find available staff and insert into serves and Pricings table
-				result=smt.executeQuery("Select id from Staffs where availability='Yes' limit 1");
+				result = smt.executeQuery("Select id from Staffs where availability='Yes' limit 1");
 				int staff_id=0;
-				if (result.next())
-					staff_id = result.getInt("id"); 
-				smt.executeUpdate(String.format("Insert into Serves values('%d','%d','%s','%d')",  staff_id,hotel_id,service_name,result.getInt("id")));
-				smt.executeUpdate(String.format("Insert into Pricings values('%d','%d','%d','%d','%s')",  1,checkinid,room_number,hotel_id,service_name));
+				System.out.println("Available Staff id: "+ staff_id);
+				if (result.next()){
+					staff_id = result.getInt("id");
+					System.out.println("Available Staff id: "+ staff_id);
+					smt.executeUpdate(String.format("Insert into Serves values('%d','%d','%s','%d')",  staff_id, hotel_id, service_name, checkinid));
+					smt.executeUpdate(String.format("Insert into Pricings values('%d','%d','%d','%d','%s')",  1,checkinid,room_number,hotel_id,service_name));
+				}
 			} else {
 				//Update count in pricings
-				smt.executeUpdate(String.format("Update Pricings set count=count+1 where checkin_id='%d' and room_number='%d'",checkinid,room_number));
+				smt.executeUpdate(String.format("Update Pricings set count=count+1 where checkin_id='%d' and room_number='%d' and service_name='%s'",checkinid,room_number,service_name));
 			}
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 }
