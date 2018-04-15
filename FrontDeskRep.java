@@ -57,10 +57,18 @@ public class FrontDeskRep extends JFrame {
 	private JButton btnCheckin;
 	private JButton btnGenerateBill;
 	private JButton btnCheckAvailability;
+	private JButton btnCheckout_1; 
+	private JButton btnInsert_1;
 	
 	private JTextArea checkinTA;
 	private JTextArea textArea_1;
 	private JTextArea textArea;
+	private JTextArea textArea_2; 
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_21;
+	private JTextField textField_22;
+	
 	
 	/**
 	 * Launch the application.
@@ -255,9 +263,9 @@ public class FrontDeskRep extends JFrame {
 		tabbedPane.addTab("Checkout", null, panel_1, null);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
-		gbl_panel_1.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel_1.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
 		JLabel lblCheckoutCustomerStay = new JLabel("Checkout Customer stay");
@@ -338,6 +346,14 @@ public class FrontDeskRep extends JFrame {
 		panel_1.add(textField_11, gbc_textField_11);
 		textField_11.setColumns(10);
 		
+		btnCheckout_1 = new JButton("Checkout");
+		
+		GridBagConstraints gbc_btnCheckout_1 = new GridBagConstraints();
+		gbc_btnCheckout_1.insets = new Insets(0, 0, 5, 5);
+		gbc_btnCheckout_1.gridx = 4;
+		gbc_btnCheckout_1.gridy = 8;
+		panel_1.add(btnCheckout_1, gbc_btnCheckout_1);
+		
 		JLabel lblSsn = new JLabel("SSN");
 		GridBagConstraints gbc_lblSsn = new GridBagConstraints();
 		gbc_lblSsn.insets = new Insets(0, 0, 5, 5);
@@ -354,17 +370,6 @@ public class FrontDeskRep extends JFrame {
 		panel_1.add(textField_12, gbc_textField_12);
 		textField_12.setColumns(10);
 		
-		JButton btnCheckout = new JButton("Pay & Checkout");
-		btnCheckout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		GridBagConstraints gbc_btnCheckout = new GridBagConstraints();
-		gbc_btnCheckout.insets = new Insets(0, 0, 5, 0);
-		gbc_btnCheckout.gridx = 5;
-		gbc_btnCheckout.gridy = 9;
-		panel_1.add(btnCheckout, gbc_btnCheckout);
-		
 		JLabel lblBillingAddressif = new JLabel("Billing Address (if new card)");
 		GridBagConstraints gbc_lblBillingAddressif = new GridBagConstraints();
 		gbc_lblBillingAddressif.insets = new Insets(0, 0, 5, 5);
@@ -380,6 +385,99 @@ public class FrontDeskRep extends JFrame {
 		gbc_textField_17.gridy = 10;
 		panel_1.add(textField_17, gbc_textField_17);
 		textField_17.setColumns(10);
+		
+		textArea_2 = new JTextArea();
+		GridBagConstraints gbc_textArea_2 = new GridBagConstraints();
+		gbc_textArea_2.gridwidth = 3;
+		gbc_textArea_2.insets = new Insets(0, 0, 0, 5);
+		gbc_textArea_2.fill = GridBagConstraints.BOTH;
+		gbc_textArea_2.gridx = 1;
+		gbc_textArea_2.gridy = 12;
+		panel_1.add(textArea_2, gbc_textArea_2);
+		
+		JPanel panel_5 = new JPanel();
+		tabbedPane.addTab("Add Customer", null, panel_5, null);
+		GridBagLayout gbl_panel_5 = new GridBagLayout();
+		gbl_panel_5.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_panel_5.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel_5.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_5.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panel_5.setLayout(gbl_panel_5);
+		
+		JLabel lblName = new JLabel("Name:");
+		GridBagConstraints gbc_lblName = new GridBagConstraints();
+		gbc_lblName.anchor = GridBagConstraints.EAST;
+		gbc_lblName.insets = new Insets(0, 0, 5, 5);
+		gbc_lblName.gridx = 2;
+		gbc_lblName.gridy = 1;
+		panel_5.add(lblName, gbc_lblName);
+		
+		textField = new JTextField();
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.insets = new Insets(0, 0, 5, 5);
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.gridx = 3;
+		gbc_textField.gridy = 1;
+		panel_5.add(textField, gbc_textField);
+		textField.setColumns(10);
+		
+		JLabel lblDob = new JLabel("DOB:");
+		GridBagConstraints gbc_lblDob = new GridBagConstraints();
+		gbc_lblDob.anchor = GridBagConstraints.EAST;
+		gbc_lblDob.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDob.gridx = 2;
+		gbc_lblDob.gridy = 2;
+		panel_5.add(lblDob, gbc_lblDob);
+		
+		textField_1 = new JTextField();
+		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
+		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_1.gridx = 3;
+		gbc_textField_1.gridy = 2;
+		panel_5.add(textField_1, gbc_textField_1);
+		textField_1.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel("Email");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 2;
+		gbc_lblNewLabel.gridy = 3;
+		panel_5.add(lblNewLabel, gbc_lblNewLabel);
+		
+		textField_21 = new JTextField();
+		GridBagConstraints gbc_textField_21 = new GridBagConstraints();
+		gbc_textField_21.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_21.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_21.gridx = 3;
+		gbc_textField_21.gridy = 3;
+		panel_5.add(textField_21, gbc_textField_21);
+		textField_21.setColumns(10);
+		
+		JLabel lblPhoneNumber = new JLabel("Phone number");
+		GridBagConstraints gbc_lblPhoneNumber = new GridBagConstraints();
+		gbc_lblPhoneNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPhoneNumber.gridx = 2;
+		gbc_lblPhoneNumber.gridy = 4;
+		panel_5.add(lblPhoneNumber, gbc_lblPhoneNumber);
+		
+		textField_22 = new JTextField();
+		GridBagConstraints gbc_textField_22 = new GridBagConstraints();
+		gbc_textField_22.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_22.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_22.gridx = 3;
+		gbc_textField_22.gridy = 4;
+		panel_5.add(textField_22, gbc_textField_22);
+		textField_22.setColumns(10);
+		
+		btnInsert_1 = new JButton("Insert");
+	
+		GridBagConstraints gbc_btnInsert_1 = new GridBagConstraints();
+		gbc_btnInsert_1.insets = new Insets(0, 0, 5, 5);
+		gbc_btnInsert_1.gridx = 3;
+		gbc_btnInsert_1.gridy = 5;
+		panel_5.add(btnInsert_1, gbc_btnInsert_1);
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Generate Bill", null, panel_2, null);
@@ -654,10 +752,21 @@ public class FrontDeskRep extends JFrame {
 				}
 			}
 		});
+
+		btnCheckout_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int hotelID = Integer.parseInt(textField_16.getText()) ;
+				int checkinid = Integer.parseInt(textField_9.getText()) ;
+				String payment_method = textField_10.getText();
+				String card_number = textField_11.getText();
+				String SSN = textField_12.getText();
+				String billing_address = textField_17.getText();
+				releaserooms(hotelID, checkinid,payment_method,card_number,SSN,billing_address);
+			}
+		});
 		
 		btnCheckAvailability.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-//				
+			public void actionPerformed(ActionEvent e) {		
 //				int hotelID = Integer.parseInt(textField.getText());
 //				int room_number = Integer.parseInt(textField_1.getText());
 				String start_date= textField_2.getText();
@@ -679,12 +788,33 @@ public class FrontDeskRep extends JFrame {
 				
 			}
 		});
+		
+		btnInsert_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			String name = textField.getText();
+			String dob = textField_1.getText();
+			String emailID = textField_21.getText();
+			String phone_number = textField_22.getText();
+			int cid=0;
+			try{
+			smt.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('"+name+"','"+dob+"','"+emailID+"', '"+phone_number+"')");
+			
+			result = smt.executeQuery("SELECT LAST_INSERT_ID()");
+			 while(result.next()){
+				 cid=result.getInt(1);
+			 }
+			 System.out.println("Customer Id: "+cid);
+			}
+			catch(SQLException ed){
+				ed.printStackTrace();
+			}
+			}
+		});
 	}
 	
 	private void assignRoomsByRequest(int hotelID,int customerID, String categoryName,String startDate,String endDate,String city, int number_of_guests) throws SQLException {
 		int[] roomhotel = reportOccupancyBasedOnRequest(hotelID, categoryName, startDate, endDate,city);
-		if(roomhotel[0]==-1)
-		{
+		if(roomhotel[0]==-1){
 			System.out.println("Room not available while checkin");
 			return;
 		}
@@ -693,24 +823,9 @@ public class FrontDeskRep extends JFrame {
 		try{
 		result=smt.executeQuery("select id from Customers where id="+customerID+"");
 		
-		if(!result.next())
-		{   Scanner s=new Scanner(System.in);
-		    System.out.println("Enter the customer's name:");
-			String name=s.next();
-			System.out.println("Enter the customer's dob:");
-			String dob=s.next();
-			System.out.println("Enter the customer's email:");
-			String emailID=s.next();
-			System.out.println("Enter the customer's phone_number:");
-			String phone_number=s.next();
-			try{
-			smt.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('"+name+"','"+dob+"','"+emailID+"', '"+phone_number+"')");
-			}
-			catch(SQLException ed){
-				ed.printStackTrace();
-			}
-		 }
-		else {
+		if(!result.next()){ 
+			System.out.println("Customer Not found.");
+		 } else {
 			System.out.println("Customer already exists in the DB");
 		}
 		}
@@ -823,4 +938,57 @@ public class FrontDeskRep extends JFrame {
 		return s;
 		}
 
+	private void releaserooms(int hotelID, int checkinid,String payment_method,String card_number,String SSN,String billing_address){
+		int tid=0;
+		int customerID=1;
+		//retrieve customer id
+		try{
+		result=smt.executeQuery(String.format("select customer_id from Done_by where checkin_id='%s'",checkinid));
+		if(result.next())
+			customerID=result.getInt("customer_id");
+		//get the final amount
+		int bill= generateBill(customerID);
+		//update this amount in checkins
+		smt.executeUpdate(String.format("update Checkins set amount='%d' where id='%d'",bill,checkinid)); 
+	    //Delete from reservations
+		smt.executeUpdate(String.format("Delete from Reservations where hotel_id,room_number in (select hotel_id,room_number from Pricings where checkin_id='%d')",checkinid));
+		//check if card_number already exists in card table
+//		result=smt.executeQuery(String.format("select card_number from Cards where card_number='%d'",card_number));
+//		if(!result.next())
+//		smt.executeUpdate(String.format("Insert into Cards values('%s','%s','%f')",card_number,payment_method,0.05));
+//		//Assume that he/she has made the payment 
+//		//insert into billings and get transaction id
+//		smt.executeUpdate(String.format("Insert into Billings('billing_address','SSN') values('%s','%s')",billing_address,SSN));
+//	    result = smt.executeQuery("SELECT LAST_INSERT_ID()");
+//		 while(result.next()){
+//			 tid=result.getInt(1);
+//		 }
+//		 //insert cardnumber,tid in paid through
+//		 smt.executeUpdate(String.format("Insert into Paid_through('transaction_id','card_number')values('%d','%s')",tid,card_number)); 
+//		//Update tid in Done_by
+//		smt.executeUpdate(String.format("Update Done_by set transaction_id='%d' where checkin_id='%d'",tid,checkinid)); 
+//	    //Set availability of staffs to Yes in staffs table
+//		smt.executeUpdate(String.format("Update Staffs set availability='Yes' where id in (select id from Serves where checkin_id='%d')",checkinid));
+//		textArea_2.setText("Successfully checkedout!");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	private int generateBill(int customer_id){
+		int amount=0;
+		try{
+			result=smt.executeQuery("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+" group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id="+customer_id+")group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))Item");
+		while(result.next()){
+			System.out.println("The total bill is "+result.getInt("Total"));
+			amount=result.getInt("Total");
+		}
+		
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return amount;
+	}
 }
