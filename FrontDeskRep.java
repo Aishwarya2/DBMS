@@ -991,4 +991,16 @@ public class FrontDeskRep extends JFrame {
 		}
 		return amount;
 	}
+	private void generateItemizedReceipt(int customer_id){
+		try{
+			result=statement.executeQuery(String.format("SELECT sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id='%d' group by checkin_id)group by p.service_name)UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id='%d')group by checkin_id)) UNION ALL select l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id='%d')group by checkin_id)",customer_id,customer_id,customer_id);
+		}
+	 while(result.next()){
+		 System.out.println("Bill"+result.getInt('rates'));
+	 }	
+       catch(SQLException e){
+		   e.printStackTrace();
+	   }		   
+	}
+	
 }
