@@ -24,6 +24,20 @@ import javax.swing.JTextArea;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.GridLayout;
+
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+
+import javax.swing.JTable;
+
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 public class FrontDeskRep extends JFrame {
@@ -43,10 +57,6 @@ public class FrontDeskRep extends JFrame {
 	private JTextField textField_10;
 	private JTextField textField_11;
 	private JTextField textField_12;
-	private JTextField txtEnterTableName;
-	private JTextField textField_14;
-	private JTextField textField_13;
-	private JTextField textField_15;
 	private JTextField textField_16;
 	private JTextField textField_17;
 	private JTextField textField_18;
@@ -57,18 +67,29 @@ public class FrontDeskRep extends JFrame {
 	private JButton btnCheckin;
 	private JButton btnGenerateBill;
 	private JButton btnCheckAvailability;
-	private JButton btnCheckout_1; 
-	private JButton btnInsert_1;
 	
 	private JTextArea checkinTA;
 	private JTextArea textArea_1;
 	private JTextArea textArea;
-	private JTextArea textArea_2; 
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_21;
-	private JTextField textField_22;
-	
+	private JTextField insert_h_id;
+	private JTextField Insert_name;
+	private JTextField insertAddress;
+	private JTextField insertAge;
+	private JTextField inserPhone;
+	private JTextField inserTitle;
+	private JTextField isnertAvailability;
+	private JTextField insertDept;
+	private JTextField update_H_Id;
+	private JTextField update_S_Id;
+	private JTextField updateName;
+	private JTextField updateAddress;
+	private JTextField updateAge;
+	private JTextField updatePhoneNumber;
+	private JTextField updateJobTitle;
+	private JTextField updateAvailability;
+	private JTextField updateDept;
+	private JTextField textField_25;
+	private JTextField textField_26;
 	
 	/**
 	 * Launch the application.
@@ -263,9 +284,9 @@ public class FrontDeskRep extends JFrame {
 		tabbedPane.addTab("Checkout", null, panel_1, null);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
-		gbl_panel_1.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel_1.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
 		JLabel lblCheckoutCustomerStay = new JLabel("Checkout Customer stay");
@@ -346,14 +367,6 @@ public class FrontDeskRep extends JFrame {
 		panel_1.add(textField_11, gbc_textField_11);
 		textField_11.setColumns(10);
 		
-		btnCheckout_1 = new JButton("Checkout");
-		
-		GridBagConstraints gbc_btnCheckout_1 = new GridBagConstraints();
-		gbc_btnCheckout_1.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCheckout_1.gridx = 4;
-		gbc_btnCheckout_1.gridy = 8;
-		panel_1.add(btnCheckout_1, gbc_btnCheckout_1);
-		
 		JLabel lblSsn = new JLabel("SSN");
 		GridBagConstraints gbc_lblSsn = new GridBagConstraints();
 		gbc_lblSsn.insets = new Insets(0, 0, 5, 5);
@@ -369,6 +382,17 @@ public class FrontDeskRep extends JFrame {
 		gbc_textField_12.gridy = 9;
 		panel_1.add(textField_12, gbc_textField_12);
 		textField_12.setColumns(10);
+		
+		JButton btnCheckout = new JButton("Pay & Checkout");
+		btnCheckout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		GridBagConstraints gbc_btnCheckout = new GridBagConstraints();
+		gbc_btnCheckout.insets = new Insets(0, 0, 5, 0);
+		gbc_btnCheckout.gridx = 5;
+		gbc_btnCheckout.gridy = 9;
+		panel_1.add(btnCheckout, gbc_btnCheckout);
 		
 		JLabel lblBillingAddressif = new JLabel("Billing Address (if new card)");
 		GridBagConstraints gbc_lblBillingAddressif = new GridBagConstraints();
@@ -386,98 +410,128 @@ public class FrontDeskRep extends JFrame {
 		panel_1.add(textField_17, gbc_textField_17);
 		textField_17.setColumns(10);
 		
-		textArea_2 = new JTextArea();
-		GridBagConstraints gbc_textArea_2 = new GridBagConstraints();
-		gbc_textArea_2.gridwidth = 3;
-		gbc_textArea_2.insets = new Insets(0, 0, 0, 5);
-		gbc_textArea_2.fill = GridBagConstraints.BOTH;
-		gbc_textArea_2.gridx = 1;
-		gbc_textArea_2.gridy = 12;
-		panel_1.add(textArea_2, gbc_textArea_2);
+		JPanel panel_4 = new JPanel();
+		tabbedPane.addTab("Room", null, panel_4, null);
+		GridBagLayout gbl_panel_4 = new GridBagLayout();
+		gbl_panel_4.columnWidths = new int[]{0, 0, 0, 0, 0};
+		gbl_panel_4.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel_4.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_4.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panel_4.setLayout(gbl_panel_4);
 		
-		JPanel panel_5 = new JPanel();
-		tabbedPane.addTab("Add Customer", null, panel_5, null);
-		GridBagLayout gbl_panel_5 = new GridBagLayout();
-		gbl_panel_5.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
-		gbl_panel_5.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel_5.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_5.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		panel_5.setLayout(gbl_panel_5);
-		
-		JLabel lblName = new JLabel("Name:");
-		GridBagConstraints gbc_lblName = new GridBagConstraints();
-		gbc_lblName.anchor = GridBagConstraints.EAST;
-		gbc_lblName.insets = new Insets(0, 0, 5, 5);
-		gbc_lblName.gridx = 2;
-		gbc_lblName.gridy = 1;
-		panel_5.add(lblName, gbc_lblName);
-		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 3;
-		gbc_textField.gridy = 1;
-		panel_5.add(textField, gbc_textField);
-		textField.setColumns(10);
-		
-		JLabel lblDob = new JLabel("DOB:");
-		GridBagConstraints gbc_lblDob = new GridBagConstraints();
-		gbc_lblDob.anchor = GridBagConstraints.EAST;
-		gbc_lblDob.insets = new Insets(0, 0, 5, 5);
-		gbc_lblDob.gridx = 2;
-		gbc_lblDob.gridy = 2;
-		panel_5.add(lblDob, gbc_lblDob);
-		
-		textField_1 = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 3;
-		gbc_textField_1.gridy = 2;
-		panel_5.add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
-		
-		JLabel lblNewLabel = new JLabel("Email");
+		JLabel lblNewLabel = new JLabel("Hotel");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 2;
-		gbc_lblNewLabel.gridy = 3;
-		panel_5.add(lblNewLabel, gbc_lblNewLabel);
+		gbc_lblNewLabel.gridx = 1;
+		gbc_lblNewLabel.gridy = 1;
+		panel_4.add(lblNewLabel, gbc_lblNewLabel);
 		
-		textField_21 = new JTextField();
-		GridBagConstraints gbc_textField_21 = new GridBagConstraints();
-		gbc_textField_21.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_21.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_21.gridx = 3;
-		gbc_textField_21.gridy = 3;
-		panel_5.add(textField_21, gbc_textField_21);
-		textField_21.setColumns(10);
+		JButton btnInsert = new JButton("Insert");
+		btnInsert.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		GridBagConstraints gbc_btnInsert = new GridBagConstraints();
+		gbc_btnInsert.insets = new Insets(0, 0, 5, 5);
+		gbc_btnInsert.gridx = 1;
+		gbc_btnInsert.gridy = 2;
+		panel_4.add(btnInsert, gbc_btnInsert);
 		
-		JLabel lblPhoneNumber = new JLabel("Phone number");
-		GridBagConstraints gbc_lblPhoneNumber = new GridBagConstraints();
-		gbc_lblPhoneNumber.insets = new Insets(0, 0, 5, 5);
-		gbc_lblPhoneNumber.gridx = 2;
-		gbc_lblPhoneNumber.gridy = 4;
-		panel_5.add(lblPhoneNumber, gbc_lblPhoneNumber);
+		JButton btnUpdate = new JButton("Update");
+		GridBagConstraints gbc_btnUpdate = new GridBagConstraints();
+		gbc_btnUpdate.insets = new Insets(0, 0, 5, 5);
+		gbc_btnUpdate.gridx = 2;
+		gbc_btnUpdate.gridy = 2;
+		panel_4.add(btnUpdate, gbc_btnUpdate);
 		
-		textField_22 = new JTextField();
-		GridBagConstraints gbc_textField_22 = new GridBagConstraints();
-		gbc_textField_22.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_22.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_22.gridx = 3;
-		gbc_textField_22.gridy = 4;
-		panel_5.add(textField_22, gbc_textField_22);
-		textField_22.setColumns(10);
+		JButton btnNewButton = new JButton("Delete");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewButton.gridx = 3;
+		gbc_btnNewButton.gridy = 2;
+		panel_4.add(btnNewButton, gbc_btnNewButton);
 		
-		btnInsert_1 = new JButton("Insert");
-	
+		JLabel lblRooms = new JLabel("Rooms");
+		GridBagConstraints gbc_lblRooms = new GridBagConstraints();
+		gbc_lblRooms.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRooms.gridx = 1;
+		gbc_lblRooms.gridy = 3;
+		panel_4.add(lblRooms, gbc_lblRooms);
+		
+		JButton btnInsert_1 = new JButton("Insert");
 		GridBagConstraints gbc_btnInsert_1 = new GridBagConstraints();
 		gbc_btnInsert_1.insets = new Insets(0, 0, 5, 5);
-		gbc_btnInsert_1.gridx = 3;
-		gbc_btnInsert_1.gridy = 5;
-		panel_5.add(btnInsert_1, gbc_btnInsert_1);
+		gbc_btnInsert_1.gridx = 1;
+		gbc_btnInsert_1.gridy = 4;
+		panel_4.add(btnInsert_1, gbc_btnInsert_1);
+		
+		JButton btnUpdate_1 = new JButton("Update");
+		GridBagConstraints gbc_btnUpdate_1 = new GridBagConstraints();
+		gbc_btnUpdate_1.insets = new Insets(0, 0, 5, 5);
+		gbc_btnUpdate_1.gridx = 2;
+		gbc_btnUpdate_1.gridy = 4;
+		panel_4.add(btnUpdate_1, gbc_btnUpdate_1);
+		
+		JButton btnDelete = new JButton("Delete");
+		GridBagConstraints gbc_btnDelete = new GridBagConstraints();
+		gbc_btnDelete.insets = new Insets(0, 0, 5, 0);
+		gbc_btnDelete.gridx = 3;
+		gbc_btnDelete.gridy = 4;
+		panel_4.add(btnDelete, gbc_btnDelete);
+		
+		JLabel lblStaff = new JLabel("Staff");
+		GridBagConstraints gbc_lblStaff = new GridBagConstraints();
+		gbc_lblStaff.insets = new Insets(0, 0, 5, 5);
+		gbc_lblStaff.gridx = 1;
+		gbc_lblStaff.gridy = 5;
+		panel_4.add(lblStaff, gbc_lblStaff);
+		
+		JButton btnInsert_2 = new JButton("Insert");
+		GridBagConstraints gbc_btnInsert_2 = new GridBagConstraints();
+		gbc_btnInsert_2.insets = new Insets(0, 0, 5, 5);
+		gbc_btnInsert_2.gridx = 1;
+		gbc_btnInsert_2.gridy = 6;
+		panel_4.add(btnInsert_2, gbc_btnInsert_2);
+		
+		JButton btnUpdate_2 = new JButton("Update");
+		GridBagConstraints gbc_btnUpdate_2 = new GridBagConstraints();
+		gbc_btnUpdate_2.insets = new Insets(0, 0, 5, 5);
+		gbc_btnUpdate_2.gridx = 2;
+		gbc_btnUpdate_2.gridy = 6;
+		panel_4.add(btnUpdate_2, gbc_btnUpdate_2);
+		
+		JButton btnDelete_1 = new JButton("Delete");
+		GridBagConstraints gbc_btnDelete_1 = new GridBagConstraints();
+		gbc_btnDelete_1.insets = new Insets(0, 0, 5, 0);
+		gbc_btnDelete_1.gridx = 3;
+		gbc_btnDelete_1.gridy = 6;
+		panel_4.add(btnDelete_1, gbc_btnDelete_1);
+		
+		JLabel lblCustomer = new JLabel("Customer");
+		GridBagConstraints gbc_lblCustomer = new GridBagConstraints();
+		gbc_lblCustomer.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCustomer.gridx = 1;
+		gbc_lblCustomer.gridy = 7;
+		panel_4.add(lblCustomer, gbc_lblCustomer);
+		
+		JButton btnUpdate_3 = new JButton("Update");
+		GridBagConstraints gbc_btnUpdate_3 = new GridBagConstraints();
+		gbc_btnUpdate_3.insets = new Insets(0, 0, 5, 5);
+		gbc_btnUpdate_3.gridx = 2;
+		gbc_btnUpdate_3.gridy = 8;
+		panel_4.add(btnUpdate_3, gbc_btnUpdate_3);
+		
+		JButton btnDelete_2 = new JButton("Delete");
+		GridBagConstraints gbc_btnDelete_2 = new GridBagConstraints();
+		gbc_btnDelete_2.insets = new Insets(0, 0, 5, 0);
+		gbc_btnDelete_2.gridx = 3;
+		gbc_btnDelete_2.gridy = 8;
+		panel_4.add(btnDelete_2, gbc_btnDelete_2);
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Generate Bill", null, panel_2, null);
@@ -597,100 +651,370 @@ public class FrontDeskRep extends JFrame {
 		gbc_textArea.gridy = 8;
 		panel_3.add(textArea, gbc_textArea);
 		
-		JPanel panel_4 = new JPanel();
-		tabbedPane.addTab("Enter/Update/Delete", null, panel_4, null);
-		GridBagLayout gbl_panel_4 = new GridBagLayout();
-		gbl_panel_4.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_panel_4.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel_4.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panel_4.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		panel_4.setLayout(gbl_panel_4);
+		JPanel panel_5 = new JPanel();
+		tabbedPane.addTab("Staff", null, panel_5, null);
+		GridBagLayout gbl_panel_5 = new GridBagLayout();
+		gbl_panel_5.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel_5.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel_5.columnWeights = new double[]{0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_5.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panel_5.setLayout(gbl_panel_5);
 		
-		JLabel lblInsertIntoTable = new JLabel("Modify table:");
-		GridBagConstraints gbc_lblInsertIntoTable = new GridBagConstraints();
-		gbc_lblInsertIntoTable.insets = new Insets(0, 0, 5, 5);
-		gbc_lblInsertIntoTable.gridx = 1;
-		gbc_lblInsertIntoTable.gridy = 1;
-		panel_4.add(lblInsertIntoTable, gbc_lblInsertIntoTable);
+		JButton btnInsert_3 = new JButton("Insert");
+		GridBagConstraints gbc_btnInsert_3 = new GridBagConstraints();
+		gbc_btnInsert_3.insets = new Insets(0, 0, 5, 5);
+		gbc_btnInsert_3.gridx = 2;
+		gbc_btnInsert_3.gridy = 1;
+		panel_5.add(btnInsert_3, gbc_btnInsert_3);
 		
-		txtEnterTableName = new JTextField();
-		txtEnterTableName.setText("Enter table name");
-		txtEnterTableName.setToolTipText("Enter Table name");
-		GridBagConstraints gbc_txtEnterTableName = new GridBagConstraints();
-		gbc_txtEnterTableName.insets = new Insets(0, 0, 5, 0);
-		gbc_txtEnterTableName.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtEnterTableName.gridx = 3;
-		gbc_txtEnterTableName.gridy = 1;
-		panel_4.add(txtEnterTableName, gbc_txtEnterTableName);
-		txtEnterTableName.setColumns(10);
+		JButton btnUpdate_4 = new JButton("Update");
+		GridBagConstraints gbc_btnUpdate_4 = new GridBagConstraints();
+		gbc_btnUpdate_4.insets = new Insets(0, 0, 5, 5);
+		gbc_btnUpdate_4.gridx = 7;
+		gbc_btnUpdate_4.gridy = 1;
+		panel_5.add(btnUpdate_4, gbc_btnUpdate_4);
 		
-		JLabel lblValues = new JLabel("Insert Values");
-		GridBagConstraints gbc_lblValues = new GridBagConstraints();
-		gbc_lblValues.insets = new Insets(0, 0, 5, 5);
-		gbc_lblValues.gridx = 1;
-		gbc_lblValues.gridy = 2;
-		panel_4.add(lblValues, gbc_lblValues);
+		JButton btnDelete_3 = new JButton("Delete");
+		GridBagConstraints gbc_btnDelete_3 = new GridBagConstraints();
+		gbc_btnDelete_3.insets = new Insets(0, 0, 5, 0);
+		gbc_btnDelete_3.gridx = 13;
+		gbc_btnDelete_3.gridy = 1;
+		panel_5.add(btnDelete_3, gbc_btnDelete_3);
 		
-		textField_14 = new JTextField();
-		GridBagConstraints gbc_textField_14 = new GridBagConstraints();
-		gbc_textField_14.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_14.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_14.gridx = 3;
-		gbc_textField_14.gridy = 2;
-		panel_4.add(textField_14, gbc_textField_14);
-		textField_14.setColumns(10);
+		JLabel lblHotelId_2 = new JLabel("Hotel Id");
+		GridBagConstraints gbc_lblHotelId_2 = new GridBagConstraints();
+		gbc_lblHotelId_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblHotelId_2.gridx = 5;
+		gbc_lblHotelId_2.gridy = 3;
+		panel_5.add(lblHotelId_2, gbc_lblHotelId_2);
 		
-		JButton btnInsert = new JButton("Insert");
-		GridBagConstraints gbc_btnInsert = new GridBagConstraints();
-		gbc_btnInsert.insets = new Insets(0, 0, 5, 0);
-		gbc_btnInsert.gridx = 3;
-		gbc_btnInsert.gridy = 3;
-		panel_4.add(btnInsert, gbc_btnInsert);
+		update_H_Id = new JTextField();
+		GridBagConstraints gbc_update_H_Id = new GridBagConstraints();
+		gbc_update_H_Id.insets = new Insets(0, 0, 5, 5);
+		gbc_update_H_Id.fill = GridBagConstraints.HORIZONTAL;
+		gbc_update_H_Id.gridx = 7;
+		gbc_update_H_Id.gridy = 3;
+		panel_5.add(update_H_Id, gbc_update_H_Id);
+		update_H_Id.setColumns(10);
 		
-		JLabel lblUpdateValues = new JLabel("Update Values");
-		GridBagConstraints gbc_lblUpdateValues = new GridBagConstraints();
-		gbc_lblUpdateValues.insets = new Insets(0, 0, 5, 5);
-		gbc_lblUpdateValues.gridx = 1;
-		gbc_lblUpdateValues.gridy = 5;
-		panel_4.add(lblUpdateValues, gbc_lblUpdateValues);
+		textField_25 = new JTextField();
+		GridBagConstraints gbc_textField_25 = new GridBagConstraints();
+		gbc_textField_25.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_25.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_25.gridx = 13;
+		gbc_textField_25.gridy = 3;
+		panel_5.add(textField_25, gbc_textField_25);
+		textField_25.setColumns(10);
 		
-		textField_13 = new JTextField();
-		GridBagConstraints gbc_textField_13 = new GridBagConstraints();
-		gbc_textField_13.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_13.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_13.gridx = 3;
-		gbc_textField_13.gridy = 5;
-		panel_4.add(textField_13, gbc_textField_13);
-		textField_13.setColumns(10);
+		JLabel lblStaffId_1 = new JLabel("Staff Id");
+		GridBagConstraints gbc_lblStaffId_1 = new GridBagConstraints();
+		gbc_lblStaffId_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblStaffId_1.gridx = 5;
+		gbc_lblStaffId_1.gridy = 5;
+		panel_5.add(lblStaffId_1, gbc_lblStaffId_1);
 		
-		JButton btnUpdate = new JButton("Update");
-		GridBagConstraints gbc_btnUpdate = new GridBagConstraints();
-		gbc_btnUpdate.insets = new Insets(0, 0, 5, 0);
-		gbc_btnUpdate.gridx = 3;
-		gbc_btnUpdate.gridy = 6;
-		panel_4.add(btnUpdate, gbc_btnUpdate);
+		update_S_Id = new JTextField();
+		GridBagConstraints gbc_update_S_Id = new GridBagConstraints();
+		gbc_update_S_Id.insets = new Insets(0, 0, 5, 5);
+		gbc_update_S_Id.fill = GridBagConstraints.HORIZONTAL;
+		gbc_update_S_Id.gridx = 7;
+		gbc_update_S_Id.gridy = 5;
+		panel_5.add(update_S_Id, gbc_update_S_Id);
+		update_S_Id.setColumns(10);
 		
-		JLabel lblDeleteRecord = new JLabel("Delete record");
-		GridBagConstraints gbc_lblDeleteRecord = new GridBagConstraints();
-		gbc_lblDeleteRecord.insets = new Insets(0, 0, 5, 5);
-		gbc_lblDeleteRecord.gridx = 1;
-		gbc_lblDeleteRecord.gridy = 8;
-		panel_4.add(lblDeleteRecord, gbc_lblDeleteRecord);
+		textField_26 = new JTextField();
+		GridBagConstraints gbc_textField_26 = new GridBagConstraints();
+		gbc_textField_26.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_26.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_26.gridx = 13;
+		gbc_textField_26.gridy = 5;
+		panel_5.add(textField_26, gbc_textField_26);
+		textField_26.setColumns(10);
 		
-		textField_15 = new JTextField();
-		GridBagConstraints gbc_textField_15 = new GridBagConstraints();
-		gbc_textField_15.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_15.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_15.gridx = 3;
-		gbc_textField_15.gridy = 8;
-		panel_4.add(textField_15, gbc_textField_15);
-		textField_15.setColumns(10);
+		JLabel lblHotelId = new JLabel("Hotel Id");
+		GridBagConstraints gbc_lblHotelId = new GridBagConstraints();
+		gbc_lblHotelId.anchor = GridBagConstraints.EAST;
+		gbc_lblHotelId.insets = new Insets(0, 0, 5, 5);
+		gbc_lblHotelId.gridx = 1;
+		gbc_lblHotelId.gridy = 6;
+		panel_5.add(lblHotelId, gbc_lblHotelId);
+//		lblHotelId.setVisible(false);
 		
-		JButton btnDelete = new JButton("Delete");
-		GridBagConstraints gbc_btnDelete = new GridBagConstraints();
-		gbc_btnDelete.gridx = 3;
-		gbc_btnDelete.gridy = 9;
-		panel_4.add(btnDelete, gbc_btnDelete);
+		insert_h_id = new JTextField();
+		insert_h_id.addComponentListener(new ComponentAdapter() {
+		
+		});
+		GridBagConstraints gbc_insert_h_id = new GridBagConstraints();
+		gbc_insert_h_id.insets = new Insets(0, 0, 5, 5);
+		gbc_insert_h_id.fill = GridBagConstraints.HORIZONTAL;
+		gbc_insert_h_id.gridx = 2;
+		gbc_insert_h_id.gridy = 6;
+		panel_5.add(insert_h_id, gbc_insert_h_id);
+		insert_h_id.setColumns(10);
+		
+		JLabel lblNewLabel_1 = new JLabel("Name");
+		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_1.gridx = 1;
+		gbc_lblNewLabel_1.gridy = 7;
+		panel_5.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		
+		Insert_name = new JTextField();
+		GridBagConstraints gbc_Insert_name = new GridBagConstraints();
+		gbc_Insert_name.insets = new Insets(0, 0, 5, 5);
+		gbc_Insert_name.fill = GridBagConstraints.HORIZONTAL;
+		gbc_Insert_name.gridx = 2;
+		gbc_Insert_name.gridy = 7;
+		panel_5.add(Insert_name, gbc_Insert_name);
+		Insert_name.setColumns(10);
+		
+		JLabel lblName = new JLabel("Name");
+		GridBagConstraints gbc_lblName = new GridBagConstraints();
+		gbc_lblName.insets = new Insets(0, 0, 5, 5);
+		gbc_lblName.gridx = 5;
+		gbc_lblName.gridy = 7;
+		panel_5.add(lblName, gbc_lblName);
+		
+		updateName = new JTextField();
+		GridBagConstraints gbc_updateName = new GridBagConstraints();
+		gbc_updateName.insets = new Insets(0, 0, 5, 5);
+		gbc_updateName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_updateName.gridx = 7;
+		gbc_updateName.gridy = 7;
+		panel_5.add(updateName, gbc_updateName);
+		updateName.setColumns(10);
+		
+		JLabel lblNewLabel_4 = new JLabel("Address");
+		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
+		gbc_lblNewLabel_4.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_4.gridx = 1;
+		gbc_lblNewLabel_4.gridy = 8;
+		panel_5.add(lblNewLabel_4, gbc_lblNewLabel_4);
+		
+		insertAddress = new JTextField();
+		GridBagConstraints gbc_insertAddress = new GridBagConstraints();
+		gbc_insertAddress.insets = new Insets(0, 0, 5, 5);
+		gbc_insertAddress.fill = GridBagConstraints.HORIZONTAL;
+		gbc_insertAddress.gridx = 2;
+		gbc_insertAddress.gridy = 8;
+		panel_5.add(insertAddress, gbc_insertAddress);
+		insertAddress.setColumns(10);
+		
+		JLabel lblAddress = new JLabel("Address");
+		GridBagConstraints gbc_lblAddress = new GridBagConstraints();
+		gbc_lblAddress.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAddress.gridx = 5;
+		gbc_lblAddress.gridy = 8;
+		panel_5.add(lblAddress, gbc_lblAddress);
+		
+		updateAddress = new JTextField();
+		GridBagConstraints gbc_updateAddress = new GridBagConstraints();
+		gbc_updateAddress.insets = new Insets(0, 0, 5, 5);
+		gbc_updateAddress.fill = GridBagConstraints.HORIZONTAL;
+		gbc_updateAddress.gridx = 7;
+		gbc_updateAddress.gridy = 8;
+		panel_5.add(updateAddress, gbc_updateAddress);
+		updateAddress.setColumns(10);
+		
+		JLabel lblNewLabel_2 = new JLabel("Age");
+		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_2.gridx = 1;
+		gbc_lblNewLabel_2.gridy = 9;
+		panel_5.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		
+		insertAge = new JTextField();
+		GridBagConstraints gbc_insertAge = new GridBagConstraints();
+		gbc_insertAge.insets = new Insets(0, 0, 5, 5);
+		gbc_insertAge.fill = GridBagConstraints.HORIZONTAL;
+		gbc_insertAge.gridx = 2;
+		gbc_insertAge.gridy = 9;
+		panel_5.add(insertAge, gbc_insertAge);
+		insertAge.setColumns(10);
+		
+		JLabel lblAge = new JLabel("Age");
+		GridBagConstraints gbc_lblAge = new GridBagConstraints();
+		gbc_lblAge.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAge.gridx = 5;
+		gbc_lblAge.gridy = 9;
+		panel_5.add(lblAge, gbc_lblAge);
+		
+		updateAge = new JTextField();
+		GridBagConstraints gbc_updateAge = new GridBagConstraints();
+		gbc_updateAge.insets = new Insets(0, 0, 5, 5);
+		gbc_updateAge.fill = GridBagConstraints.HORIZONTAL;
+		gbc_updateAge.gridx = 7;
+		gbc_updateAge.gridy = 9;
+		panel_5.add(updateAge, gbc_updateAge);
+		updateAge.setColumns(10);
+		
+		JLabel lblNewLabel_5 = new JLabel("Phone Number");
+		GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
+		gbc_lblNewLabel_5.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_5.gridx = 1;
+		gbc_lblNewLabel_5.gridy = 10;
+		panel_5.add(lblNewLabel_5, gbc_lblNewLabel_5);
+		
+		inserPhone = new JTextField();
+		GridBagConstraints gbc_inserPhone = new GridBagConstraints();
+		gbc_inserPhone.insets = new Insets(0, 0, 5, 5);
+		gbc_inserPhone.fill = GridBagConstraints.HORIZONTAL;
+		gbc_inserPhone.gridx = 2;
+		gbc_inserPhone.gridy = 10;
+		panel_5.add(inserPhone, gbc_inserPhone);
+		inserPhone.setColumns(10);
+		
+		JLabel lblPhoneNumber = new JLabel("Phone Number");
+		GridBagConstraints gbc_lblPhoneNumber = new GridBagConstraints();
+		gbc_lblPhoneNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPhoneNumber.gridx = 5;
+		gbc_lblPhoneNumber.gridy = 10;
+		panel_5.add(lblPhoneNumber, gbc_lblPhoneNumber);
+		
+		updatePhoneNumber = new JTextField();
+		GridBagConstraints gbc_updatePhoneNumber = new GridBagConstraints();
+		gbc_updatePhoneNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_updatePhoneNumber.fill = GridBagConstraints.HORIZONTAL;
+		gbc_updatePhoneNumber.gridx = 7;
+		gbc_updatePhoneNumber.gridy = 10;
+		panel_5.add(updatePhoneNumber, gbc_updatePhoneNumber);
+		updatePhoneNumber.setColumns(10);
+		
+		JLabel lblNewLabel_3 = new JLabel("Job Title");
+		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_3.gridx = 1;
+		gbc_lblNewLabel_3.gridy = 11;
+		panel_5.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		
+		inserTitle = new JTextField();
+		GridBagConstraints gbc_inserTitle = new GridBagConstraints();
+		gbc_inserTitle.insets = new Insets(0, 0, 5, 5);
+		gbc_inserTitle.fill = GridBagConstraints.HORIZONTAL;
+		gbc_inserTitle.gridx = 2;
+		gbc_inserTitle.gridy = 11;
+		panel_5.add(inserTitle, gbc_inserTitle);
+		inserTitle.setColumns(10);
+		
+		JLabel lblJobTitle = new JLabel("Job Title");
+		GridBagConstraints gbc_lblJobTitle = new GridBagConstraints();
+		gbc_lblJobTitle.insets = new Insets(0, 0, 5, 5);
+		gbc_lblJobTitle.gridx = 5;
+		gbc_lblJobTitle.gridy = 11;
+		panel_5.add(lblJobTitle, gbc_lblJobTitle);
+		
+		updateJobTitle = new JTextField();
+		GridBagConstraints gbc_updateJobTitle = new GridBagConstraints();
+		gbc_updateJobTitle.insets = new Insets(0, 0, 5, 5);
+		gbc_updateJobTitle.fill = GridBagConstraints.HORIZONTAL;
+		gbc_updateJobTitle.gridx = 7;
+		gbc_updateJobTitle.gridy = 11;
+		panel_5.add(updateJobTitle, gbc_updateJobTitle);
+		updateJobTitle.setColumns(10);
+		
+		JLabel lblNewLabel_6 = new JLabel("Availability");
+		GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
+		gbc_lblNewLabel_6.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_6.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_6.gridx = 1;
+		gbc_lblNewLabel_6.gridy = 12;
+		panel_5.add(lblNewLabel_6, gbc_lblNewLabel_6);
+		
+		isnertAvailability = new JTextField();
+		GridBagConstraints gbc_isnertAvailability = new GridBagConstraints();
+		gbc_isnertAvailability.insets = new Insets(0, 0, 5, 5);
+		gbc_isnertAvailability.fill = GridBagConstraints.HORIZONTAL;
+		gbc_isnertAvailability.gridx = 2;
+		gbc_isnertAvailability.gridy = 12;
+		panel_5.add(isnertAvailability, gbc_isnertAvailability);
+		isnertAvailability.setColumns(10);
+		
+		JLabel lblAvailability = new JLabel("Availability");
+		GridBagConstraints gbc_lblAvailability = new GridBagConstraints();
+		gbc_lblAvailability.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAvailability.gridx = 5;
+		gbc_lblAvailability.gridy = 12;
+		panel_5.add(lblAvailability, gbc_lblAvailability);
+		
+		updateAvailability = new JTextField();
+		GridBagConstraints gbc_updateAvailability = new GridBagConstraints();
+		gbc_updateAvailability.insets = new Insets(0, 0, 5, 5);
+		gbc_updateAvailability.fill = GridBagConstraints.HORIZONTAL;
+		gbc_updateAvailability.gridx = 7;
+		gbc_updateAvailability.gridy = 12;
+		panel_5.add(updateAvailability, gbc_updateAvailability);
+		updateAvailability.setColumns(10);
+		
+		JLabel lblNewLabel_7 = new JLabel("Department");
+		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
+		gbc_lblNewLabel_7.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_7.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_7.gridx = 1;
+		gbc_lblNewLabel_7.gridy = 13;
+		panel_5.add(lblNewLabel_7, gbc_lblNewLabel_7);
+		
+		insertDept = new JTextField();
+		GridBagConstraints gbc_insertDept = new GridBagConstraints();
+		gbc_insertDept.insets = new Insets(0, 0, 5, 5);
+		gbc_insertDept.fill = GridBagConstraints.HORIZONTAL;
+		gbc_insertDept.gridx = 2;
+		gbc_insertDept.gridy = 13;
+		panel_5.add(insertDept, gbc_insertDept);
+		insertDept.setColumns(10);
+		
+		JLabel Department = new JLabel("Department");
+		GridBagConstraints gbc_Department = new GridBagConstraints();
+		gbc_Department.insets = new Insets(0, 0, 5, 5);
+		gbc_Department.gridx = 5;
+		gbc_Department.gridy = 13;
+		panel_5.add(Department, gbc_Department);
+		
+		updateDept = new JTextField();
+		GridBagConstraints gbc_updateDept = new GridBagConstraints();
+		gbc_updateDept.insets = new Insets(0, 0, 5, 5);
+		gbc_updateDept.fill = GridBagConstraints.HORIZONTAL;
+		gbc_updateDept.gridx = 7;
+		gbc_updateDept.gridy = 13;
+		panel_5.add(updateDept, gbc_updateDept);
+		updateDept.setColumns(10);
+		
+		JButton insertOK = new JButton("OK");
+		insertOK.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int hotelId = Integer.parseInt(insert_h_id.getText());
+				String availability = "Yes";
+				String name = Insert_name.getText();
+				String address = insertAddress.getText();
+				int age = Integer.parseInt(insertAge.getText());
+				String job_title = inserTitle.getText();
+				String phone_number = inserPhone.getText();
+				String department = insertDept.getText();
+				insertIntoStaffs(hotelId, availability, name, address, age, job_title, phone_number, department);
+			}
+		});
+		GridBagConstraints gbc_insertOK = new GridBagConstraints();
+		gbc_insertOK.insets = new Insets(0, 0, 0, 5);
+		gbc_insertOK.gridx = 2;
+		gbc_insertOK.gridy = 14;
+		panel_5.add(insertOK, gbc_insertOK);
+		
+		JButton UpdateOK = new JButton("OK");
+		GridBagConstraints gbc_UpdateOK = new GridBagConstraints();
+		gbc_UpdateOK.insets = new Insets(0, 0, 0, 5);
+		gbc_UpdateOK.gridx = 7;
+		gbc_UpdateOK.gridy = 14;
+		panel_5.add(UpdateOK, gbc_UpdateOK);
+		
+		JButton deleteOk = new JButton("OK");
+		GridBagConstraints gbc_deleteOk = new GridBagConstraints();
+		gbc_deleteOk.gridx = 13;
+		gbc_deleteOk.gridy = 14;
+		panel_5.add(deleteOk, gbc_deleteOk);
 	}
 
 	private void initEvents() {
@@ -739,7 +1063,7 @@ public class FrontDeskRep extends JFrame {
 				String customerID = textField_4.getText();
 				String resultStr="";
 				try{
-					result=smt.executeQuery("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customerID+" group by checkin_id)group by p.service_name) UNION ALL select sum(c.nightly_rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customerID+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customerID+")group by checkin_id))Item");
+					result=smt.executeQuery("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customerID+" group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id="+customerID+")group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customerID+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customerID+")group by checkin_id))Item");
 				while(result.next()){
 					resultStr+="\n"+"The total bill is "+result.getInt("Total");
 					System.out.println("The total bill is "+result.getInt("Total"));
@@ -752,21 +1076,10 @@ public class FrontDeskRep extends JFrame {
 				}
 			}
 		});
-
-		btnCheckout_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int hotelID = Integer.parseInt(textField_16.getText()) ;
-				int checkinid = Integer.parseInt(textField_9.getText()) ;
-				String payment_method = textField_10.getText();
-				String card_number = textField_11.getText();
-				String SSN = textField_12.getText();
-				String billing_address = textField_17.getText();
-				releaserooms(hotelID, checkinid,payment_method,card_number,SSN,billing_address);
-			}
-		});
 		
 		btnCheckAvailability.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {		
+			public void actionPerformed(ActionEvent e) {
+//				
 //				int hotelID = Integer.parseInt(textField.getText());
 //				int room_number = Integer.parseInt(textField_1.getText());
 				String start_date= textField_2.getText();
@@ -788,33 +1101,12 @@ public class FrontDeskRep extends JFrame {
 				
 			}
 		});
-		
-		btnInsert_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			String name = textField.getText();
-			String dob = textField_1.getText();
-			String emailID = textField_21.getText();
-			String phone_number = textField_22.getText();
-			int cid=0;
-			try{
-			smt.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('"+name+"','"+dob+"','"+emailID+"', '"+phone_number+"')");
-			
-			result = smt.executeQuery("SELECT LAST_INSERT_ID()");
-			 while(result.next()){
-				 cid=result.getInt(1);
-			 }
-			 System.out.println("Customer Id: "+cid);
-			}
-			catch(SQLException ed){
-				ed.printStackTrace();
-			}
-			}
-		});
 	}
 	
 	private void assignRoomsByRequest(int hotelID,int customerID, String categoryName,String startDate,String endDate,String city, int number_of_guests) throws SQLException {
 		int[] roomhotel = reportOccupancyBasedOnRequest(hotelID, categoryName, startDate, endDate,city);
-		if(roomhotel[0]==-1){
+		if(roomhotel[0]==-1)
+		{
 			System.out.println("Room not available while checkin");
 			return;
 		}
@@ -823,9 +1115,24 @@ public class FrontDeskRep extends JFrame {
 		try{
 		result=smt.executeQuery("select id from Customers where id="+customerID+"");
 		
-		if(!result.next()){ 
-			System.out.println("Customer Not found.");
-		 } else {
+		if(!result.next())
+		{   Scanner s=new Scanner(System.in);
+		    System.out.println("Enter the customer's name:");
+			String name=s.next();
+			System.out.println("Enter the customer's dob:");
+			String dob=s.next();
+			System.out.println("Enter the customer's email:");
+			String emailID=s.next();
+			System.out.println("Enter the customer's phone_number:");
+			String phone_number=s.next();
+			try{
+			smt.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('"+name+"','"+dob+"','"+emailID+"', '"+phone_number+"')");
+			}
+			catch(SQLException ed){
+				ed.printStackTrace();
+			}
+		 }
+		else {
 			System.out.println("Customer already exists in the DB");
 		}
 		}
@@ -937,70 +1244,12 @@ public class FrontDeskRep extends JFrame {
 		}
 		return s;
 		}
-
-	private void releaserooms(int hotelID, int checkinid,String payment_method,String card_number,String SSN,String billing_address){
-		int tid=0;
-		int customerID=1;
-		//retrieve customer id
+	private void insertIntoStaffs(int hotelID, String availability, String name, String  address, int age, String  job_title, String phone_number, String department) {
 		try{
-		result=smt.executeQuery(String.format("select customer_id from Done_by where checkin_id='%s'",checkinid));
-		if(result.next())
-			customerID=result.getInt("customer_id");
-		//get the final amount
-		int bill= generateBill(customerID);
-		//update this amount in checkins
-		smt.executeUpdate(String.format("update Checkins set amount='%d' where id='%d'",bill,checkinid)); 
-	    //Delete from reservations
-		smt.executeUpdate(String.format("Delete from Reservations where hotel_id,room_number in (select hotel_id,room_number from Pricings where checkin_id='%d')",checkinid));
-		//check if card_number already exists in card table
-//		result=smt.executeQuery(String.format("select card_number from Cards where card_number='%d'",card_number));
-//		if(!result.next())
-//		smt.executeUpdate(String.format("Insert into Cards values('%s','%s','%f')",card_number,payment_method,0.05));
-//		//Assume that he/she has made the payment 
-//		//insert into billings and get transaction id
-//		smt.executeUpdate(String.format("Insert into Billings('billing_address','SSN') values('%s','%s')",billing_address,SSN));
-//	    result = smt.executeQuery("SELECT LAST_INSERT_ID()");
-//		 while(result.next()){
-//			 tid=result.getInt(1);
-//		 }
-//		 //insert cardnumber,tid in paid through
-//		 smt.executeUpdate(String.format("Insert into Paid_through('transaction_id','card_number')values('%d','%s')",tid,card_number)); 
-//		//Update tid in Done_by
-//		smt.executeUpdate(String.format("Update Done_by set transaction_id='%d' where checkin_id='%d'",tid,checkinid)); 
-//	    //Set availability of staffs to Yes in staffs table
-//		smt.executeUpdate(String.format("Update Staffs set availability='Yes' where id in (select id from Serves where checkin_id='%d')",checkinid));
-//		textArea_2.setText("Successfully checkedout!");
+		smt.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values("+hotelID+", '"+name+"','"+ address+"',"+age+", '"+phone_number+"', '"+job_title+"', '"+availability+"', '"+department+"')");
 		}
 		catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
-	
-	private int generateBill(int customer_id){
-		int amount=0;
-		try{
-			result=smt.executeQuery("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+" group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id="+customer_id+")group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customer_id+")group by checkin_id))Item");
-		while(result.next()){
-			System.out.println("The total bill is "+result.getInt("Total"));
-			amount=result.getInt("Total");
-		}
-		
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-		}
-		return amount;
-	}
-	private void generateItemizedReceipt(int customer_id){
-		try{
-			result=statement.executeQuery(String.format("SELECT sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id='%d' group by checkin_id)group by p.service_name)UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id='%d')group by checkin_id)) UNION ALL select l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id='%d')group by checkin_id)",customer_id,customer_id,customer_id);
-		}
-	 while(result.next()){
-		 System.out.println("Bill"+result.getInt('rates'));
-	 }	
-       catch(SQLException e){
-		   e.printStackTrace();
-	   }		   
-	}
-	
 }
