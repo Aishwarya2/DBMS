@@ -12,9 +12,9 @@ public class DBPopulate {
 //	private static final String password="Macrohard.123";
 //	private static final String dbName="dbname";
 	private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/";
-	private static final String username = "ID";
-	private static final String password = "PASSWORD";
-	private static final String dbName="YOUR_DB";
+	private static final String username = "pjain15";
+	private static final String password = "gradApp135!";
+	private static final String dbName="pjain15";
 	
 	
 	private static Connection connection = null;
@@ -46,10 +46,10 @@ public class DBPopulate {
 		//Insert	
 		insertIntoHotels("New Marriot1", "9198331120","500 Fayetteville St, Raleigh, NC", 47.5,"27666","Raleigh");
 		insertIntoRooms(7,200, "Deluxe", 4);
-		insertIntoStaffs(1,"Yes", "New Robin Sam", "25 Brigadoon, Raleigh, NC", 29, "Catering","9451204444");
+		insertIntoStaffs(1,"Yes", "New Robin Sam", "25 Brigadoon, Raleigh, NC", 29, "Server","9451204444","Catering");
 		insertIntoCustomers("Tony Stark", "750123456","1975-02-21", "stark@gmail.com");
 	
-		//Updates
+		//Updatessho
 		try{
 		connection.setAutoCommit(false);
 		updateHotels("New Updated Marriot1", "501 Fayetteville St, Raleigh, NC", "9198331122","33.00", 1,"27666");
@@ -215,11 +215,11 @@ public class DBPopulate {
 			
 			
 			
-	statement.executeUpdate("create table Locations(zip_code char(5) PRIMARY KEY,address varchar(50) NOT NULL, rate float NOT NULL,city varchar(20) NOT NULL)");
+			statement.executeUpdate("create table Locations(zip_code char(5) PRIMARY KEY,address varchar(50) NOT NULL, rate float NOT NULL,city varchar(20) NOT NULL)");
 
 			statement.executeUpdate("create table Hotels(id int PRIMARY KEY AUTO_INCREMENT,name varchar(30) NOT NULL,phone_number char(10) NOT NULL,zip_code char(5) NOT NULL,FOREIGN KEY (zip_code) REFERENCES Locations(zip_code) ON DELETE CASCADE)");
 			
-			statement.executeUpdate("create table Staffs(id int NOT NULL AUTO_INCREMENT,hotel_id int NOT NULL,name varchar(30) NOT NULL,address varchar(50) NOT NULL,age int NOT NULL,phone_number char(10) NOT NULL,job_title varchar(30) NOT NULL,availability varchar(5) NOT NULL,PRIMARY KEY (id, hotel_id),FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE)");
+			statement.executeUpdate("create table Staffs(id int NOT NULL AUTO_INCREMENT,hotel_id int NOT NULL,name varchar(30) NOT NULL,address varchar(50) NOT NULL,age int NOT NULL,phone_number char(10) NOT NULL,job_title varchar(30) NOT NULL,availability varchar(5) NOT NULL, department varchar(30) NOT NULL, PRIMARY KEY (id, hotel_id),FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE)");
 
 			statement.executeUpdate("create table Managers(id int NOT NULL,hotel_id int NOT NULL, password varchar(32) NOT NULL,PRIMARY KEY(id, hotel_id),FOREIGN KEY (id, hotel_id) REFERENCES Staffs(id,hotel_id) ON DELETE CASCADE)");
 			
@@ -277,24 +277,24 @@ statement.executeUpdate("INSERT INTO Locations VALUES ('27601', '500 Fayettevill
 		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('Conrad', '3055036500', '33132')"); // 56000
 		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('Hampton Inn', '912619734', '31419')");
 		
-		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(1, 'Robin Sam', '25 Brigadoon, Raleigh, NC', 29, '9451204444', 'Catering', 'Yes')");
-		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(2, 'Kanya Took', ' 84, Oberlin Road, Raleigh, NC', 43, '4444444444', 'Catering', 'Yes')");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(1, 'Robin Sam', '25 Brigadoon, Raleigh, NC', 29, '9451204444', 'Chef', 'Yes' , 'Catering')");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(2, 'Kanya Took', ' 84, Oberlin Road, Raleigh, NC', 43, '4444444444', 'Server', 'Yes' , 'Catering')");
 
-		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(3, 'Seemant Shawn', 'Apt 63, 450 Oberlin Road, Raleigh, NC', 37, '5555555555', 'Laundry', 'Yes')");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(3, 'Seemant Shawn', 'Apt 63, 450 Oberlin Road, Raleigh, NC', 37, '5555555555', 'Supervisor', 'Yes', 'Laundry')");
 
-		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(4, 'Rick Gose',  'Apt 34, 103 Avent Ferry Road, Raleigh, NC', 42, '7266266267', 'Manager', 'No')");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(4, 'Rick Gose',  'Apt 34, 103 Avent Ferry Road, Raleigh, NC', 42, '7266266267', 'Manager', 'No', 'Management')");
 
-		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(5 , 'Huimin Joe' , '245, Fayetteville Road, Charlotte, NC', 45 , '7414115167',  ' Catering', 'No' )");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(5 , 'Huimin Joe' , '245, Fayetteville Road, Charlotte, NC', 45 , '7414115167',  'Butler', 'No','Catering' )");
 
-		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(6 , 'Ross Packard' , '8974, Niton Road, Charlotte, NC', 45 , '7411115167',  'Room Service', 'Yes')");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(6 , 'Ross Packard' , '8974, Niton Road, Charlotte, NC', 45 , '7411115167',  'Server', 'Yes','Room Service')");
 
-		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(7, 'Bihit Hans',  '103 Avent Ferry Road, Charolotte, NC', 42, '7216266267', 'Manager', 'Yes' )");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(7, 'Bihit Hans',  '103 Avent Ferry Road, Charolotte, NC', 42, '7216266267', 'Manager', 'Yes', 'Management' )");
 
-		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(7, 'Hans Hubberman',  '64, 103 Avenue Road, Dublin, OH', 39, '2216266267', 'Manager', 'Yes' )");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(7, 'Hans Hubberman',  '64, 103 Avenue Road, Dublin, OH', 39, '2216266267', 'Manager', 'Yes', 'Management')");
 
-		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(7 , 'Ninoh Tu' , '24, Gollen drive, Napa', 45 , '7414111167',  ' Catering', 'Yes' )");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(7 , 'Ninoh Tu' , '24, Gollen drive, Napa', 45 , '7414111167',  'Sous Chef', 'Yes','Catering' )");
 
-		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values(7, 'Naromi Nida',  '1790 Venue Drive, Miami, Florida', 25, '2216266267', 'Catering', 'Yes' )");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(7, 'Naromi Nida',  '1790 Venue Drive, Miami, Florida', 25, '2216266267', 'Server', 'Yes','Catering' )");
 		
 		statement.executeUpdate("INSERT INTO Managers VALUES (1, 1, MD5('qwerty') )");
 		statement.executeUpdate("INSERT INTO Managers VALUES (2, 2, MD5('password') )");
@@ -414,9 +414,9 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
 		e.printStackTrace();
 	}
 	}
-	private static void insertIntoStaffs(int hotelID, String availability, String name, String  address, int age, String  job_title, String phone_number) {
+	private static void insertIntoStaffs(int hotelID, String availability, String name, String  address, int age, String  job_title, String phone_number, String department) {
 		try{
-		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability) values("+hotelID+", '"+name+"','"+ address+"',"+age+", '"+phone_number+"', '"+job_title+"', '"+availability+"')");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values("+hotelID+", '"+name+"','"+ address+"',"+age+", '"+phone_number+"', '"+job_title+"', '"+availability+"', '"+department+"')");
 		}
 		catch(SQLException e){
 			e.printStackTrace();
