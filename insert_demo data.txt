@@ -26,8 +26,8 @@ insert into Managers values (101, 0002, 'password');
 insert into Managers values (102, 0003, 'password');
 insert into Managers values (105, 0004, 'password');
 
-insert into Frontdesk_rep values (103, 0001, 'password');
-insert into Frontdesk_rep values (106, 0004, 'password');
+insert into Frontdesk_rep values (106, 0001, 'password');
+insert into Frontdesk_rep values (109, 0004, 'password');
 
 insert into Category values ('Economy', 100);
 insert into Category values ('Deluxe', 200);
@@ -53,9 +53,7 @@ insert into Services values ('gyms',15);
 insert into Services values ('room service',10);
 insert into Services values ('food service',10);
 insert into Services values ('special requests',20);
-
-
-
+insert into Services values ('None',0);
 
 insert into Checkins(number_of_guests, start_date, end_date, amount, checkin_time, checkout_time) values (1,'2017-05-10', '2017-05-13', 100, '15:17:00', '10:22:00');
 insert into Reservations values (01, 0001, '2017-05-10', '2017-05-13');

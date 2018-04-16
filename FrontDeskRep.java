@@ -4217,7 +4217,7 @@ public class FrontDeskRep extends JFrame {
 					result = smt.executeQuery(String.format("SELECT checkin_id  from Done_by where customer_id=(select customer_id from Customers where email='%s') order by checkin_id desc limit 1", customerEmail));
 					if(result.next()) {
 						int checkinID = result.getInt("checkin_id");
-						result=smt.executeQuery(String.format("select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where checkin_id=%d)group by p.service_name) UNION ALL select sum(c.nightly_rate) as rates from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where checkin_id=%d)))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where checkin_id=%d))", checkinID, checkinID, checkinID));
+						result=smt.executeQuery(String.format("select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and se.service_name in(select p.service_name from Pricings p where p.checkin_id=%d group by p.service_name) UNION ALL select sum(c.nightly_rate) as rates from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id in(select hotel_id from Pricings where checkin_id =%d))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id  in (select hotel_id from Pricings where checkin_id=%d)", checkinID, checkinID, checkinID));
 						resultStr+="\n"+"Itemized Bill:";
 						System.out.println("Itemized Bill:");
 						while(result.next()){
@@ -4282,16 +4282,24 @@ public class FrontDeskRep extends JFrame {
 		if(result.next()) {
 			customerID=result.getInt("customer_id");
 			//get the final amount
-			int bill= generateBill(checkinid);
+			double bill= generateBill(checkinid);
+			double discount = 0.0;
+			
+			//check if card_number already exists in card table
+			result=smt.executeQuery(String.format("select * from Cards where card_number='%s'",card_number));
+			if(!result.next()){
+				smt.executeUpdate(String.format("Insert into Cards values('%s','%s','%f')",card_number,payment_method,0.0));
+			} else {
+				discount = result.getFloat("discount");
+			}
+			bill = bill - bill*discount;
+			System.out.println("Final Bill: " + bill);
 			//update this amount in checkins
-			smt.executeUpdate(String.format("update Checkins set amount='%d', checkout_time=CURTIME() where id='%d'",bill,checkinid)); 
+			smt.executeUpdate(String.format("update Checkins set amount='%.2f', checkout_time=CURTIME() where id='%d'",bill,checkinid)); 
 		    //Delete from reservations
 			System.out.println("Deleting Reservation");
 			smt.executeUpdate(String.format("Delete from Reservations where (hotel_id,room_number) in (select hotel_id,room_number from Pricings where checkin_id='%d')",checkinid));
-			//check if card_number already exists in card table
-			result=smt.executeQuery(String.format("select card_number from Cards where card_number='%s'",card_number));
-			if(!result.next())
-			smt.executeUpdate(String.format("Insert into Cards values('%s','%s','%f')",card_number,payment_method,0.0));
+			
 			//Assume that he/she has made the payment 
 			//insert into billings and get transaction id
 			smt.executeUpdate(String.format("Insert into Billings(billing_address,SSN) values('%s','%s')",billing_address,SSN));
@@ -4312,11 +4320,11 @@ public class FrontDeskRep extends JFrame {
 		}
 	}
 
-	private int  generateBill(int checkinID){
-		int amount=0;
+	private double  generateBill(int checkinID){
+		double amount=0;
 		try{
-			result=smt.executeQuery(String.format("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where checkin_id=%d)group by p.service_name) UNION ALL select sum(c.nightly_rate) as rates from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where checkin_id=%d)))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where checkin_id=%d)))Item", checkinID, checkinID, checkinID));
-		while(result.next()){
+			result=smt.executeQuery(String.format("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and se.service_name in(select p.service_name from Pricings p where p.checkin_id=%d group by p.service_name) UNION ALL select sum(c.nightly_rate) as rates from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id in(select hotel_id from Pricings where checkin_id =%d))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id  in (select hotel_id from Pricings where checkin_id=%d))Item;", checkinID, checkinID, checkinID));
+			while(result.next()){
 			System.out.println("The total bill is "+result.getInt("Total"));
 			amount = result.getInt("Total");
 		}
