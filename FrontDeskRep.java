@@ -710,7 +710,7 @@ public class FrontDeskRep extends JFrame {
 		GridBagConstraints gbc_lblStaffId_1 = new GridBagConstraints();
 		gbc_lblStaffId_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblStaffId_1.gridx = 5;
-		gbc_lblStaffId_1.gridy = 5;
+		gbc_lblStaffId_1.gridy = 4;
 		panel_5.add(lblStaffId_1, gbc_lblStaffId_1);
 		
 		update_S_Id = new JTextField();
@@ -718,9 +718,17 @@ public class FrontDeskRep extends JFrame {
 		gbc_update_S_Id.insets = new Insets(0, 0, 5, 5);
 		gbc_update_S_Id.fill = GridBagConstraints.HORIZONTAL;
 		gbc_update_S_Id.gridx = 7;
-		gbc_update_S_Id.gridy = 5;
+		gbc_update_S_Id.gridy = 4;
 		panel_5.add(update_S_Id, gbc_update_S_Id);
 		update_S_Id.setColumns(10);
+		
+		JLabel lblInvalidArguments = new JLabel("Invalid arguments");
+		lblInvalidArguments.setVisible(false);
+		GridBagConstraints gbc_lblInvalidArguments = new GridBagConstraints();
+		gbc_lblInvalidArguments.insets = new Insets(0, 0, 5, 5);
+		gbc_lblInvalidArguments.gridx = 7;
+		gbc_lblInvalidArguments.gridy = 5;
+		panel_5.add(lblInvalidArguments, gbc_lblInvalidArguments);
 		
 		textField_26 = new JTextField();
 		GridBagConstraints gbc_textField_26 = new GridBagConstraints();
@@ -751,6 +759,41 @@ public class FrontDeskRep extends JFrame {
 		gbc_insert_h_id.gridy = 6;
 		panel_5.add(insert_h_id, gbc_insert_h_id);
 		insert_h_id.setColumns(10);
+		
+		JButton btnConfirm = new JButton("Confirm");
+		btnConfirm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Integer hotelId = Integer.parseInt(update_H_Id.getText());
+				Integer staffId= Integer.parseInt(update_S_Id.getText());
+				try {
+					ResultSet result = smt.executeQuery("Select name, address, age, phone_number, job_title, availability, department FROM Staffs where hotel_id ="+hotelId+" AND id ="+staffId);
+					System.out.println("REACHED 1");
+					while(result.next()){
+					System.out.println(result.getString("name"));
+					updateName.setText(result.getString("name"));
+					System.out.println("REACHED 2");
+					updateAddress.setText(result.getString("address"));
+					System.out.println("REACHED 3");
+					updateAge.setText(Integer.toString(result.getInt("age")));
+					System.out.println("REACHED 4");
+					updatePhoneNumber.setText(result.getString("phone_number"));
+					updateJobTitle.setText(result.getString("job_title"));
+					updateAvailability.setText(result.getString("availability"));
+					updateDept.setText(result.getString("department"));
+					}
+				} catch (Exception ex) {
+					// TODO Auto-generated catch block
+					
+					lblInvalidArguments.setVisible(true);
+					ex.printStackTrace();
+				}
+			}
+		});
+		GridBagConstraints gbc_btnConfirm = new GridBagConstraints();
+		gbc_btnConfirm.insets = new Insets(0, 0, 5, 5);
+		gbc_btnConfirm.gridx = 7;
+		gbc_btnConfirm.gridy = 6;
+		panel_5.add(btnConfirm, gbc_btnConfirm);
 		
 		JLabel lblNewLabel_1 = new JLabel("Name");
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
@@ -1004,6 +1047,22 @@ public class FrontDeskRep extends JFrame {
 		panel_5.add(insertOK, gbc_insertOK);
 		
 		JButton UpdateOK = new JButton("OK");
+		UpdateOK.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int hotelID = Integer.parseInt(update_H_Id.getText());
+				int staffId = Integer.parseInt(update_S_Id.getText());
+				String name = updateName.getText();
+				String address = updateAddress.getText();
+				int age = Integer.parseInt(updateAge.getText());
+				String job_title = updateJobTitle.getText();
+				String phone_number = updatePhoneNumber.getText();
+				String department = updateDept.getText();
+				String availability = updateAvailability.getText();
+				updateStaff(hotelID, staffId, availability, name, address, age, job_title, phone_number, department);
+			}
+			
+			
+		});
 		GridBagConstraints gbc_UpdateOK = new GridBagConstraints();
 		gbc_UpdateOK.insets = new Insets(0, 0, 0, 5);
 		gbc_UpdateOK.gridx = 7;
@@ -1249,6 +1308,15 @@ public class FrontDeskRep extends JFrame {
 		smt.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values("+hotelID+", '"+name+"','"+ address+"',"+age+", '"+phone_number+"', '"+job_title+"', '"+availability+"', '"+department+"')");
 		}
 		catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	public void updateStaff(int hotelID, int staffId, String availability, String name, String  address, int age, String  job_title, String phone_number, String department)
+	{
+		try {
+			smt.executeUpdate("UPDATE Staffs set availability='"+availability+"', name='"+name+"',address='"+address+"', age="+age+", job_title='"+job_title+"', phone_number='"+phone_number+"',department='"+department+"' WHERE hotel_id="+hotelID+" AND id="+staffId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

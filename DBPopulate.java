@@ -13,7 +13,7 @@ public class DBPopulate {
 //	private static final String dbName="dbname";
 	private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/";
 	private static final String username = "pjain15";
-	private static final String password = "gradApp135!";
+	private static final String password = "PASSWORD";
 	private static final String dbName="pjain15";
 	
 	
