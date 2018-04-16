@@ -2485,9 +2485,11 @@ public class FrontDeskRep extends JFrame {
 	}
 	
 	public boolean deleteStaff(int hotelID, int staffId){
+	
+		int t;
 		try {
-			smt.executeUpdate("DELETE FROM Staffs where hotel_id="+hotelID+" AND id="+ staffId);
-			return true;
+			t = smt.executeUpdate("DELETE FROM Staffs where hotel_id="+hotelID+" AND id="+ staffId);
+			return true&&(t == 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -2521,8 +2523,9 @@ public class FrontDeskRep extends JFrame {
 	
 	public boolean deleteLocation(String zipCode) {
 		// TODO Auto-generated method stub
+		int t;
 		try {
-			smt.executeUpdate("Delete from Locations where zip_code='"+zipCode+"'");
+			t = smt.executeUpdate("Delete from Locations where zip_code='"+zipCode+"'");
 		} 
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -2530,7 +2533,7 @@ public class FrontDeskRep extends JFrame {
 			return false;
 		}
 		
-		return true;
+		return true&&(t == 1);
 	}
 	
 	protected boolean insertHotel(String name, String phone, String zip_code) {
@@ -2562,16 +2565,16 @@ public class FrontDeskRep extends JFrame {
 	}
 	
 	public boolean deleteHotel(int hotelId){
-		
+		int t;
 		try {
-			smt.executeUpdate("DELETE FROM Hotels where id="+hotelId);
+		t=	smt.executeUpdate("DELETE FROM Hotels where id="+hotelId);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			
 			e.printStackTrace();
 			return false;
 		}
-		return true;
+		return true&&(t==1);
 	}
 	
 	public boolean insertCustomer(String name, String DOB, String email, String phone_number){
@@ -2596,9 +2599,9 @@ public class FrontDeskRep extends JFrame {
 	}
 	
 	public boolean deleteCustomer(int id){
-		
+		int t;
 		try {
-			smt.executeUpdate("DELETE from Customers where id="+id);
+			t = smt.executeUpdate("DELETE from Customers where id="+id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -2606,7 +2609,7 @@ public class FrontDeskRep extends JFrame {
 		}
 		
 		
-		return true;
+		return true&&(t==1);
 	}
 	
 	public boolean insertRoom(int hotelId, int roomNumber, int maxOccupancy, String category){
