@@ -67,6 +67,7 @@ public class FrontDeskRep extends JFrame {
 	private JButton btnCheckin;
 	private JButton btnGenerateBill;
 	private JButton btnCheckAvailability;
+	private JButton btnGenerateItemizedReceipt; 
 	
 	private JTextArea checkinTA;
 	private JTextArea textArea_1;
@@ -549,7 +550,7 @@ public class FrontDeskRep extends JFrame {
 		gbc_lblGenerateBillFor.gridy = 1;
 		panel_2.add(lblGenerateBillFor, gbc_lblGenerateBillFor);
 		
-		JLabel lblCustomerId = new JLabel("Customer ID:");
+		JLabel lblCustomerId = new JLabel("Customer Email:");
 		GridBagConstraints gbc_lblCustomerId = new GridBagConstraints();
 		gbc_lblCustomerId.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCustomerId.anchor = GridBagConstraints.EAST;
@@ -573,6 +574,14 @@ public class FrontDeskRep extends JFrame {
 		gbc_btnGenerateBill.gridx = 3;
 		gbc_btnGenerateBill.gridy = 3;
 		panel_2.add(btnGenerateBill, gbc_btnGenerateBill);
+		
+		btnGenerateItemizedReceipt = new JButton("Generate Itemized Receipt");
+		
+		GridBagConstraints gbc_btnGenerateItemizedReceipt = new GridBagConstraints();
+		gbc_btnGenerateItemizedReceipt.insets = new Insets(0, 0, 5, 0);
+		gbc_btnGenerateItemizedReceipt.gridx = 5;
+		gbc_btnGenerateItemizedReceipt.gridy = 3;
+		panel_2.add(btnGenerateItemizedReceipt, gbc_btnGenerateItemizedReceipt);
 		
 		textArea_1 = new JTextArea();
 		GridBagConstraints gbc_textArea_1 = new GridBagConstraints();
@@ -1149,21 +1158,56 @@ public class FrontDeskRep extends JFrame {
 		
 		btnGenerateBill.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String customerID = textField_4.getText();
+				String customerEmail = textField_4.getText();
 				String resultStr="";
 				try{
-					result=smt.executeQuery("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customerID+" group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id="+customerID+")group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customerID+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customerID+")group by checkin_id))Item");
-				while(result.next()){
-					resultStr+="\n"+"The total bill is "+result.getInt("Total");
-					System.out.println("The total bill is "+result.getInt("Total"));
-				}
+					result = smt.executeQuery(String.format("SELECT checkin_id  from Done_by where customer_id=(select customer_id from Customers where email='%s') order by checkin_id desc limit 1", customerEmail));
+					if(result.next()) {
+						int checkinID = result.getInt("checkin_id");
+						result=smt.executeQuery(String.format("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where checkin_id=%d)group by p.service_name) UNION ALL select sum(c.nightly_rate) as rates from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where checkin_id=%d)))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where checkin_id=%d)))Item", checkinID, checkinID, checkinID));
+						while(result.next()){
+							resultStr+="\n"+"The total bill is "+result.getInt("Total");
+							System.out.println("The total bill is "+result.getInt("Total"));
+						}
 
-				textArea_1.setText(resultStr);
+						textArea_1.setText(resultStr);
+					} else {
+						System.out.println("Customer not Checked in.");
+					}
+						
+					
 				}
 				catch(SQLException ex){
 					ex.printStackTrace();
 				}
 			}
+		});
+		
+		btnGenerateItemizedReceipt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String customerEmail = textField_4.getText();
+				String resultStr="";
+				try{
+					result = smt.executeQuery(String.format("SELECT checkin_id  from Done_by where customer_id=(select customer_id from Customers where email='%s') order by checkin_id desc limit 1", customerEmail));
+					if(result.next()) {
+						int checkinID = result.getInt("checkin_id");
+						result=smt.executeQuery(String.format("select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where checkin_id=%d)group by p.service_name) UNION ALL select sum(c.nightly_rate) as rates from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where checkin_id=%d)))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where checkin_id=%d))", checkinID, checkinID, checkinID));
+						resultStr+="\n"+"Itemized Bill:";
+						System.out.println("Itemized Bill:");
+						while(result.next()){
+							resultStr+="\n"+"Bill: "+result.getInt("rates");
+							System.out.println("Bill: "+result.getInt("rates"));
+						}
+						textArea_1.setText(resultStr);
+					} else {
+						System.out.println("Customer not Checked in.");
+					}
+				}
+				catch(SQLException ex){
+					ex.printStackTrace();
+				}
+			}
+
 		});
 		
 		btnCheckAvailability.addActionListener(new ActionListener() {
