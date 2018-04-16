@@ -49,7 +49,7 @@ create table Customers(
 id int PRIMARY KEY AUTO_INCREMENT, 
 name varchar(30) NOT NULL,
 DOB date,
-email varchar(50) NOT NULL,
+email varchar(50) NOT NULL UNIQUE,
 phone_number char(10)
 )AUTO_INCREMENT=1001;
 
@@ -120,7 +120,7 @@ count int,
 checkin_id int NOT NULL,
 room_number int(2) zerofill NOT NULL,
 hotel_id int(4) zerofill NOT NULL, 
-service_name varchar(20) NOT NULL,
+service_name varchar(20),
 PRIMARY KEY(checkin_id, room_number, hotel_id, service_name),
 FOREIGN KEY(hotel_id, room_number) REFERENCES Rooms(hotel_id, room_number) ON DELETE CASCADE,
 FOREIGN KEY(checkin_id) REFERENCES Checkins(id) ON DELETE CASCADE,
