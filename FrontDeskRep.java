@@ -417,11 +417,8 @@ public class FrontDeskRep extends JFrame {
 		panel_1.add(textField_12, gbc_textField_12);
 		textField_12.setColumns(10);
 		
-		JButton btnCheckout = new JButton("Pay & Checkout");
-		btnCheckout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnCheckout = new JButton("Pay & Checkout");
+		
 		GridBagConstraints gbc_btnCheckout = new GridBagConstraints();
 		gbc_btnCheckout.insets = new Insets(0, 0, 5, 0);
 		gbc_btnCheckout.gridx = 5;
@@ -2221,7 +2218,7 @@ public class FrontDeskRep extends JFrame {
 
 	private int insertIntoCheckins(int number_of_guests,int hotel_id, String startDate,String endDate) throws SQLException {
 		int cid=0;
-//		statement.executeUpdate("INSERT INTO Checkins(number_of_guests,start_date,end_date,checkin_time) VALUES ('"+"233232332323232"+"', '"+startDate+"','"+endDate+"',TIME(NOW()))");
+//		smt.executeUpdate("INSERT INTO Checkins(number_of_guests,start_date,end_date,checkin_time) VALUES ('"+"233232332323232"+"', '"+startDate+"','"+endDate+"',TIME(NOW()))");
 		smt.executeUpdate("INSERT INTO Checkins(number_of_guests,start_date,end_date,checkin_time) VALUES ("+number_of_guests+", '"+startDate+"','"+endDate+"',TIME(NOW()))");
 		
 		result = smt.executeQuery("SELECT LAST_INSERT_ID()");
@@ -2486,6 +2483,7 @@ public class FrontDeskRep extends JFrame {
 	private JButton btnGenerateBill;
 	private JButton btnCheckAvailability;
 	private JButton btnGenerateItemizedReceipt; 
+	private JButton btnCheckout;
 	
 	private JTextArea checkinTA;
 	private JTextArea textArea_1;
@@ -4262,7 +4260,73 @@ public class FrontDeskRep extends JFrame {
 				
 			}
 		});
+		
+		btnCheckout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int hotelID = Integer.parseInt(textField_16.getText());
+				int checkinid = Integer.parseInt(textField_9.getText());
+				String payment_method = textField_10.getText();
+				String card_number = textField_11.getText(); 
+				String SSN = textField_12.getText();
+				String billing_address = textField_17.getText();
+				releaserooms(hotelID,checkinid,payment_method,card_number,SSN,billing_address);
+			}
+		});
 	}
+	private void releaserooms(int hotelID, int checkinid,String payment_method,String card_number,String SSN,String billing_address){
+		int tid=0;
+		int customerID = 0;
+		//retrieve customer id
+		try{
+		result=smt.executeQuery(String.format("select customer_id from Done_by where checkin_id='%s'",checkinid));
+		if(result.next()) {
+			customerID=result.getInt("customer_id");
+			//get the final amount
+			int bill= generateBill(checkinid);
+			//update this amount in checkins
+			smt.executeUpdate(String.format("update Checkins set amount='%d', checkout_time=CURTIME() where id='%d'",bill,checkinid)); 
+		    //Delete from reservations
+			System.out.println("Deleting Reservation");
+			smt.executeUpdate(String.format("Delete from Reservations where (hotel_id,room_number) in (select hotel_id,room_number from Pricings where checkin_id='%d')",checkinid));
+			//check if card_number already exists in card table
+			result=smt.executeQuery(String.format("select card_number from Cards where card_number='%s'",card_number));
+			if(!result.next())
+			smt.executeUpdate(String.format("Insert into Cards values('%s','%s','%f')",card_number,payment_method,0.0));
+			//Assume that he/she has made the payment 
+			//insert into billings and get transaction id
+			smt.executeUpdate(String.format("Insert into Billings(billing_address,SSN) values('%s','%s')",billing_address,SSN));
+		    result = smt.executeQuery("SELECT LAST_INSERT_ID()");
+			 while(result.next()){
+				 tid=result.getInt(1);
+			 }
+			 //insert cardnumber,tid in paid through
+			 smt.executeUpdate(String.format("Insert into Paid_through(transaction_id,card_number) values ('%d','%s')",tid,card_number)); 
+			//Update tid in Done_by
+			smt.executeUpdate(String.format("Update Done_by set transaction_id='%d' where checkin_id='%d'",tid,checkinid)); 
+		    //Set availability of staffs to Yes in staffs table
+			smt.executeUpdate(String.format("Update Staffs set availability='Yes' where id in (select id from Serves where checkin_id='%d')",checkinid));
+		}	
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
+	private int  generateBill(int checkinID){
+		int amount=0;
+		try{
+			result=smt.executeQuery(String.format("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where checkin_id=%d)group by p.service_name) UNION ALL select sum(c.nightly_rate) as rates from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where checkin_id=%d)))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where checkin_id=%d)))Item", checkinID, checkinID, checkinID));
+		while(result.next()){
+			System.out.println("The total bill is "+result.getInt("Total"));
+			amount = result.getInt("Total");
+		}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return amount;
+	}
+	
 	
 	private void assignRoomsByRequest(int hotelID,int customerID, String categoryName,String startDate,String endDate,String city, int number_of_guests) throws SQLException {
 		int[] roomhotel = reportOccupancyBasedOnRequest(hotelID, categoryName, startDate, endDate,city, number_of_guests);
@@ -4291,6 +4355,7 @@ public class FrontDeskRep extends JFrame {
 		insertIntoReservations(roomhotel[0], roomhotel[1], startDate, endDate);
 		int checkinID = insertIntoCheckins(number_of_guests,hotelID, startDate, endDate);
 		insertIntoDoneBy(checkinID, customerID);
+        insertIntoPricings(checkinID, roomhotel[0], roomhotel[1]);
         
 		if(categoryName.equals("Presidential")) {
 			int[]staffs=findAvailableStaffs(hotelID);
@@ -4307,6 +4372,14 @@ public class FrontDeskRep extends JFrame {
 		
 	}
 	
+	private void insertIntoPricings(int checkinID, int room_number,int hotelID) {
+		try {
+			smt.executeUpdate(String.format("Insert into Pricings values('%d','%d','%d','%d','None')",  1,checkinID,room_number,hotelID));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	private int[] reportOccupancyBasedOnRequest(int hotelID, String category_name, String startDate,String endDate,String city,int capacity) {
 		int[]answer=new int[2];
 		try {
