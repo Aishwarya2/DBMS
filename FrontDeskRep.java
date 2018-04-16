@@ -2614,7 +2614,7 @@ public class FrontDeskRep extends JFrame {
 	
 	public boolean insertRoom(int hotelId, int roomNumber, int maxOccupancy, String category){
 		try {
-			smt.executeUpdate("insert into Rooms values ("+hotelId+", 000"+roomNumber+", "+maxOccupancy+", '"+category+"')");
+			smt.executeUpdate("insert into Rooms values ("+roomNumber+", 000"+hotelId+", "+maxOccupancy+", '"+category+"')");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
