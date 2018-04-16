@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -38,6 +39,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import javax.swing.JSpinner;
+import javax.swing.JList;
 
 
 public class FrontDeskRep extends JFrame {
@@ -91,6 +97,23 @@ public class FrontDeskRep extends JFrame {
 	private JTextField updateDept;
 	private JTextField delete_H_Id;
 	private JTextField delete_S_Id;
+	private JTextField insertName;
+	private JTextField insertPhone;
+	private JTextField updateHotelID;
+	private JTextField update_H_Name;
+	private JTextField update_H_Phone;
+	private JTextField DeleteHotelID;
+	private JTextField insertHZip;
+	private JTextField insertHAddress;
+	private JTextField insertHRate;
+	private JTextField inserHCity;
+	private JTextField updateHZipcode;
+	private JTextField updateHAddress;
+	private JTextField updateHRate;
+	private JTextField updateHCity;
+	private JTextField deleteZip;
+	private JTextField insertZip;
+	private JTextField updateZipCode;
 	
 	/**
 	 * Launch the application.
@@ -131,6 +154,7 @@ public class FrontDeskRep extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(15, 0, 773, 442);
@@ -669,26 +693,26 @@ public class FrontDeskRep extends JFrame {
 		gbl_panel_5.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_5.setLayout(gbl_panel_5);
 		
-		JButton btnInsert_3 = new JButton("Insert");
-		GridBagConstraints gbc_btnInsert_3 = new GridBagConstraints();
-		gbc_btnInsert_3.insets = new Insets(0, 0, 5, 5);
-		gbc_btnInsert_3.gridx = 2;
-		gbc_btnInsert_3.gridy = 1;
-		panel_5.add(btnInsert_3, gbc_btnInsert_3);
+		JLabel lblInsert = new JLabel("INSERT");
+		GridBagConstraints gbc_lblInsert = new GridBagConstraints();
+		gbc_lblInsert.insets = new Insets(0, 0, 5, 5);
+		gbc_lblInsert.gridx = 2;
+		gbc_lblInsert.gridy = 1;
+		panel_5.add(lblInsert, gbc_lblInsert);
 		
-		JButton btnUpdate_4 = new JButton("Update");
-		GridBagConstraints gbc_btnUpdate_4 = new GridBagConstraints();
-		gbc_btnUpdate_4.insets = new Insets(0, 0, 5, 5);
-		gbc_btnUpdate_4.gridx = 7;
-		gbc_btnUpdate_4.gridy = 1;
-		panel_5.add(btnUpdate_4, gbc_btnUpdate_4);
+		JLabel lblUpdate = new JLabel("UPDATE");
+		GridBagConstraints gbc_lblUpdate = new GridBagConstraints();
+		gbc_lblUpdate.insets = new Insets(0, 0, 5, 5);
+		gbc_lblUpdate.gridx = 7;
+		gbc_lblUpdate.gridy = 1;
+		panel_5.add(lblUpdate, gbc_lblUpdate);
 		
-		JButton btnDelete_3 = new JButton("Delete");
-		GridBagConstraints gbc_btnDelete_3 = new GridBagConstraints();
-		gbc_btnDelete_3.insets = new Insets(0, 0, 5, 0);
-		gbc_btnDelete_3.gridx = 13;
-		gbc_btnDelete_3.gridy = 1;
-		panel_5.add(btnDelete_3, gbc_btnDelete_3);
+		JLabel lblDelete = new JLabel("DELETE");
+		GridBagConstraints gbc_lblDelete = new GridBagConstraints();
+		gbc_lblDelete.insets = new Insets(0, 0, 5, 0);
+		gbc_lblDelete.gridx = 13;
+		gbc_lblDelete.gridy = 1;
+		panel_5.add(lblDelete, gbc_lblDelete);
 		
 		JLabel lblHotelId_2 = new JLabel("Hotel Id");
 		GridBagConstraints gbc_lblHotelId_2 = new GridBagConstraints();
@@ -1113,7 +1137,599 @@ public class FrontDeskRep extends JFrame {
 		gbc_deleteOk.gridx = 13;
 		gbc_deleteOk.gridy = 14;
 		panel_5.add(deleteOk, gbc_deleteOk);
+		
+		JPanel Hotel = new JPanel();
+		tabbedPane.addTab("Hotel", null, Hotel, null);
+		GridBagLayout gbl_Hotel = new GridBagLayout();
+		gbl_Hotel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_Hotel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_Hotel.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_Hotel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		Hotel.setLayout(gbl_Hotel);
+		
+		JLabel lblInsert_1 = new JLabel("Insert");
+		GridBagConstraints gbc_lblInsert_1 = new GridBagConstraints();
+		gbc_lblInsert_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblInsert_1.gridx = 3;
+		gbc_lblInsert_1.gridy = 0;
+		Hotel.add(lblInsert_1, gbc_lblInsert_1);
+		
+		JLabel lblUpdate_1 = new JLabel("Update");
+		GridBagConstraints gbc_lblUpdate_1 = new GridBagConstraints();
+		gbc_lblUpdate_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblUpdate_1.gridx = 10;
+		gbc_lblUpdate_1.gridy = 0;
+		Hotel.add(lblUpdate_1, gbc_lblUpdate_1);
+		
+		JLabel lblDelete_1 = new JLabel("Delete");
+		GridBagConstraints gbc_lblDelete_1 = new GridBagConstraints();
+		gbc_lblDelete_1.insets = new Insets(0, 0, 5, 0);
+		gbc_lblDelete_1.gridx = 18;
+		gbc_lblDelete_1.gridy = 0;
+		Hotel.add(lblDelete_1, gbc_lblDelete_1);
+		
+		JLabel lblHotelId_3 = new JLabel("Hotel ID");
+		GridBagConstraints gbc_lblHotelId_3 = new GridBagConstraints();
+		gbc_lblHotelId_3.insets = new Insets(0, 0, 5, 5);
+		gbc_lblHotelId_3.gridx = 8;
+		gbc_lblHotelId_3.gridy = 2;
+		Hotel.add(lblHotelId_3, gbc_lblHotelId_3);
+		
+		updateHotelID = new JTextField();
+		GridBagConstraints gbc_updateHotelID = new GridBagConstraints();
+		gbc_updateHotelID.insets = new Insets(0, 0, 5, 5);
+		gbc_updateHotelID.fill = GridBagConstraints.HORIZONTAL;
+		gbc_updateHotelID.gridx = 10;
+		gbc_updateHotelID.gridy = 2;
+		Hotel.add(updateHotelID, gbc_updateHotelID);
+		updateHotelID.setColumns(10);
+		
+		JLabel lblHotelId_4 = new JLabel("Hotel ID");
+		GridBagConstraints gbc_lblHotelId_4 = new GridBagConstraints();
+		gbc_lblHotelId_4.anchor = GridBagConstraints.EAST;
+		gbc_lblHotelId_4.insets = new Insets(0, 0, 5, 5);
+		gbc_lblHotelId_4.gridx = 17;
+		gbc_lblHotelId_4.gridy = 2;
+		Hotel.add(lblHotelId_4, gbc_lblHotelId_4);
+		
+
+		JLabel lblInvalidHotel = new JLabel("Invalid Hotel");
+		GridBagConstraints gbc_lblInvalidHotel = new GridBagConstraints();
+		gbc_lblInvalidHotel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblInvalidHotel.gridx = 10;
+		gbc_lblInvalidHotel.gridy = 4;
+		Hotel.add(lblInvalidHotel, gbc_lblInvalidHotel);
+		lblInvalidHotel.setVisible(false);
+		
+		DeleteHotelID = new JTextField();
+		GridBagConstraints gbc_DeleteHotelID = new GridBagConstraints();
+		gbc_DeleteHotelID.insets = new Insets(0, 0, 5, 0);
+		gbc_DeleteHotelID.fill = GridBagConstraints.HORIZONTAL;
+		gbc_DeleteHotelID.gridx = 18;
+		gbc_DeleteHotelID.gridy = 2;
+		Hotel.add(DeleteHotelID, gbc_DeleteHotelID);
+		DeleteHotelID.setColumns(10);
+		
+		JButton confirmHotel = new JButton("Confirm");
+		confirmHotel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+//				System.out.println(updateHot.getText());
+				int hotelId = Integer.parseInt(updateHotelID.getText());
+				boolean b = false;
+				try {
+					ResultSet rs = smt.executeQuery("SELECT * FROM Hotels where id ="+hotelId);
+					
+					while(rs.next()){
+						b = true;
+						update_H_Name.setText(rs.getString("name"));
+						
+						update_H_Phone.setText(rs.getString("phone_number"));
+						
+						updateZipCode.setText(rs.getString("zip_code"));
+						
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					b = false;
+					e1.printStackTrace();
+					
+				}
+				lblInvalidHotel.setVisible(!b);
+				
+			}
+		});
+		GridBagConstraints gbc_confirmHotel = new GridBagConstraints();
+		gbc_confirmHotel.insets = new Insets(0, 0, 5, 5);
+		gbc_confirmHotel.gridx = 10;
+		gbc_confirmHotel.gridy = 3;
+		Hotel.add(confirmHotel, gbc_confirmHotel);
+		
+		JLabel lb_Name = new JLabel("Name");
+		GridBagConstraints gbc_lb_Name = new GridBagConstraints();
+		gbc_lb_Name.insets = new Insets(0, 0, 5, 5);
+		gbc_lb_Name.gridx = 1;
+		gbc_lb_Name.gridy = 4;
+		Hotel.add(lb_Name, gbc_lb_Name);
+		
+		insertName = new JTextField();
+		GridBagConstraints gbc_insertName = new GridBagConstraints();
+		gbc_insertName.insets = new Insets(0, 0, 5, 5);
+		gbc_insertName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_insertName.gridx = 3;
+		gbc_insertName.gridy = 4;
+		Hotel.add(insertName, gbc_insertName);
+		insertName.setColumns(10);
+		
+		JLabel lblInvalidHotelId = new JLabel("Invalid Hotel Id");
+		GridBagConstraints gbc_lblInvalidHotelId = new GridBagConstraints();
+		gbc_lblInvalidHotelId.insets = new Insets(0, 0, 5, 0);
+		gbc_lblInvalidHotelId.gridx = 18;
+		gbc_lblInvalidHotelId.gridy = 4;
+		Hotel.add(lblInvalidHotelId, gbc_lblInvalidHotelId);
+		lblInvalidHotelId.setVisible(false);
+		
+		
+		JLabel lblName_1 = new JLabel("Name");
+		GridBagConstraints gbc_lblName_1 = new GridBagConstraints();
+		gbc_lblName_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblName_1.gridx = 8;
+		gbc_lblName_1.gridy = 5;
+		Hotel.add(lblName_1, gbc_lblName_1);
+		
+		update_H_Name = new JTextField();
+		GridBagConstraints gbc_update_H_Name = new GridBagConstraints();
+		gbc_update_H_Name.insets = new Insets(0, 0, 5, 5);
+		gbc_update_H_Name.fill = GridBagConstraints.HORIZONTAL;
+		gbc_update_H_Name.gridx = 10;
+		gbc_update_H_Name.gridy = 5;
+		Hotel.add(update_H_Name, gbc_update_H_Name);
+		update_H_Name.setColumns(10);
+		
+		JLabel lblPhoneNumber_1 = new JLabel("Phone Number");
+		GridBagConstraints gbc_lblPhoneNumber_1 = new GridBagConstraints();
+		gbc_lblPhoneNumber_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPhoneNumber_1.gridx = 1;
+		gbc_lblPhoneNumber_1.gridy = 6;
+		Hotel.add(lblPhoneNumber_1, gbc_lblPhoneNumber_1);
+		
+		insertPhone = new JTextField();
+		GridBagConstraints gbc_insertPhone = new GridBagConstraints();
+		gbc_insertPhone.insets = new Insets(0, 0, 5, 5);
+		gbc_insertPhone.fill = GridBagConstraints.HORIZONTAL;
+		gbc_insertPhone.gridx = 3;
+		gbc_insertPhone.gridy = 6;
+		Hotel.add(insertPhone, gbc_insertPhone);
+		insertPhone.setColumns(10);
+		
+		JLabel lblPhoneNumber_2 = new JLabel("Phone Number");
+		GridBagConstraints gbc_lblPhoneNumber_2 = new GridBagConstraints();
+		gbc_lblPhoneNumber_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPhoneNumber_2.gridx = 8;
+		gbc_lblPhoneNumber_2.gridy = 6;
+		Hotel.add(lblPhoneNumber_2, gbc_lblPhoneNumber_2);
+		
+		update_H_Phone = new JTextField();
+		GridBagConstraints gbc_update_H_Phone = new GridBagConstraints();
+		gbc_update_H_Phone.insets = new Insets(0, 0, 5, 5);
+		gbc_update_H_Phone.fill = GridBagConstraints.HORIZONTAL;
+		gbc_update_H_Phone.gridx = 10;
+		gbc_update_H_Phone.gridy = 6;
+		Hotel.add(update_H_Phone, gbc_update_H_Phone);
+		update_H_Phone.setColumns(10);
+		
+		JLabel lblZipCode = new JLabel("Zip Code");
+		GridBagConstraints gbc_lblZipCode = new GridBagConstraints();
+		gbc_lblZipCode.insets = new Insets(0, 0, 5, 5);
+		gbc_lblZipCode.gridx = 1;
+		gbc_lblZipCode.gridy = 7;
+		Hotel.add(lblZipCode, gbc_lblZipCode);
+		
+		insertZip = new JTextField();
+		GridBagConstraints gbc_insertZip = new GridBagConstraints();
+		gbc_insertZip.insets = new Insets(0, 0, 5, 5);
+		gbc_insertZip.fill = GridBagConstraints.HORIZONTAL;
+		gbc_insertZip.gridx = 3;
+		gbc_insertZip.gridy = 7;
+		Hotel.add(insertZip, gbc_insertZip);
+		insertZip.setColumns(10);
+
+		
+		JLabel lblZipCode_1 = new JLabel("Zip Code");
+		GridBagConstraints gbc_lblZipCode_1 = new GridBagConstraints();
+		gbc_lblZipCode_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblZipCode_1.gridx = 8;
+		gbc_lblZipCode_1.gridy = 7;
+		Hotel.add(lblZipCode_1, gbc_lblZipCode_1);
+		
+		JButton hInsertOk = new JButton("OK");
+		hInsertOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String name = insertName.getText();
+				String phone = insertPhone.getText();
+				String zip_code = insertZip.getText();
+				boolean b = insertHotel(name, phone, zip_code);
+				lblInvalidArguments.setVisible(!b);
+			}
+		});
+		
+		updateZipCode = new JTextField();
+		GridBagConstraints gbc_updateZipCode = new GridBagConstraints();
+		gbc_updateZipCode.insets = new Insets(0, 0, 5, 5);
+		gbc_updateZipCode.fill = GridBagConstraints.HORIZONTAL;
+		gbc_updateZipCode.gridx = 10;
+		gbc_updateZipCode.gridy = 7;
+		Hotel.add(updateZipCode, gbc_updateZipCode);
+		updateZipCode.setColumns(10);
+		
+		JLabel lblInvalidData = new JLabel("Invalid Data");
+		GridBagConstraints gbc_lblInvalidData = new GridBagConstraints();
+		gbc_lblInvalidData.insets = new Insets(0, 0, 0, 5);
+		gbc_lblInvalidData.gridx = 1;
+		gbc_lblInvalidData.gridy = 8;
+		Hotel.add(lblInvalidData, gbc_lblInvalidData);
+		lblInvalidData.setVisible(false);
+		
+		JLabel lblFailed = new JLabel("Failed!");
+		GridBagConstraints gbc_lblFailed = new GridBagConstraints();
+		gbc_lblFailed.insets = new Insets(0, 0, 0, 5);
+		gbc_lblFailed.gridx = 8;
+		gbc_lblFailed.gridy = 8;
+		Hotel.add(lblFailed, gbc_lblFailed);
+		lblFailed.setVisible(false);
+		
+		GridBagConstraints gbc_hInsertOk = new GridBagConstraints();
+		gbc_hInsertOk.insets = new Insets(0, 0, 0, 5);
+		gbc_hInsertOk.gridx = 3;
+		gbc_hInsertOk.gridy = 8;
+		Hotel.add(hInsertOk, gbc_hInsertOk);
+		
+		JButton hUpdateOk = new JButton("OK");
+		hUpdateOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int hotelId = Integer.parseInt(updateHotelID.getText());
+				String name = update_H_Name.getText();
+				String phone_number = update_H_Phone.getText();
+				String zip_code = updateZipCode.getText();
+				
+				boolean b = updateHotel(hotelId, name, phone_number, zip_code);
+				lblFailed.setVisible(!b);
+			}
+
+			
+		});
+		
+		
+		
+		
+		GridBagConstraints gbc_hUpdateOk = new GridBagConstraints();
+		gbc_hUpdateOk.insets = new Insets(0, 0, 0, 5);
+		gbc_hUpdateOk.gridx = 10;
+		gbc_hUpdateOk.gridy = 8;
+		Hotel.add(hUpdateOk, gbc_hUpdateOk);
+		lblFailed.setVisible(false);
+		
+		JButton HDeleteOK = new JButton("OK");
+		HDeleteOK.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int hotelId = Integer.parseInt(DeleteHotelID.getText());
+				boolean b = deleteHotel(hotelId);
+				lblInvalidHotelId.setVisible(!b);
+			}
+		});
+		GridBagConstraints gbc_HDeleteOK = new GridBagConstraints();
+		gbc_HDeleteOK.gridx = 18;
+		gbc_HDeleteOK.gridy = 8;
+		Hotel.add(HDeleteOK, gbc_HDeleteOK);
+		
+		JPanel Locations = new JPanel();
+		tabbedPane.addTab("Locations", null, Locations, null);
+		GridBagLayout gbl_Locations = new GridBagLayout();
+		gbl_Locations.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_Locations.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_Locations.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_Locations.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		Locations.setLayout(gbl_Locations);
+		
+		JLabel lblInvalidZip_1 = new JLabel("Invalid Zip");
+		GridBagConstraints gbc_lblInvalidZip_1 = new GridBagConstraints();
+		gbc_lblInvalidZip_1.insets = new Insets(0, 0, 5, 0);
+		gbc_lblInvalidZip_1.gridx = 19;
+		gbc_lblInvalidZip_1.gridy = 3;
+		Locations.add(lblInvalidZip_1, gbc_lblInvalidZip_1);
+		lblInvalidZip_1.setVisible(false);
+		
+		
+		JLabel lblInsert_2 = new JLabel("Insert");
+		GridBagConstraints gbc_lblInsert_2 = new GridBagConstraints();
+		gbc_lblInsert_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblInsert_2.gridx = 3;
+		gbc_lblInsert_2.gridy = 0;
+		Locations.add(lblInsert_2, gbc_lblInsert_2);
+		
+		JLabel lblUpdate_2 = new JLabel("Update");
+		GridBagConstraints gbc_lblUpdate_2 = new GridBagConstraints();
+		gbc_lblUpdate_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblUpdate_2.gridx = 10;
+		gbc_lblUpdate_2.gridy = 0;
+		Locations.add(lblUpdate_2, gbc_lblUpdate_2);
+		
+		JLabel lblDelete_2 = new JLabel("Delete");
+		GridBagConstraints gbc_lblDelete_2 = new GridBagConstraints();
+		gbc_lblDelete_2.insets = new Insets(0, 0, 5, 0);
+		gbc_lblDelete_2.gridx = 19;
+		gbc_lblDelete_2.gridy = 0;
+		Locations.add(lblDelete_2, gbc_lblDelete_2);
+		
+		JLabel lblIlegalArguments = new JLabel("Ilegal Arguments");
+		GridBagConstraints gbc_lblIlegalArguments = new GridBagConstraints();
+		gbc_lblIlegalArguments.insets = new Insets(0, 0, 0, 5);
+		gbc_lblIlegalArguments.gridx = 10;
+		gbc_lblIlegalArguments.gridy = 12;
+		Locations.add(lblIlegalArguments, gbc_lblIlegalArguments);
+		lblIlegalArguments.setVisible(false);
+		
+		
+		JLabel lblZipcode_1 = new JLabel("ZipCode");
+		GridBagConstraints gbc_lblZipcode_1 = new GridBagConstraints();
+		gbc_lblZipcode_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblZipcode_1.gridx = 8;
+		gbc_lblZipcode_1.gridy = 2;
+		Locations.add(lblZipcode_1, gbc_lblZipcode_1);
+		
+		updateHZipcode = new JTextField();
+		GridBagConstraints gbc_updateHZipcode = new GridBagConstraints();
+		gbc_updateHZipcode.insets = new Insets(0, 0, 5, 5);
+		gbc_updateHZipcode.fill = GridBagConstraints.HORIZONTAL;
+		gbc_updateHZipcode.gridx = 10;
+		gbc_updateHZipcode.gridy = 2;
+		Locations.add(updateHZipcode, gbc_updateHZipcode);
+		updateHZipcode.setColumns(10);
+		
+		JLabel lblZipcode_2 = new JLabel("ZipCode");
+		GridBagConstraints gbc_lblZipcode_2 = new GridBagConstraints();
+		gbc_lblZipcode_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblZipcode_2.gridx = 17;
+		gbc_lblZipcode_2.gridy = 2;
+		Locations.add(lblZipcode_2, gbc_lblZipcode_2);
+		
+		deleteZip = new JTextField();
+		GridBagConstraints gbc_deleteZip = new GridBagConstraints();
+		gbc_deleteZip.insets = new Insets(0, 0, 5, 0);
+		gbc_deleteZip.fill = GridBagConstraints.HORIZONTAL;
+		gbc_deleteZip.gridx = 19;
+		gbc_deleteZip.gridy = 2;
+		Locations.add(deleteZip, gbc_deleteZip);
+		deleteZip.setColumns(10);
+		
+		JLabel lblZipcode = new JLabel("ZipCode");
+		GridBagConstraints gbc_lblZipcode = new GridBagConstraints();
+		gbc_lblZipcode.insets = new Insets(0, 0, 5, 5);
+		gbc_lblZipcode.gridx = 1;
+		gbc_lblZipcode.gridy = 3;
+		Locations.add(lblZipcode, gbc_lblZipcode);
+		
+		JLabel lblInvalidZip = new JLabel("Invalid Zip");
+		GridBagConstraints gbc_lblInvalidZip = new GridBagConstraints();
+		gbc_lblInvalidZip.insets = new Insets(0, 0, 5, 5);
+		gbc_lblInvalidZip.gridx = 10;
+		gbc_lblInvalidZip.gridy = 4;
+		Locations.add(lblInvalidZip, gbc_lblInvalidZip);
+		lblInvalidZip.setVisible(false);
+		
+		insertHZip = new JTextField();
+		GridBagConstraints gbc_insertHZip = new GridBagConstraints();
+		gbc_insertHZip.insets = new Insets(0, 0, 5, 5);
+		gbc_insertHZip.fill = GridBagConstraints.HORIZONTAL;
+		gbc_insertHZip.gridx = 3;
+		gbc_insertHZip.gridy = 3;
+		Locations.add(insertHZip, gbc_insertHZip);
+		insertHZip.setColumns(10);
+		
+		JButton btnConfirm_1 = new JButton("Confirm");
+		btnConfirm_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String zip = updateHZipcode.getText();
+				ResultSet result;
+				try {
+					result = smt.executeQuery("Select * from Locations where zip_code="+zip);
+					while(result.next()){
+						updateHAddress.setText(result.getString("address"));
+						updateHCity.setText(result.getString("city"));
+						updateHRate.setText(Float.toString(result.getFloat("rate")));
+					
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					lblInvalidZip.setVisible(true);
+					
+				}
+				
+			}
+		});
+		GridBagConstraints gbc_btnConfirm_1 = new GridBagConstraints();
+		gbc_btnConfirm_1.insets = new Insets(0, 0, 5, 5);
+		gbc_btnConfirm_1.gridx = 10;
+		gbc_btnConfirm_1.gridy = 3;
+		Locations.add(btnConfirm_1, gbc_btnConfirm_1);
+		
+		
+		
+		
+		JButton deleteLocation = new JButton("Delete");
+		deleteLocation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String zipCode= deleteZip.getText();
+				boolean b;
+				b = deleteLocation(zipCode);
+				lblInvalidZip_1.setVisible(!b);
+			}
+
+			
+		});
+		GridBagConstraints gbc_deleteLocation = new GridBagConstraints();
+		gbc_deleteLocation.insets = new Insets(0, 0, 5, 0);
+		gbc_deleteLocation.gridx = 19;
+		gbc_deleteLocation.gridy = 4;
+		Locations.add(deleteLocation, gbc_deleteLocation);
+		
+		JLabel lblAddress_1 = new JLabel("Address");
+		GridBagConstraints gbc_lblAddress_1 = new GridBagConstraints();
+		gbc_lblAddress_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAddress_1.gridx = 1;
+		gbc_lblAddress_1.gridy = 5;
+		Locations.add(lblAddress_1, gbc_lblAddress_1);
+		
+		insertHAddress = new JTextField();
+		GridBagConstraints gbc_insertHAddress = new GridBagConstraints();
+		gbc_insertHAddress.insets = new Insets(0, 0, 5, 5);
+		gbc_insertHAddress.fill = GridBagConstraints.HORIZONTAL;
+		gbc_insertHAddress.gridx = 3;
+		gbc_insertHAddress.gridy = 5;
+		Locations.add(insertHAddress, gbc_insertHAddress);
+		insertHAddress.setColumns(10);
+		
+		JLabel lblAddress_2 = new JLabel("Address");
+		GridBagConstraints gbc_lblAddress_2 = new GridBagConstraints();
+		gbc_lblAddress_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAddress_2.gridx = 8;
+		gbc_lblAddress_2.gridy = 5;
+		Locations.add(lblAddress_2, gbc_lblAddress_2);
+		
+		updateHAddress = new JTextField();
+		GridBagConstraints gbc_updateHAddress = new GridBagConstraints();
+		gbc_updateHAddress.insets = new Insets(0, 0, 5, 5);
+		gbc_updateHAddress.fill = GridBagConstraints.HORIZONTAL;
+		gbc_updateHAddress.gridx = 10;
+		gbc_updateHAddress.gridy = 5;
+		Locations.add(updateHAddress, gbc_updateHAddress);
+		updateHAddress.setColumns(10);
+		
+		JLabel lblRate = new JLabel("Rate");
+		GridBagConstraints gbc_lblRate = new GridBagConstraints();
+		gbc_lblRate.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRate.gridx = 1;
+		gbc_lblRate.gridy = 7;
+		Locations.add(lblRate, gbc_lblRate);
+		
+		insertHRate = new JTextField();
+		GridBagConstraints gbc_insertHRate = new GridBagConstraints();
+		gbc_insertHRate.insets = new Insets(0, 0, 5, 5);
+		gbc_insertHRate.fill = GridBagConstraints.HORIZONTAL;
+		gbc_insertHRate.gridx = 3;
+		gbc_insertHRate.gridy = 7;
+		Locations.add(insertHRate, gbc_insertHRate);
+		insertHRate.setColumns(10);
+		
+		JLabel lblRate_1 = new JLabel("Rate");
+		GridBagConstraints gbc_lblRate_1 = new GridBagConstraints();
+		gbc_lblRate_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRate_1.gridx = 8;
+		gbc_lblRate_1.gridy = 7;
+		Locations.add(lblRate_1, gbc_lblRate_1);
+		
+		updateHRate = new JTextField();
+		GridBagConstraints gbc_updateHRate = new GridBagConstraints();
+		gbc_updateHRate.insets = new Insets(0, 0, 5, 5);
+		gbc_updateHRate.fill = GridBagConstraints.HORIZONTAL;
+		gbc_updateHRate.gridx = 10;
+		gbc_updateHRate.gridy = 7;
+		Locations.add(updateHRate, gbc_updateHRate);
+		updateHRate.setColumns(10);
+		
+		JLabel lblCity_1 = new JLabel("City");
+		GridBagConstraints gbc_lblCity_1 = new GridBagConstraints();
+		gbc_lblCity_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCity_1.gridx = 1;
+		gbc_lblCity_1.gridy = 9;
+		Locations.add(lblCity_1, gbc_lblCity_1);
+		
+		inserHCity = new JTextField();
+		GridBagConstraints gbc_inserHCity = new GridBagConstraints();
+		gbc_inserHCity.insets = new Insets(0, 0, 5, 5);
+		gbc_inserHCity.fill = GridBagConstraints.HORIZONTAL;
+		gbc_inserHCity.gridx = 3;
+		gbc_inserHCity.gridy = 9;
+		Locations.add(inserHCity, gbc_inserHCity);
+		inserHCity.setColumns(10);
+		
+		JLabel lblCity_2 = new JLabel("City");
+		GridBagConstraints gbc_lblCity_2 = new GridBagConstraints();
+		gbc_lblCity_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCity_2.gridx = 8;
+		gbc_lblCity_2.gridy = 9;
+		Locations.add(lblCity_2, gbc_lblCity_2);
+		
+		JLabel lblInvalidAgrumenets = new JLabel("Invalid Agruments");
+		GridBagConstraints gbc_lblInvalidAgrumenets = new GridBagConstraints();
+		gbc_lblInvalidAgrumenets.insets = new Insets(0, 0, 0, 5);
+		gbc_lblInvalidAgrumenets.gridx = 3;
+		gbc_lblInvalidAgrumenets.gridy = 12;
+		Locations.add(lblInvalidAgrumenets, gbc_lblInvalidAgrumenets);
+		lblInvalidAgrumenets.setVisible(false);
+		
+		updateHCity = new JTextField();
+		GridBagConstraints gbc_updateHCity = new GridBagConstraints();
+		gbc_updateHCity.insets = new Insets(0, 0, 5, 5);
+		gbc_updateHCity.fill = GridBagConstraints.HORIZONTAL;
+		gbc_updateHCity.gridx = 10;
+		gbc_updateHCity.gridy = 9;
+		Locations.add(updateHCity, gbc_updateHCity);
+		updateHCity.setColumns(10);
+		
+		JButton insertLocation = new JButton("OK");
+		insertLocation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String zip = insertHZip.getText();
+				String address = insertHAddress.getText();
+				float rate = Float.parseFloat(insertHRate.getText());
+				String city = inserHCity.getText();
+				
+			 boolean b =insertLocation(zip, address, rate, city);
+			 lblInvalidAgrumenets.setVisible(!b);
+			}
+		});
+		GridBagConstraints gbc_insertLocation = new GridBagConstraints();
+		gbc_insertLocation.insets = new Insets(0, 0, 5, 5);
+		gbc_insertLocation.gridx = 3;
+		gbc_insertLocation.gridy = 11;
+		Locations.add(insertLocation, gbc_insertLocation);
+		
+		JButton updateLocation = new JButton("OK");
+		updateLocation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				boolean b;
+				
+				String zip = updateHZipcode.getText();
+				updateHZipcode.setEditable(false);
+				String address = updateHAddress.getText();
+				float rate = Float.parseFloat(updateHRate.getText());
+				String city = updateHCity.getText();
+				b = updateLocations(zip, address, rate, city);
+				lblIlegalArguments.setVisible(!b);
+			}
+		});
+		GridBagConstraints gbc_updateLocation = new GridBagConstraints();
+		gbc_updateLocation.insets = new Insets(0, 0, 5, 5);
+		gbc_updateLocation.gridx = 10;
+		gbc_updateLocation.gridy = 11;
+		Locations.add(updateLocation, gbc_updateLocation);
+		
+	
+		
+//		JLabel lblInvalidAgrumenets = new JLabel("Invalid Agruments");
+//		GridBagConstraints gbc_lblInvalidAgrumenets = new GridBagConstraints();
+//		gbc_lblInvalidAgrumenets.insets = new Insets(0, 0, 0, 5);
+//		gbc_lblInvalidAgrumenets.gridx = 3;
+//		gbc_lblInvalidAgrumenets.gridy = 12;
+//		panel_6.add(lblInvalidAgrumenets, gbc_lblInvalidAgrumenets);
+//		lblInvalidAgrumenets.setVisible(false);
+		
+		
 	}
+
+	
 
 	private void initEvents() {
 		btnCheckin.addActionListener(new ActionListener() {
@@ -1391,5 +2007,84 @@ public class FrontDeskRep extends JFrame {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public boolean insertLocation(String zipcode, String address, float rate, String city){
+		try {
+			smt.execute("INSERT INTO Locations values('"+zipcode+"', '"+address+"', "+rate+", '"+city+"')");
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
+	public boolean updateLocations(String zipcode, String address, float rate, String city){
+		try {
+			smt.executeUpdate("Update Locations set address='"+address+"', rate="+rate+",city='"+city+"' where zip_code='"+zipcode+"'");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean deleteLocation(String zipCode) {
+		// TODO Auto-generated method stub
+		try {
+			smt.executeUpdate("Delete from Locations where zip_code='"+zipCode+"'");
+		} 
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
+	
+	protected boolean insertHotel(String name, String phone, String zip_code) {
+		// TODO Auto-generated method stub
+		try {
+			smt.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('"+name+"', '"+phone+"', '"+zip_code+"')");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean updateHotel(int hotelId, String name,String phone_number, String zip_code) {
+		// TODO Auto-generated method stub
+		try {
+			System.out.println("REACHED");
+			smt.executeUpdate("UPDATE Hotels set name='"+name+"', phone_number='"+phone_number+"',zip_code='"+zip_code+"' where id="+hotelId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean deleteHotel(int hotelId){
+		
+		try {
+			smt.executeUpdate("DELETE FROM Hotels where id="+hotelId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 }
