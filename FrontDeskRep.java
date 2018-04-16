@@ -88,8 +88,8 @@ public class FrontDeskRep extends JFrame {
 	private JTextField updateJobTitle;
 	private JTextField updateAvailability;
 	private JTextField updateDept;
-	private JTextField textField_25;
-	private JTextField textField_26;
+	private JTextField delete_H_Id;
+	private JTextField delete_S_Id;
 	
 	/**
 	 * Launch the application.
@@ -697,14 +697,21 @@ public class FrontDeskRep extends JFrame {
 		panel_5.add(update_H_Id, gbc_update_H_Id);
 		update_H_Id.setColumns(10);
 		
-		textField_25 = new JTextField();
-		GridBagConstraints gbc_textField_25 = new GridBagConstraints();
-		gbc_textField_25.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_25.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_25.gridx = 13;
-		gbc_textField_25.gridy = 3;
-		panel_5.add(textField_25, gbc_textField_25);
-		textField_25.setColumns(10);
+		JLabel lblHotelid_1 = new JLabel("HotelID");
+		GridBagConstraints gbc_lblHotelid_1 = new GridBagConstraints();
+		gbc_lblHotelid_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblHotelid_1.gridx = 11;
+		gbc_lblHotelid_1.gridy = 3;
+		panel_5.add(lblHotelid_1, gbc_lblHotelid_1);
+		
+		delete_H_Id = new JTextField();
+		GridBagConstraints gbc_delete_H_Id = new GridBagConstraints();
+		gbc_delete_H_Id.insets = new Insets(0, 0, 5, 0);
+		gbc_delete_H_Id.fill = GridBagConstraints.HORIZONTAL;
+		gbc_delete_H_Id.gridx = 13;
+		gbc_delete_H_Id.gridy = 3;
+		panel_5.add(delete_H_Id, gbc_delete_H_Id);
+		delete_H_Id.setColumns(10);
 		
 		JLabel lblStaffId_1 = new JLabel("Staff Id");
 		GridBagConstraints gbc_lblStaffId_1 = new GridBagConstraints();
@@ -730,14 +737,21 @@ public class FrontDeskRep extends JFrame {
 		gbc_lblInvalidArguments.gridy = 5;
 		panel_5.add(lblInvalidArguments, gbc_lblInvalidArguments);
 		
-		textField_26 = new JTextField();
-		GridBagConstraints gbc_textField_26 = new GridBagConstraints();
-		gbc_textField_26.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_26.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_26.gridx = 13;
-		gbc_textField_26.gridy = 5;
-		panel_5.add(textField_26, gbc_textField_26);
-		textField_26.setColumns(10);
+		JLabel lblStaffid = new JLabel("Staff_ID");
+		GridBagConstraints gbc_lblStaffid = new GridBagConstraints();
+		gbc_lblStaffid.insets = new Insets(0, 0, 5, 5);
+		gbc_lblStaffid.gridx = 11;
+		gbc_lblStaffid.gridy = 5;
+		panel_5.add(lblStaffid, gbc_lblStaffid);
+		
+		delete_S_Id = new JTextField();
+		GridBagConstraints gbc_delete_S_Id = new GridBagConstraints();
+		gbc_delete_S_Id.insets = new Insets(0, 0, 5, 0);
+		gbc_delete_S_Id.fill = GridBagConstraints.HORIZONTAL;
+		gbc_delete_S_Id.gridx = 13;
+		gbc_delete_S_Id.gridy = 5;
+		panel_5.add(delete_S_Id, gbc_delete_S_Id);
+		delete_S_Id.setColumns(10);
 		
 		JLabel lblHotelId = new JLabel("Hotel Id");
 		GridBagConstraints gbc_lblHotelId = new GridBagConstraints();
@@ -827,6 +841,14 @@ public class FrontDeskRep extends JFrame {
 		gbc_updateName.gridy = 7;
 		panel_5.add(updateName, gbc_updateName);
 		updateName.setColumns(10);
+		
+		JLabel lblStaffDoesntExist = new JLabel("Staff doesn't exist");
+		lblStaffDoesntExist.setVisible(false);
+		GridBagConstraints gbc_lblStaffDoesntExist = new GridBagConstraints();
+		gbc_lblStaffDoesntExist.insets = new Insets(0, 0, 5, 0);
+		gbc_lblStaffDoesntExist.gridx = 13;
+		gbc_lblStaffDoesntExist.gridy = 7;
+		panel_5.add(lblStaffDoesntExist, gbc_lblStaffDoesntExist);
 		
 		JLabel lblNewLabel_4 = new JLabel("Address");
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
@@ -1070,6 +1092,14 @@ public class FrontDeskRep extends JFrame {
 		panel_5.add(UpdateOK, gbc_UpdateOK);
 		
 		JButton deleteOk = new JButton("OK");
+		deleteOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int hotelId = Integer.parseInt(delete_H_Id.getText());
+				int staffId = Integer.parseInt(delete_S_Id.getText());
+				boolean b = deleteStaff(hotelId, staffId);
+				lblStaffDoesntExist.setVisible(!b);
+			}
+		});
 		GridBagConstraints gbc_deleteOk = new GridBagConstraints();
 		gbc_deleteOk.gridx = 13;
 		gbc_deleteOk.gridy = 14;
@@ -1318,6 +1348,17 @@ public class FrontDeskRep extends JFrame {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public boolean deleteStaff(int hotelID, int staffId){
+		try {
+			smt.executeUpdate("DELETE FROM Staffs where hotel_id="+hotelID+" AND id="+ staffId);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
 		}
 	}
 }
