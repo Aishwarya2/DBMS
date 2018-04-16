@@ -51,6 +51,7 @@ insert into Services values ('phone bills',5);
 insert into Services values ('dry cleaning',16);
 insert into Services values ('gyms',15);
 insert into Services values ('room service',10);
+insert into Services values ('food service',10);
 insert into Services values ('special requests',20);
 
 
@@ -90,3 +91,6 @@ insert into Billings values (4,'24 BST Dr, Dallas TX 14', '4409328');
 insert into Cards values ('cash','cash',0);
 insert into Done_by values (4,4,1004);
 insert into Paid_through values (4,'cash');
+
+insert into Pricings values (3,1,01,0001,'food service');
+insert into Serves values (107, 0001, 'food service', 1);
