@@ -10,14 +10,13 @@ insert into Hotels (name, phone_number, zip_code) values ('Hotel D', '920', '320
 
 insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0001, 'Mary', '90 ABC St, Raleigh NC 27', 40, '654', 'Manager', 'Yes', 'Management');
 insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0002, 'John', '798 XYZ St, Rochester NY 54', 45, '564', 'Manager', 'Yes', 'Management');
-insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0002, 'John', '798 XYZ St, Rochester NY 54', 45, '564', 'Catering Staff', 'Yes', 'Catering');
-insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0002, 'John', '798 XYZ St, Rochester NY 54', 45, '564', 'Catering Staff', 'Yes', 'Catering');
 insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0003, 'Carol', '351 MH St, Greensboro NC 27', 55, '546', 'Manager', 'Yes', 'Management');
+insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0002, 'John', '798 XYZ St, Rochester NY 54', 45, '564', 'Catering Staff', 'Yes', 'Catering');
+insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0002, 'John', '798 XYZ St, Rochester NY 54', 45, '564', 'Catering Staff', 'Yes', 'Catering');
+insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0004, 'Peter', '475 RG St, Raleigh NC 27', 52, '724', 'Manager', 'Yes', 'Management');
 insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0001, 'Emma', '49 ABC St, Raleigh NC 27', 55, '546', 'Front Desk Staff', 'Yes', 'Management');
 insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0001, 'Ava', '425 RG St, Raleigh NC 27', 55, '777', 'Catering Staff', 'Yes', 'Catering');
 insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0001, 'June', '425 RG St, Raleigh NC 27', 55, '777', 'Catering Staff', 'Yes', 'Catering');
-
-insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0004, 'Peter', '475 RG St, Raleigh NC 27', 52, '724', 'Manager', 'Yes', 'Management');
 insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0004, 'Olivia', '325 PD St, Raleigh NC 27', 27, '799', 'Front Desk Staff', 'Yes', 'Management');
 insert into Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values (0004, 'Rich', '325 PD St, Raleigh NC 27', 27, '799', 'Catering Staff', 'Yes', 'Catering');
 
