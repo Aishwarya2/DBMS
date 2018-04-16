@@ -1237,7 +1237,7 @@ public class FrontDeskRep extends JFrame {
 	}
 	
 	private void assignRoomsByRequest(int hotelID,int customerID, String categoryName,String startDate,String endDate,String city, int number_of_guests) throws SQLException {
-		int[] roomhotel = reportOccupancyBasedOnRequest(hotelID, categoryName, startDate, endDate,city);
+		int[] roomhotel = reportOccupancyBasedOnRequest(hotelID, categoryName, startDate, endDate,city, number_of_guests);
 		if(roomhotel[0]==-1)
 		{
 			System.out.println("Room not available while checkin");
@@ -1249,21 +1249,8 @@ public class FrontDeskRep extends JFrame {
 		result=smt.executeQuery("select id from Customers where id="+customerID+"");
 		
 		if(!result.next())
-		{   Scanner s=new Scanner(System.in);
-		    System.out.println("Enter the customer's name:");
-			String name=s.next();
-			System.out.println("Enter the customer's dob:");
-			String dob=s.next();
-			System.out.println("Enter the customer's email:");
-			String emailID=s.next();
-			System.out.println("Enter the customer's phone_number:");
-			String phone_number=s.next();
-			try{
-			smt.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('"+name+"','"+dob+"','"+emailID+"', '"+phone_number+"')");
-			}
-			catch(SQLException ed){
-				ed.printStackTrace();
-			}
+		{  
+			System.out.println("Customer Not found");
 		 }
 		else {
 			System.out.println("Customer already exists in the DB");
@@ -1277,7 +1264,7 @@ public class FrontDeskRep extends JFrame {
 		int checkinID = insertIntoCheckins(number_of_guests,hotelID, startDate, endDate);
 		insertIntoDoneBy(checkinID, customerID);
         
-		if(categoryName == "Presidential Suite") {
+		if(categoryName.equals("Presidential")) {
 			int[]staffs=findAvailableStaffs(hotelID);
 			if(staffs[0]==-1)
 			{
@@ -1285,25 +1272,23 @@ public class FrontDeskRep extends JFrame {
 			  return;
 			}
 			
-			insertIntoServes(staffs[0], hotelID, "HouseKeeping",checkinID);
-			insertIntoServes(staffs[1], hotelID, "Catering",checkinID);
+			insertIntoServes(staffs[0], hotelID, "room service ",checkinID);
+			insertIntoServes(staffs[1], hotelID, "food service",checkinID);
 			smt.executeQuery("UPDATE Staffs SET availability='No' where id in ("+staffs[0]+","+staffs[1]+") and hotel_id="+hotelID+"");
 		}
 		
 	}
 	
-	private int[] reportOccupancyBasedOnRequest(int hotelID, String category_name, String startDate,String endDate,String city) {
+	private int[] reportOccupancyBasedOnRequest(int hotelID, String category_name, String startDate,String endDate,String city,int capacity) {
 		int[]answer=new int[2];
 		try {
-				result=smt.executeQuery("SELECT * FROM Reservations r, Hotels h where r.hotel_id="+hotelID+" and r. room_number in"
-											 +"(select room_number from Rooms where category_name='"+category_name+"' and hotel_id="+hotelID+" )"
-											 +"and r.start_date>='"+startDate+"' and r.end_Date<='"+endDate+"' and h.zip_code in "
-											 +"(select zip_code from Locations where city='"+city+"')");
+				result=smt.executeQuery(String.format("select * from Rooms where (room_number,hotel_id) NOT IN (SELECT r.room_number,r.hotel_id FROM Reservations r, Hotels h where r.hotel_id=%d and r.start_date>='%s' and r.end_Date<='%s' and h.zip_code in (select zip_code from Locations where city='%s')) and room_number in (select room_number from Rooms where category_name='%s' and hotel_id=%d ) and hotel_id = %d and max_occupancy >= %d",hotelID, startDate, endDate, city, category_name, hotelID,hotelID,capacity));
 				if(result.next()){
 					int rno=result.getInt("room_number");
 					int hotelid=result.getInt("hotel_id");
 					answer[0]=rno;
 					answer[1]=hotelid;
+					System.out.println(rno +" "+hotelid );
 				}
 				else
 				{
@@ -1361,13 +1346,15 @@ public class FrontDeskRep extends JFrame {
 		int count=0;
 		int[]s=new int[2];
 		try{
-		result=smt.executeQuery("SELECT id from Staffs WHERE hotel_id="+hotelID+"");
+		result=smt.executeQuery("SELECT id from Staffs WHERE hotel_id="+hotelID+" and availability='Yes' and job_title!='Manager'");
 		while(result.next()&&count<2){
              s[count]=result.getInt("id");
              count++;
 		}
-		if(count==0)
-			{
+		System.out.println(s[0]);
+		System.out.println(s[1]);
+		if(count==0){
+			System.out.println("No Staffs available");
 			s[0]=-1;
 			s[1]=-1;
 			}
