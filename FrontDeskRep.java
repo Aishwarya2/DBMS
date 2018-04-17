@@ -683,7 +683,9 @@ public class FrontDeskRep extends JFrame {
 				int maxOccupancy = Integer.parseInt(insertMaxOccupancy.getText());
 				String category = insertCategory.getText();
 				
+				//insert room into the database
 				boolean b = insertRoom(hotelId, roomNumber, maxOccupancy, category);
+				//if insertion was not successfull display error to user
 				lblCouldntInsert.setVisible(!b);
 				
 				
@@ -742,8 +744,9 @@ public class FrontDeskRep extends JFrame {
 				int roomNumber = Integer.parseInt(updateRoomNumber.getText());
 				int maxOccupancy = Integer.parseInt(updateMaxOccupancy.getText());
 				String category = updateCategory.getText();
+				//update Room data from hotel id and room number 
 				boolean b = updateRoom(hotelId, roomNumber, maxOccupancy, category);
-				
+				//if updation was not successfull report to the user
 				lblInvalidData_1.setVisible(!b);
 				
 			}
@@ -763,7 +766,9 @@ public class FrontDeskRep extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				int hotelId = Integer.parseInt(deleteRoomHotelId.getText());
 				int roomNumber = Integer.parseInt(deleteRoomNumber.getText());
+				//delete Room based on data provided by the user
 				boolean b = deleteRoom(hotelId, roomNumber);
+				//if delete failed report or room did not exist report
 				lblFailedToDelete.setVisible(!b);
 			}
 		});
@@ -1032,12 +1037,15 @@ public class FrontDeskRep extends JFrame {
 		JButton btnConfirm = new JButton("Confirm");
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//get the parameters from the form
 				Integer hotelId = Integer.parseInt(update_H_Id.getText());
 				Integer staffId= Integer.parseInt(update_S_Id.getText());
 				try {
+					//populate the updatable fields from data exisiting in the database
 					ResultSet result = smt.executeQuery("Select name, address, age, phone_number, job_title, availability, department FROM Staffs where hotel_id ="+hotelId+" AND id ="+staffId);
 					
 					while(result.next()){
+
 					System.out.println(result.getString("name"));
 					updateName.setText(result.getString("name"));
 					
@@ -1052,7 +1060,7 @@ public class FrontDeskRep extends JFrame {
 					}
 				} catch (Exception ex) {
 					// TODO Auto-generated catch block
-					
+					//if an error occurs notify user
 					lblInvalidArguments.setVisible(true);
 					ex.printStackTrace();
 				}
@@ -1306,6 +1314,8 @@ public class FrontDeskRep extends JFrame {
 		JButton insertOK = new JButton("OK");
 		insertOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				//get the fields from the form
 				int hotelId = Integer.parseInt(insert_h_id.getText());
 				String availability = "Yes";
 				String name = Insert_name.getText();
@@ -1314,6 +1324,7 @@ public class FrontDeskRep extends JFrame {
 				String job_title = inserTitle.getText();
 				String phone_number = inserPhone.getText();
 				String department = insertDept.getText();
+				//insert into staffs the fields obtained from the form
 				insertIntoStaffs(hotelId, availability, name, address, age, job_title, phone_number, department);
 			}
 		});
@@ -1326,6 +1337,7 @@ public class FrontDeskRep extends JFrame {
 		JButton UpdateOK = new JButton("OK");
 		UpdateOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//get values frim fields in the form
 				int hotelID = Integer.parseInt(update_H_Id.getText());
 				int staffId = Integer.parseInt(update_S_Id.getText());
 				String name = updateName.getText();
@@ -1335,6 +1347,7 @@ public class FrontDeskRep extends JFrame {
 				String phone_number = updatePhoneNumber.getText();
 				String department = updateDept.getText();
 				String availability = updateAvailability.getText();
+				//update Staff table with new valuels	
 				updateStaff(hotelID, staffId, availability, name, address, age, job_title, phone_number, department);
 			}
 			
@@ -1439,10 +1452,12 @@ public class FrontDeskRep extends JFrame {
 				int hotelId = Integer.parseInt(updateHotelID.getText());
 				boolean b = false;
 				try {
+					//Get data about the hotel with specific hotel id
 					ResultSet rs = smt.executeQuery("SELECT * FROM Hotels where id ="+hotelId);
 					
 					while(rs.next()){
 						b = true;
+						//if hotel exists populate the other update fields
 						update_H_Name.setText(rs.getString("name"));
 						
 						update_H_Phone.setText(rs.getString("phone_number"));
@@ -1452,10 +1467,12 @@ public class FrontDeskRep extends JFrame {
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
+					//if there's an error update flag and print the exception
 					b = false;
 					e1.printStackTrace();
 					
 				}
+				//Notify user if there's an error
 				lblInvalidHotel.setVisible(!b);
 				
 			}
@@ -1566,10 +1583,13 @@ public class FrontDeskRep extends JFrame {
 		JButton hInsertOk = new JButton("OK");
 		hInsertOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//get values from the form
 				String name = insertName.getText();
 				String phone = insertPhone.getText();
 				String zip_code = insertZip.getText();
+				//insert the data of the hotel into the database
 				boolean b = insertHotel(name, phone, zip_code);
+				//Notify user of error
 				lblInvalidArguments.setVisible(!b);
 			}
 		});
@@ -1608,12 +1628,14 @@ public class FrontDeskRep extends JFrame {
 		JButton hUpdateOk = new JButton("OK");
 		hUpdateOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//get values from form
 				int hotelId = Integer.parseInt(updateHotelID.getText());
 				String name = update_H_Name.getText();
 				String phone_number = update_H_Phone.getText();
 				String zip_code = updateZipCode.getText();
-				
+				// update values in the hotel ltable
 				boolean b = updateHotel(hotelId, name, phone_number, zip_code);
+				//notify user for the error
 				lblFailed.setVisible(!b);
 			}
 
@@ -1634,7 +1656,9 @@ public class FrontDeskRep extends JFrame {
 		HDeleteOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int hotelId = Integer.parseInt(DeleteHotelID.getText());
+				//delete hotel if hotel exists
 				boolean b = deleteHotel(hotelId);
+				//if failed give error
 				lblInvalidHotelId.setVisible(!b);
 			}
 		});
@@ -1753,6 +1777,7 @@ public class FrontDeskRep extends JFrame {
 				String zip = updateHZipcode.getText();
 				ResultSet result;
 				try {
+					// populate the fields from the values in the database
 					result = smt.executeQuery("Select * from Locations where zip_code="+zip);
 					while(result.next()){
 						updateHAddress.setText(result.getString("address"));
@@ -1922,13 +1947,15 @@ public class FrontDeskRep extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			
 				boolean b;
-				
+				//get values from the form
 				String zip = updateHZipcode.getText();
 				updateHZipcode.setEditable(false);
 				String address = updateHAddress.getText();
 				float rate = Float.parseFloat(updateHRate.getText());
 				String city = updateHCity.getText();
+				//update the locations
 				b = updateLocations(zip, address, rate, city);
+				//Display error message if any error
 				lblIlegalArguments.setVisible(!b);
 			}
 		});
@@ -2039,6 +2066,7 @@ public class FrontDeskRep extends JFrame {
 				int customerId = Integer.parseInt(updateCId.getText());
 				boolean flag=false;
 				try {
+					//get data of the customer from database
 					ResultSet rs = smt.executeQuery("SELECT * from Customers where id="+customerId);
 					
 					while(rs.next()){
@@ -2055,8 +2083,9 @@ public class FrontDeskRep extends JFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					flag = false;
+					//update flag for exception
 				}
-				
+				//if no data exists or if error display message
 				lblInvalidCId.setVisible(!flag);
 			}
 		});
@@ -2187,11 +2216,14 @@ public class FrontDeskRep extends JFrame {
 		JButton insertCOK = new JButton("OK");
 		insertCOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//get values from the Form
 				String name = insertCName.getText();
 				String DOB= insertCDOB.getText();
 				String email = insertCEmail.getText();
 				String phone_number = insertCPhoneNumber.getText();
+				//Insert the Customer data in database
 				boolean b = insertCustomer(name, DOB, email, phone_number);
+				//  Display if any error
 				lblFailedToInsert.setVisible(!b);
 			}
 		});
@@ -2233,8 +2265,9 @@ public class FrontDeskRep extends JFrame {
 				String DOB = updateCDOB.getText();
 				String email = updateCEmail.getText();
 				String phone_number = updateCPhoneNumber.getText();
-				
+				// Update Customer data in the database
 				boolean b = updateCustomer(id, name, DOB, email, phone_number);
+				// Notify of errors
 				lblFailedToUpdate.setVisible(!b);
 				
 				
@@ -2283,6 +2316,7 @@ public class FrontDeskRep extends JFrame {
 			       		ex.printStackTrace();
 			       		try{
 			       		if(connection!=null){
+							   //Roll back transations if error occurs
 			       			System.out.println("Transaction is being rolled back");
 			       			connection.rollback();
 			       		}
@@ -2308,6 +2342,7 @@ public class FrontDeskRep extends JFrame {
 				String customerID = textField_4.getText();
 				String resultStr="";
 				try{
+					//  Get the cost of services
 					result=smt.executeQuery("SELECT SUM(rates) as Total from(select sum(se.rate*pr.count) as rates from Services se,Pricings pr where se.service_name=pr.service_name and pr.service_name in(select p.service_name from Pricings p where p.checkin_id in(select checkin_id from Done_by where customer_id="+customerID+" group by checkin_id)group by p.service_name) UNION ALL select sum(ps.nightly_rate) as rates from Pricings ps where ps.checkin_id in(select d.checkin_id from Done_by d where customer_id="+customerID+")group by ps.checkin_id UNION ALL select sum(c.rate) from Category c,Rooms r where r.category_name=c.category_name and r.room_number in(select p.room_number from Pricings p where p.hotel_id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customerID+")group by checkin_id))UNION ALL SELECT l.rate as rates from Locations l,Hotels h where l.zip_code=h.zip_code and h.id =(select hotel_id from Pricings where checkin_id in(select checkin_id from Done_by where customer_id="+customerID+")group by checkin_id))Item");
 				while(result.next()){
 					resultStr+="\n"+"The total bill is "+result.getInt("Total");
