@@ -13,7 +13,7 @@ public class DBPopulate {
 //	private static final String dbName="dbname";
 	private static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/";
 	private static final String username = "pjain15";
-	private static final String password = "PASSWORD";
+	private static final String password = "gradApp135!";
 	private static final String dbName="pjain15";
 	
 	
@@ -43,16 +43,11 @@ public class DBPopulate {
 			e.printStackTrace();
 		}
 			initialize();
-		//Insert	
-		insertIntoHotels("New Marriot1", "9198331120","500 Fayetteville St, Raleigh, NC", 47.5,"27666","Raleigh");
-		insertIntoRooms(7,200, "Deluxe", 4);
-		insertIntoStaffs(1,"Yes", "New Robin Sam", "25 Brigadoon, Raleigh, NC", 29, "Server","9451204444","Catering");
-		insertIntoCustomers("Tony Stark", "750123456","1975-02-21", "stark@gmail.com");
-	
-		//Updatessho
+		
+		
 		try{
 		connection.setAutoCommit(false);
-		updateHotels("New Updated Marriot1", "501 Fayetteville St, Raleigh, NC", "9198331122","33.00", 1,"27666");
+
 		connection.commit();
 		}
 		catch(SQLException ex){
@@ -73,15 +68,15 @@ public class DBPopulate {
 		catch(SQLException e){
 			e.printStackTrace();
 		}
-		updateRooms(1, 200, "Executive Suite", 3);
-		updateStaffs("No","New Updated Robin Sam", "25 Brigadoon, Raleigh, NC", 39, "Laundry","9191211111",1);
-		updateCustomers("Updated Tony Stark", "750123456","1975-02-21", "stark@gmail.com", 1);
+//		updateRooms(1, 200, "Executive Suite", 3);
+//		updateStaffs("No","New Updated Robin Sam", "25 Brigadoon, Raleigh, NC", 39, "Laundry","9191211111",1);
+//		updateCustomers("Updated Tony Stark", "750123456","1975-02-21", "stark@gmail.com", 1);
 	
 	    //Deletes
-		deleteFromHotels(2);
-		deleteFromRooms(1, 202);
-		deleteFromStaffs(2);
-		deleteFromCustomers(2);
+//		deleteFromHotels(2);
+//		deleteFromRooms(1, 202);
+//		deleteFromStaffs(2);
+//		deleteFromCustomers(2);
 		
 		//verify user preferences
 		verifyUserPreference(1,200,"2018-05-03","2018-05-09");
@@ -89,7 +84,7 @@ public class DBPopulate {
 		//Maintain service records
 		try{
 		connection.setAutoCommit(false);
-		updatePricings(1, 45.12, 3, 107,4,"Laundry");
+//		updatePricings(1, 45.12, 3, 107,4,"Laundry");
 		connection.commit();
 		}
 		catch(SQLException e){
@@ -112,36 +107,36 @@ public class DBPopulate {
 		}
 		
 		//Find available rooms of a particular category on a particular day
-		findCategoryPreference(1,200,"2018-05-03","Deluxe");
+//		findCategoryPreference(1,200,"2018-05-03","Deluxe");
 		
 		//Find availability of rooms by using room number
-		findRoomAvailable(200,1);
+//		findRoomAvailable(200,1);
 		
 		//Report occupancy by hotel
-		reportOccupancyByHotel(0);
+//		reportOccupancyByHotel(0);
 		
 		//Report occupancy by room_type
-		reportOccupancyByRoomType();
+//		reportOccupancyByRoomType();
 		
 		//Report occupancy by date range
-		reportOccupancyByDateRange();
+//		reportOccupancyByDateRange();
 		
 		//Report occupancy by city
-		reportOccupancyByCity();
+//		reportOccupancyByCity();
 		
 		//Report Total Occupancy
-		reportTotalOccupancy();
+//		reportTotalOccupancy();
 		
 		//Report percentage of rooms occupied
-		reportPercentageOfRoomsOccupied();
+//		reportPercentageOfRoomsOccupied();
 		
 		//Information on number of Staffs grouped by their role
-		getStaffGroupedByRoles();
+//		getStaffGroupedByRoles();
 		
        	// assignRoomsByRequest(hotel_id, customer_id, category_name, start_date, end_date, city, number_of_guests);
        	try{
        	connection.setAutoCommit(false);
-		assignRoomsByRequest(1, 1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh",4);
+//		assignRoomsByRequest(1, 1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh",4);
        	connection.commit();
        	}
        	catch(SQLException e){
@@ -164,16 +159,16 @@ public class DBPopulate {
        	}
        	
        	//generate bill
-       	generateBill(1);
+//       	generateBill(1);
        	
        	//generate itemized receipt
-       	generateItemizedReceipt(1);
+//       	generateItemizedReceipt(1);
        	
        	//display staff for every customer stay
-       	displayStaffForEveryCustomerStay();
+//       	displayStaffForEveryCustomerStay();
        	
        	//Generate revenue earned by a given hotel during a given date range
-       	generateRevenueByHotelDate(1,"2018-04-02","2018-04-05");
+//       	generateRevenueByHotelDate(1,"2018-04-02","2018-04-05");
        	
        	//int[]result=reportOccupancyBasedOnRequest(1, "Deluxe", "2018-05-03", "2018-05-10", "Raleigh");
        	//System.out.println("room"+result[0]+"in hotel"+result[1]);
@@ -211,57 +206,135 @@ public class DBPopulate {
 	} catch (SQLException e) {
 	}
 			
-			
-			
-			
-			
-			statement.executeUpdate("create table Locations(zip_code char(5) PRIMARY KEY,address varchar(50) NOT NULL, rate float NOT NULL,city varchar(20) NOT NULL)");
+		statement.executeUpdate("create table Locations(zip_code char(5) PRIMARY KEY,address varchar(50) NOT NULL, rate float NOT NULL,city varchar(20) NOT NULL)");
 
-			statement.executeUpdate("create table Hotels(id int PRIMARY KEY AUTO_INCREMENT,name varchar(30) NOT NULL,phone_number char(10) NOT NULL,zip_code char(5) NOT NULL,FOREIGN KEY (zip_code) REFERENCES Locations(zip_code) ON DELETE CASCADE)");
-			
-			statement.executeUpdate("create table Staffs(id int NOT NULL AUTO_INCREMENT,hotel_id int NOT NULL,name varchar(30) NOT NULL,address varchar(50) NOT NULL,age int NOT NULL,phone_number char(10) NOT NULL,job_title varchar(30) NOT NULL,availability varchar(5) NOT NULL, department varchar(30) NOT NULL, PRIMARY KEY (id, hotel_id),FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE)");
+		statement.executeUpdate("create table Hotels(id int(4) zerofill PRIMARY KEY AUTO_INCREMENT,name varchar(30) NOT NULL,phone_number char(10) NOT NULL,zip_code char(5) NOT NULL,FOREIGN KEY (zip_code) REFERENCES Locations(zip_code) ON DELETE CASCADE)");
+					
+		statement.executeUpdate("create table Staffs(id int NOT NULL AUTO_INCREMENT,hotel_id int(4) zerofill NOT NULL,name varchar(30) NOT NULL,address varchar(50) NOT NULL,age int NOT NULL,phone_number char(10) NOT NULL,job_title varchar(30) NOT NULL,availability varchar(5) NOT NULL, department varchar(30) NOT NULL, PRIMARY KEY (id, hotel_id),FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE) AUTO_INCREMENT=100");
 
-			statement.executeUpdate("create table Managers(id int NOT NULL,hotel_id int NOT NULL, password varchar(32) NOT NULL,PRIMARY KEY(id, hotel_id),FOREIGN KEY (id, hotel_id) REFERENCES Staffs(id,hotel_id) ON DELETE CASCADE)");
-			
-			statement.executeUpdate("create table Frontdesk_rep(id int NOT NULL,hotel_id int NOT NULL,password varchar(32) NOT NULL,PRIMARY KEY(id, hotel_id),FOREIGN KEY (id, hotel_id) REFERENCES Staffs(id,hotel_id) ON DELETE CASCADE)");
-			
-			statement.executeUpdate("create table Customers(id int PRIMARY KEY AUTO_INCREMENT, name varchar(30) NOT NULL,DOB date,email varchar(50) NOT NULL,phone_number char(10))");
-			
-			statement.executeUpdate("create table Billings (transaction_id int PRIMARY KEY AUTO_INCREMENT,billing_address varchar(100) NOT NULL,SSN char(10) NOT NULL)");
+		statement.executeUpdate("create table Managers(id int NOT NULL,hotel_id int(4) zerofill NOT NULL, password varchar(32) NOT NULL,PRIMARY KEY(id, hotel_id),FOREIGN KEY (id, hotel_id) REFERENCES Staffs(id,hotel_id) ON DELETE CASCADE)");
+					
+		statement.executeUpdate("create table Frontdesk_rep(id int NOT NULL,hotel_id int(4) zerofill NOT NULL,password varchar(32) NOT NULL,PRIMARY KEY(id, hotel_id),FOREIGN KEY (id, hotel_id) REFERENCES Staffs(id,hotel_id) ON DELETE CASCADE)");
+					
+		statement.executeUpdate("create table Customers(id int PRIMARY KEY AUTO_INCREMENT, name varchar(30) NOT NULL,DOB date,email varchar(50) NOT NULL,phone_number char(10)) AUTO_INCREMENT=1001");
+					
+		statement.executeUpdate("create table Billings (transaction_id int PRIMARY KEY AUTO_INCREMENT,billing_address varchar(100) NOT NULL,SSN char(10) NOT NULL)");
 
-			statement.executeUpdate("create table Cards(card_number char(16) PRIMARY KEY,payment_method varchar(20) NOT NULL,discount float NOT NULL,SSN char(10) NOT NULL)");
-			
-			statement.executeUpdate("create table Paid_through (transaction_id int NOT NULL,card_number char(16) NOT NULL,PRIMARY KEY(transaction_id, card_number),FOREIGN KEY (transaction_id) REFERENCES Billings(transaction_id) ON DELETE CASCADE,FOREIGN KEY (card_number) REFERENCES Cards(card_number) ON DELETE CASCADE)");
-			
-			statement.executeUpdate("create table Category(category_name varchar(30) PRIMARY KEY,rate float NOT NULL)");
-			
-			statement.executeUpdate("create table Rooms(room_number int NOT NULL,hotel_id int NOT NULL, max_occupancy int NOT NULL,category_name varchar(30),PRIMARY KEY (hotel_id,room_number),FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE,FOREIGN KEY (category_name) REFERENCES Category(category_name) ON DELETE CASCADE)");
+		statement.executeUpdate("create table Cards(card_number char(16) PRIMARY KEY,payment_method varchar(20) NOT NULL,discount float NOT NULL)");
+					
+		statement.executeUpdate("create table Paid_through (transaction_id int NOT NULL,card_number char(16) NOT NULL,PRIMARY KEY(transaction_id, card_number),FOREIGN KEY (transaction_id) REFERENCES Billings(transaction_id) ON DELETE CASCADE,FOREIGN KEY (card_number) REFERENCES Cards(card_number) ON DELETE CASCADE)");
+					
+		statement.executeUpdate("create table Category(category_name varchar(30) PRIMARY KEY,nightly_rate float NOT NULL)");
+					
+		statement.executeUpdate("create table Rooms(room_number int(2) zerofill NOT NULL,hotel_id int(4) zerofill NOT NULL, max_occupancy int NOT NULL,category_name varchar(30),PRIMARY KEY (hotel_id,room_number),FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE,FOREIGN KEY (category_name) REFERENCES Category(category_name) ON DELETE CASCADE)");
 
-			statement.executeUpdate("create table Checkins(id int PRIMARY KEY AUTO_INCREMENT,number_of_guests int DEFAULT 0,"
-								   +"start_date date NOT NULL,end_date date NOT NULL,amount float,checkin_time time(3) NOT NULL,"
-								   +"checkout_time time(3),CONSTRAINT chk_date CHECK(start_date<end_date))");
-			
-			statement.executeUpdate("create table Reservations (room_number int NOT NULL,hotel_id int NOT NULL, "
-								   +"start_date date NOT NULL,end_date date NOT NULL,PRIMARY KEY(room_number, hotel_id, start_date, end_date),"
-								   +"FOREIGN KEY(hotel_id, room_number) REFERENCES Rooms(hotel_id,room_number) ON DELETE CASCADE)");
-			
+		statement.executeUpdate("create table Checkins(id int PRIMARY KEY AUTO_INCREMENT,number_of_guests int DEFAULT 0," + "start_date date NOT NULL,end_date date NOT NULL,amount float,checkin_time time(3) NOT NULL," + "checkout_time time(3))");
+					
+		statement.executeUpdate("create table Reservations (room_number int(2) zerofill NOT NULL,hotel_id int(4) zerofill NOT NULL, " + "start_date date NOT NULL,end_date date NOT NULL,PRIMARY KEY(room_number, hotel_id, start_date, end_date)," + "FOREIGN KEY(hotel_id, room_number) REFERENCES Rooms(hotel_id,room_number) ON DELETE CASCADE)");
+					
 
-			statement.executeUpdate("create table Services (service_name varchar(20) PRIMARY KEY,rate float NOT NULL)");
+		statement.executeUpdate("create table Services (service_name varchar(20) PRIMARY KEY,rate float NOT NULL)");
+					
+		statement.executeUpdate("create table Pricings(count int,checkin_id int NOT NULL, room_number int(2) zerofill NOT NULL, hotel_id int(4) zerofill NOT NULL, service_name varchar(20) NOT NULL," + "PRIMARY KEY(checkin_id, room_number, hotel_id, service_name),FOREIGN KEY(hotel_id, room_number) REFERENCES Rooms(hotel_id, room_number) ON DELETE CASCADE," + "FOREIGN KEY(checkin_id) REFERENCES Checkins(id) ON DELETE CASCADE,FOREIGN KEY(service_name) REFERENCES Services(service_name) ON DELETE CASCADE)");
+					
+		statement.executeUpdate("create table Done_by(checkin_id int NOT NULL,transaction_id int UNIQUE,"
+										   +"customer_id int NOT NULL, PRIMARY KEY(checkin_id, customer_id),FOREIGN KEY(transaction_id) REFERENCES Billings(transaction_id) ON DELETE CASCADE,"
+										   +"FOREIGN KEY(checkin_id) REFERENCES Checkins(id) ON DELETE CASCADE,FOREIGN KEY(customer_id) REFERENCES Customers(id) ON DELETE CASCADE)");
+					
+
+		statement.executeUpdate("create table Serves(staff_id int NOT NULL,hotel_id int(4) zerofill NOT NULL,service_name varchar(20) NOT NULL,"
+										+"checkin_id int NOT NULL,PRIMARY KEY(staff_id, hotel_id, service_name, checkin_id),FOREIGN KEY (hotel_id, staff_id) REFERENCES Staffs(hotel_id, id) ON DELETE CASCADE,"
+										+"FOREIGN KEY(checkin_id) REFERENCES Checkins(id) ON DELETE CASCADE,FOREIGN KEY(service_name) REFERENCES Services(service_name) ON DELETE CASCADE)");
+					
 			
-			statement.executeUpdate("create table Pricings(count int,nightly_rate float NOT NULL,checkin_id int NOT NULL,"
-								   +"room_number int NOT NULL,hotel_id int NOT NULL, service_name varchar(20) NOT NULL,"
-								   +"PRIMARY KEY(checkin_id, room_number, hotel_id, service_name),FOREIGN KEY(hotel_id, room_number) REFERENCES Rooms(hotel_id, room_number) ON DELETE CASCADE,"
-								   +"FOREIGN KEY(checkin_id) REFERENCES Checkins(id) ON DELETE CASCADE,FOREIGN KEY(service_name) REFERENCES Services(service_name) ON DELETE CASCADE)");
 			
-			statement.executeUpdate("create table Done_by(checkin_id int NOT NULL,transaction_id int UNIQUE,"
-								   +"customer_id int NOT NULL, PRIMARY KEY(checkin_id, customer_id),FOREIGN KEY(transaction_id) REFERENCES Billings(transaction_id) ON DELETE CASCADE,"
-								   +"FOREIGN KEY(checkin_id) REFERENCES Checkins(id) ON DELETE CASCADE,FOREIGN KEY(customer_id) REFERENCES Customers(id) ON DELETE CASCADE)");
+		statement.executeUpdate("INSERT INTO Locations VALUES ('27606', '21 ABC St, Raleigh NC 27', 100.0, 'Raleigh')");
+		statement.executeUpdate("INSERT INTO Locations VALUES ('54608', '25 XYZ St, Rochester NY0 54', 101.0, 'Rochester')");
+		statement.executeUpdate("INSERT INTO Locations VALUES ('27607', '29 PQR St, Greensboro NC 27', 90.0, 'Greensboro')");
+		statement.executeUpdate("INSERT INTO Locations VALUES ('32001', '28 GHW St, Raleigh NC 32', 102.0, 'Raleigh')");
+
+		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('Hotel A', '919', '27606')");
+		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('Hotel B', '718', '54608')");
+		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('Hotel C', '984', '27607')");
+		statement.executeUpdate("INSERT INTO Hotels(name, phone_number, zip_code) VALUES ('Hotel D', '920', '32001')");
+
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(0001, 'Mary', '90 ABC St, Raleigh NC 27', 40, '654', 'Manager', 'Yes', 'Management')");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(0002, 'John', '798 XYZ St, Rochester NY 54', 45, '564', 'Manager', 'Yes', 'Management')");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(0003, 'Carol', '351 MH St, Greensboro NC 27', 55, '546', 'Manager', 'Yes', 'Management')");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(0001, 'Emma', '49 ABC St, Raleigh NC 27', 55, '546', 'Front Desk Staff', 'Yes', 'Management')");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(0001, 'Ava', '425 RG St, Raleigh NC 27', 55, '777', 'Catering Staff', 'Yes', 'Management')");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(0004, 'Peter', '475 RG St, Raleigh NC 27', 52, '724', 'Manager', 'Yes', 'Management')");
+		statement.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values(0004, 'Olivia', '325 PD St, Raleigh NC 27', 27, '799', 'Front Desk Staff', 'Yes', 'Management')");
+
+		statement.executeUpdate("INSERT INTO Managers VALUES (100, 0001, MD5('password') )");
+		statement.executeUpdate("INSERT INTO Managers VALUES (101, 0002, MD5('password') )");
+		statement.executeUpdate("INSERT INTO Managers VALUES (102, 0003, MD5('password') )");
+		statement.executeUpdate("INSERT INTO Managers VALUES (105, 0004, MD5('password') )");
+
+		statement.executeUpdate("INSERT INTO Frontdesk_rep VALUES (103, 0001, MD5('password'))");
+		statement.executeUpdate("INSERT INTO Frontdesk_rep VALUES (106, 0004, MD5('password'))");
+
+		statement.executeUpdate("INSERT INTO Category VALUES('Economy', 100)");
+		statement.executeUpdate("INSERT INTO Category VALUES('Deluxe', 200)");
+		statement.executeUpdate("INSERT INTO Category VALUES('Executive', 1000)");
+		statement.executeUpdate("INSERT INTO Category VALUES('Presidential', 5000)");
+
+		statement.executeUpdate("INSERT INTO Rooms VALUES(01, 0001, 1, 'Economy')");
+		statement.executeUpdate("INSERT INTO Rooms VALUES(02, 0001, 2, 'Deluxe')");
+		statement.executeUpdate("INSERT INTO Rooms VALUES(03, 0002, 1, 'Economy')");
+		statement.executeUpdate("INSERT INTO Rooms VALUES(02, 0003, 3, 'Executive')");
+		statement.executeUpdate("INSERT INTO Rooms VALUES(01, 0004, 4, 'Presidential')");
+		statement.executeUpdate("INSERT INTO Rooms VALUES(05, 0001, 2, 'Deluxe')");
+
+		statement.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('David','1980-01-30', 'david@gmail.com','123')");
+		statement.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('Sarah','1971-01-30', 'sarah@gmail.com','456')");
+		statement.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('Joseph','1987-01-30', 'joseph@gmail.com','789')");
+		statement.executeUpdate("INSERT INTO Customers(name, DOB, email, phone_number) VALUES ('Lucy','1985-01-30', 'lucy@gmail.com','213')");
+
+		statement.executeUpdate("INSERT INTO Services VALUES('phone bills',5)");
+		statement.executeUpdate("INSERT INTO Services VALUES('dry cleaning',16)");
+		statement.executeUpdate("INSERT INTO Services VALUES('gyms',15)");
+		statement.executeUpdate("INSERT INTO Services VALUES('room service',10)");
+		statement.executeUpdate("INSERT INTO Services VALUES('special requests',20)");
+
+		statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time ) VALUES (1,'2017-05-10', '2017-05-13', 100, '15:17:00', '10:22:00')");
+		statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time ) VALUES (2,'2017-05-10', '2017-05-13', 200, '16:11:00', '9:27:00')");
+		statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time ) VALUES (1,'2016-05-10', '2017-05-14', 100, '15:45:00', '11:10:00')");
+		statement.executeUpdate("INSERT INTO Checkins(number_of_guests, start_date, end_date, amount, checkin_time,checkout_time ) VALUES (2,'2018-05-10', '2018-05-12', 1000, '14:30:00', '10:00:00')");
+
+		statement.executeUpdate("INSERT INTO Reservations VALUES(01, 0001, '2017-05-10', '2017-05-13')");
+		statement.executeUpdate("INSERT INTO Reservations VALUES(02, 0001, '2017-05-10', '2017-05-13')");
+		statement.executeUpdate("INSERT INTO Reservations VALUES(03, 0002, '2016-05-10', '2017-05-14')");
+		statement.executeUpdate("INSERT INTO Reservations VALUES(02, 0003, '2018-05-10', '2018-05-12')");
+
+		statement.executeUpdate("INSERT INTO Pricings values(1,1,01,0001,'dry cleaning')");
+		statement.executeUpdate("INSERT INTO Pricings values(2,1,01,0001,'gyms')");
+		statement.executeUpdate("INSERT INTO Pricings values(1,2,02,0001,'gyms')");
+		statement.executeUpdate("INSERT INTO Pricings values(1,3,03,0002,'room service')");
+		statement.executeUpdate("INSERT INTO Pricings values(1,4,02,0003,'phone bills')");
+
+		statement.executeUpdate("INSERT INTO Billings(billing_address, SSN) VALUES ('980 TRT St, Raleigh NC', '5939846')");
+		statement.executeUpdate("INSERT INTO Billings(billing_address, SSN) VALUES ('7720 MHT St, Greensboro NC', '7778352')");
+		statement.executeUpdate("INSERT INTO Billings(billing_address, SSN) VALUES ('231 DRY St, Rochester NY 78', '8589430')");
+		statement.executeUpdate("INSERT INTO Billings(billing_address, SSN) VALUES ('24 BST Dr, Dallas TX 14', '4409328')");
+
+		statement.executeUpdate("INSERT INTO Cards VALUES ('1052','credit',0)");
+		statement.executeUpdate("INSERT INTO Cards VALUES ('3020','hotel credit',0.05)");
+		statement.executeUpdate("INSERT INTO Cards VALUES ('2497','credit',0)");
+		statement.executeUpdate("INSERT INTO Cards VALUES ('cash','cash',0)");
+
+		statement.executeUpdate("INSERT INTO Done_by VALUES (1,1,1001)");
+		statement.executeUpdate("INSERT INTO Done_by VALUES (2,2,1002)");
+		statement.executeUpdate("INSERT INTO Done_by VALUES (3,3,1003)");
+		statement.executeUpdate("INSERT INTO Done_by VALUES (4,4,1004)");
+
+		statement.executeUpdate("INSERT INTO Paid_through VALUES (1,'1052')");
+		statement.executeUpdate("INSERT INTO Paid_through VALUES (2,'3020')");
+		statement.executeUpdate("INSERT INTO Paid_through VALUES (3,'2497')");
+		statement.executeUpdate("INSERT INTO Paid_through VALUES (4,'cash')");	
 			
-			statement.executeUpdate("create table Serves(staff_id int NOT NULL,hotel_id int NOT NULL,service_name varchar(20) NOT NULL,"
-								+"checkin_id int NOT NULL,PRIMARY KEY(staff_id, hotel_id, service_name, checkin_id),FOREIGN KEY (hotel_id, staff_id) REFERENCES Staffs(hotel_id, id) ON DELETE CASCADE,"
-								+"FOREIGN KEY(checkin_id) REFERENCES Checkins(id) ON DELETE CASCADE,FOREIGN KEY(service_name) REFERENCES Services(service_name) ON DELETE CASCADE)");
-			
-statement.executeUpdate("INSERT INTO Locations VALUES ('27601', '500 Fayetteville St, Raleigh, NC', 47.5,'Raleigh')");
+		
+/*statement.executeUpdate("INSERT INTO Locations VALUES ('27601', '500 Fayetteville St, Raleigh, NC', 47.5,'Raleigh')");
 		statement.executeUpdate("INSERT INTO Locations VALUES ('28202', '230 College St, Charlotte, NC', 99,'Charlotte')");
 		statement.executeUpdate("INSERT INTO Locations VALUES ('43017', '600 Metro Pl, Dublin, OH', 69,'Dublin')");
 		statement.executeUpdate("INSERT INTO Locations VALUES ('94559', '800 California Blvd, Napa, CA', 103,'Napa')");
@@ -392,7 +465,7 @@ statement.executeUpdate("INSERT INTO Done_by VALUES (3, 3, 3)");
 statement.executeUpdate("INSERT INTO Done_by VALUES (4, 4, 4)");
 statement.executeUpdate("INSERT INTO Done_by VALUES (5, 7, 5)");
 statement.executeUpdate("INSERT INTO Done_by VALUES (6, 5, 6)");
-statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");
+statement.executeUpdate("INSERT INTO Done_by VALUES (7, 6, 7)");*/
 		}  catch (SQLException e) {
 			e.printStackTrace();
 		}
