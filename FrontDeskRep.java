@@ -165,7 +165,7 @@ public class FrontDeskRep extends JFrame {
 		initComponents();
 		initEvents();
 	}
-	
+	/*GUI for the FrontDeskRep operations*/
 	private void initComponents() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 810, 498);
@@ -1229,7 +1229,7 @@ public class FrontDeskRep extends JFrame {
 		JButton confirmHotel = new JButton("Confirm");
 		confirmHotel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				System.out.println(updateHot.getText());
+
 				int hotelId = Integer.parseInt(updateHotelID.getText());
 				boolean b = false;
 				try {
@@ -2190,6 +2190,7 @@ public class FrontDeskRep extends JFrame {
 			}
 		});
 	}
+	//CHECKOUT - RELEASE ROOMS
 	private void releaserooms(int hotelID, int checkinid,String payment_method,String card_number,String SSN,String billing_address){
 		int tid=0;
 		int customerID = 0;
@@ -2204,11 +2205,14 @@ public class FrontDeskRep extends JFrame {
 			
 			//check if card_number already exists in card table
 			result=smt.executeQuery(String.format("select * from Cards where card_number='%s'",card_number));
+			//If card_number doesn't exist, insert into Cards table
 			if(!result.next()){
 				smt.executeUpdate(String.format("Insert into Cards values('%s','%s','%f')",card_number,payment_method,0.0));
 			} else {
+			//Else retrieve the discount value (0 or 0.05) from the Cards table
 				discount = result.getFloat("discount");
 			}
+			//Total amount=amount - discount
 			bill = bill - bill*discount;
 			System.out.println("Final Bill: " + bill);
 			//update this amount in checkins
@@ -2220,7 +2224,8 @@ public class FrontDeskRep extends JFrame {
 			//Assume that he/she has made the payment 
 			//insert into billings and get transaction id
 			smt.executeUpdate(String.format("Insert into Billings(billing_address,SSN) values('%s','%s')",billing_address,SSN));
-		    result = smt.executeQuery("SELECT LAST_INSERT_ID()");
+		    //Retrieve the last inserted transaction ID as tid
+			result = smt.executeQuery("SELECT LAST_INSERT_ID()");
 			 while(result.next()){
 				 tid=result.getInt(1);
 			 }
@@ -2236,7 +2241,7 @@ public class FrontDeskRep extends JFrame {
 			e.printStackTrace();
 		}
 	}
-
+    //GENERATE BILL (to peek and look at the amount at any point in time while the customer is checked-in)
 	private double  generateBill(int checkinID){
 		double amount=0;
 		try{
@@ -2252,9 +2257,11 @@ public class FrontDeskRep extends JFrame {
 		return amount;
 	}
 	
-	
+	//CHECKIN - assign rooms by customer request
 	private void assignRoomsByRequest(int hotelID,int customerID, String categoryName,String startDate,String endDate,String city, int number_of_guests) throws SQLException {
+		//check if room type requested by customer is available
 		int[] roomhotel = reportOccupancyBasedOnRequest(hotelID, categoryName, startDate, endDate,city, number_of_guests);
+        // if no such room is available, display the message as below		
 		if(roomhotel[0]==-1)
 		{
 			System.out.println("Room not available while checkin");
@@ -2262,9 +2269,10 @@ public class FrontDeskRep extends JFrame {
 		}
 		//If needed
 		// insertIntoCustomers("Tony Stark", "750123456","1975-02-21", "stark@gmail.com");	
+		//Check if the customer is in the system
 		try{
 		result=smt.executeQuery("select id from Customers where id="+customerID+"");
-		
+		// If customer not found error is displayed, insert into Customers from the GUI
 		if(!result.next())
 		{  
 			System.out.println("Customer Not found");
@@ -2276,8 +2284,9 @@ public class FrontDeskRep extends JFrame {
 		catch(SQLException er){
 			er.printStackTrace();
 		}
-			
+		//Record that the rooms have been reserved as per the customer's request	
 		insertIntoReservations(roomhotel[0], roomhotel[1], startDate, endDate);
+		//Compute the number of nights the customer is staying
 		Date sdate=new Date();
 		try {
 			sdate = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
@@ -2298,15 +2307,21 @@ public class FrontDeskRep extends JFrame {
 		long diffDays = diffTime / (1000 * 60 * 60 * 24);
 		double nightly_rate=0.0;
 		System.out.println(diffDays);
+		//Retrieve the nightly_rate for the involved rooms from the hotel 
 		result = smt.executeQuery(String.format("select nightly_rate from Category where category_name='%s'",categoryName));
 		while(result.next())
 		{
 			nightly_rate=result.getFloat("nightly_rate");
 		}
+		/* insert nightly_rate*diffDays as the amount for the specific checkin.
+		NOTE: This amount is not the final amount. The final amount is available only after checkout
+		*/
 		int checkinID = insertIntoCheckins(number_of_guests,hotelID, startDate, endDate,nightly_rate*diffDays);
+		//Record that this checkinID corresponds to this customer
 		insertIntoDoneBy(checkinID, customerID);
+		//Insert records into Pricings to capture checkinID relationship with hotel_id,room_number, and service
         insertIntoPricings(checkinID, roomhotel[0], roomhotel[1]);
-        
+        //Deal with presidential suite rooms separately
 		if(categoryName.equals("Presidential")) {
 			int[]staffs=findAvailableStaffs(hotelID);
 			if(staffs[0]==-1)
@@ -2314,14 +2329,15 @@ public class FrontDeskRep extends JFrame {
 			  System.out.println("Staffs not available");
 			  return;
 			}
-			
+		//Assign dedicated room service and food service staff for a presidential checkin	
 			insertIntoServes(staffs[0], hotelID, "room service ",checkinID);
 			insertIntoServes(staffs[1], hotelID, "food service",checkinID);
+		// Set availability of staff to No if staff has been assigned to presidential suite	
 			smt.executeQuery("UPDATE Staffs SET availability='No' where id in ("+staffs[0]+","+staffs[1]+") and hotel_id="+hotelID+"");
 		}
 		
 	}
-	
+	//INSERT INTO PRICINGS
 	private void insertIntoPricings(int checkinID, int room_number,int hotelID) {
 		try {
 			smt.executeUpdate(String.format("Insert into Pricings values('%d','%d','%d','%d','None')",  1,checkinID,room_number,hotelID));
@@ -2330,8 +2346,9 @@ public class FrontDeskRep extends JFrame {
 			e.printStackTrace();
 		}
 	}
+	//REPORT OCCUPANCY BASED ON HOTEL ROOM_TYPE DATE_RANGE AND CITY
 	private int[] reportOccupancyBasedOnRequest(int hotelID, String category_name, String startDate,String endDate,String city,int capacity) {
-		int[]answer=new int[2];
+		int[]answer=new int[2]; // Identifies two staffs(one for catering and another for presidential suite
 		try {
 				result=smt.executeQuery(String.format("select * from Rooms where (room_number,hotel_id) NOT IN (SELECT r.room_number,r.hotel_id FROM Reservations r, Hotels h where r.hotel_id=%d and r.start_date>='%s' and r.end_Date<='%s' and h.zip_code in (select zip_code from Locations where city='%s')) and room_number in (select room_number from Rooms where category_name='%s' and hotel_id=%d ) and hotel_id = %d and max_occupancy >= %d",hotelID, startDate, endDate, city, category_name, hotelID,hotelID,capacity));
 				if(result.next()){
@@ -2352,7 +2369,7 @@ public class FrontDeskRep extends JFrame {
 			}
 		return answer;
 	}
-
+    //INSERT INTO RESERVATIONS TABLE
 	private void insertIntoReservations(int room_number,int hotelID, String startDate,String endDate) {
 		try{
 		result=smt.executeQuery("SELECT * from Rooms where room_number="+room_number+" and hotel_id="+hotelID+"");
@@ -2363,7 +2380,7 @@ public class FrontDeskRep extends JFrame {
 			e.printStackTrace();
 		}
 		}
-
+    //INSERT INTO CHECKINS TABLE
 	private int insertIntoCheckins(int number_of_guests,int hotel_id, String startDate,String endDate,double amount) throws SQLException {
 		int cid=0;
 //		smt.executeUpdate("INSERT INTO Checkins(number_of_guests,start_date,end_date,checkin_time) VALUES ('"+"233232332323232"+"', '"+startDate+"','"+endDate+"',TIME(NOW()))");
@@ -2376,7 +2393,7 @@ public class FrontDeskRep extends JFrame {
 		 System.out.println("Checkin: " + cid);
 		return cid;
 		}
-
+    //INSERT INTO SERVES TABLE
 	private void insertIntoServes(int staffid,int hotelid,String job_title,int checkinid) {
 		try{
 		smt.executeUpdate("INSERT INTO Serves VALUES ("+staffid+","+hotelid+",'"+job_title+"',"+checkinid+")");
@@ -2385,6 +2402,7 @@ public class FrontDeskRep extends JFrame {
 			e.printStackTrace();
 		}
 		}
+	//INSERT INTO DONE_BY	
 	private void insertIntoDoneBy(int checkinID, int customerID) {
 		try{
 		smt.executeUpdate("INSERT INTO Done_by VALUES ("+checkinID+",NULL, "+customerID+")");
@@ -2393,6 +2411,7 @@ public class FrontDeskRep extends JFrame {
 			e.printStackTrace();
 		}
 		}
+	//FIND THE AVAILABLE STAFFS(used in assigning staffs to presidential suite)	
 	private int[] findAvailableStaffs(int hotelID) {
 		int count=0;
 		int[]s=new int[2];
@@ -2415,6 +2434,7 @@ public class FrontDeskRep extends JFrame {
 		}
 		return s;
 		}
+	//INSERT INTO STAFFS TABLE	
 	private void insertIntoStaffs(int hotelID, String availability, String name, String  address, int age, String  job_title, String phone_number, String department) {
 		try{
 		smt.executeUpdate("INSERT INTO Staffs(hotel_id, name, address, age, phone_number, job_title, availability, department) values("+hotelID+", '"+name+"','"+ address+"',"+age+", '"+phone_number+"', '"+job_title+"', '"+availability+"', '"+department+"')");
@@ -2423,6 +2443,7 @@ public class FrontDeskRep extends JFrame {
 			e.printStackTrace();
 		}
 	}
+	//UPDATE STAFFS TABLE
 	public void updateStaff(int hotelID, int staffId, String availability, String name, String  address, int age, String  job_title, String phone_number, String department)
 	{
 		try {
@@ -2432,7 +2453,7 @@ public class FrontDeskRep extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	
+	//DELETE STAFFS TABLE
 	public boolean deleteStaff(int hotelID, int staffId){
 		try {
 			smt.executeUpdate("DELETE FROM Staffs where hotel_id="+hotelID+" AND id="+ staffId);
@@ -2447,7 +2468,7 @@ public class FrontDeskRep extends JFrame {
 
 	
 
-	
+    //INSERT INTO LOCATIONS TABLE	
 	public boolean insertLocation(String zipcode, String address, float rate, String city){
 		try {
 			smt.execute("INSERT INTO Locations values('"+zipcode+"', '"+address+"', "+rate+", '"+city+"')");
@@ -2459,7 +2480,7 @@ public class FrontDeskRep extends JFrame {
 		}
 		
 	}
-	
+	//UPDATE LOCATIONS TABLE
 	public boolean updateLocations(String zipcode, String address, float rate, String city){
 		try {
 			smt.executeUpdate("Update Locations set address='"+address+"', rate="+rate+",city='"+city+"' where zip_code='"+zipcode+"'");
@@ -2471,7 +2492,7 @@ public class FrontDeskRep extends JFrame {
 		
 		return true;
 	}
-	
+    //DELETE LOCATIONS	
 	public boolean deleteLocation(String zipCode) {
 		// TODO Auto-generated method stub
 		int t;
@@ -2486,7 +2507,7 @@ public class FrontDeskRep extends JFrame {
 		
 		return true&&(t == 1);
 	}
-	
+	//INSERT INTO HOTELS
 	protected boolean insertHotel(String name, String phone, String zip_code) {
 		// TODO Auto-generated method stub
 		try {
@@ -2499,7 +2520,7 @@ public class FrontDeskRep extends JFrame {
 		
 		return true;
 	}
-	
+    //UPDATE HOTELS TABLE	
 	public boolean updateHotel(int hotelId, String name,String phone_number, String zip_code) {
 		// TODO Auto-generated method stub
 		try {
@@ -2514,7 +2535,7 @@ public class FrontDeskRep extends JFrame {
 		
 		return true;
 	}
-	
+	//DELETE FROM HOTELS TABLE
 	public boolean deleteHotel(int hotelId){
 		int t;
 		try {
@@ -2527,7 +2548,7 @@ public class FrontDeskRep extends JFrame {
 		}
 		return true&&(t==1);
 	}
-	
+    // INSERT INTO CUSTOMERS TABLE	
 	public boolean insertCustomer(String name, String DOB, String email, String phone_number){
 		try {
 			smt.executeUpdate("Insert into Customers(name, DOB, email, phone_number) values ('"+name+"','"+DOB+"', '"+email+"','"+phone_number+"')");
@@ -2538,6 +2559,7 @@ public class FrontDeskRep extends JFrame {
 		}
 		return true;
 	}
+	//UPDATE CUSTOMERS TABLE
 	public boolean updateCustomer(int id, String name, String DOB, String email, String phone_number){
 		try {
 			smt.executeUpdate("UPDATE Customers set name='"+name+"', DOB='"+DOB+"', email='"+email+"', phone_number='"+phone_number+"' where id="+id);
@@ -2548,7 +2570,7 @@ public class FrontDeskRep extends JFrame {
 		}
 		return true;
 	}
-	
+	//DELETE FROM CUSTOMER
 	public boolean deleteCustomer(int id){
 		int t;
 		try {
@@ -2562,7 +2584,7 @@ public class FrontDeskRep extends JFrame {
 		
 		return true&&(t==1);
 	}
-	
+    //INSERT INTO ROOMS TABLE	
 	public boolean insertRoom(int hotelId, int roomNumber, int maxOccupancy, String category){
 		try {
 			smt.executeUpdate("insert into Rooms values ("+hotelId+", 000"+roomNumber+", "+maxOccupancy+", '"+category+"')");
@@ -2574,7 +2596,7 @@ public class FrontDeskRep extends JFrame {
 		
 		return true;
 	}
-	
+	//UPDATE ROOM FUNCTIONALITY
 	public boolean updateRoom(int hotelId, int roomNumber, int maxOccupancy, String category){
 		
 		try {
@@ -2586,7 +2608,7 @@ public class FrontDeskRep extends JFrame {
 		}
 		return true;
 	}
-	
+	//DELETE ROOM FUNCTIONALITY
 	public boolean deleteRoom(int hotelId, int roomNumber){
 		int t;
 		try {
