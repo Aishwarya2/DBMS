@@ -2493,7 +2493,10 @@ public class FrontDeskRep extends JFrame {
 
 	private void insertIntoReservations(int room_number,int hotelID, String startDate,String endDate) {
 		try{
+			//insert values into Reservations table
+			//get the Rooms where the specific room number and room id are hotel id
 		result=smt.executeQuery("SELECT * from Rooms where room_number="+room_number+" and hotel_id="+hotelID+"");
+		//insert into reservations for those rooms
 		if(result.next())
 			smt.executeUpdate("INSERT INTO Reservations VALUES ("+room_number+", "+hotelID+", '"+startDate+"','"+endDate+"')");
 		}
@@ -2699,6 +2702,7 @@ public class FrontDeskRep extends JFrame {
 	
 	public boolean insertRoom(int hotelId, int roomNumber, int maxOccupancy, String category){
 		try {
+			//Insert the data into Rooms table
 			smt.executeUpdate("insert into Rooms values ("+roomNumber+", 000"+hotelId+", "+maxOccupancy+", '"+category+"')");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -2712,10 +2716,12 @@ public class FrontDeskRep extends JFrame {
 	public boolean updateRoom(int hotelId, int roomNumber, int maxOccupancy, String category){
 		
 		try {
+			//Delete Room from Database
 			smt.executeUpdate("UPDATE Rooms set max_occupancy="+maxOccupancy+", category_name='"+category+"' where hotel_id=000"+hotelId+" AND room_number="+roomNumber);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block3
 			e.printStackTrace();
+			//Return false if failed
 			return false;
 		}
 		return true;
