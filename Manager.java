@@ -353,7 +353,7 @@ public class Manager extends JFrame {
 		revenueTA.setVisible(false);
 		
 	}
-
+//Display total occupancy for every hotel
 	private void initEvents(){
 		btnOccupancyByHotel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -371,7 +371,7 @@ public class Manager extends JFrame {
 				}
 			}
 		});
-		
+	//Report occupancy for a given date range	
 		btnOccupancyByDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -391,7 +391,7 @@ public class Manager extends JFrame {
 			}
 		});
 		
-
+   //Report occupancy by room type
 		btnOccupancyByRoom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -412,7 +412,7 @@ public class Manager extends JFrame {
 				}
 			}
 		});
-		
+	// report occupancy in the entire hotel chain	
 		btnTotalOccupancy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -429,7 +429,7 @@ public class Manager extends JFrame {
 				}
 			}
 		});
-		
+	//Report occupancy by city	
 		btnOccupancyByCity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -447,7 +447,7 @@ public class Manager extends JFrame {
 				}
 			}
 		});
-		
+		//Percentage occupancy for every hotel
 		btnTotalPercentageOccupancy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -466,7 +466,7 @@ public class Manager extends JFrame {
 				}
 			}
 		});
-		
+		//Display staffs grouped by their job title
 		btnGroupStaffsBy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -484,7 +484,7 @@ public class Manager extends JFrame {
 
 			}
 		});
-		
+		//Display staff info for every customer stay
 		btnStaffInfoFor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
@@ -502,7 +502,7 @@ public class Manager extends JFrame {
 				}
 			}
 		});
-		
+ 		//generate revenue for a given hotel during a given date range
 		btnGenerateRevenue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String hotel_id = textField_1.getText();
@@ -523,7 +523,7 @@ public class Manager extends JFrame {
 				}
 			}
 		});
-		
+        //Assign staffs for various services		
 		btnAssignStaffs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int hotel_id = Integer.parseInt(textField.getText());
@@ -538,7 +538,7 @@ public class Manager extends JFrame {
 			}
 		});
 	}
-	
+	//Function to assign staff to services
 	private void assignstaff(int hotel_id,int room_number,int checkinid,String service_name)
 	{
 		 try{
