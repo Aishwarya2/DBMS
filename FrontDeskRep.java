@@ -627,6 +627,7 @@ public class FrontDeskRep extends JFrame {
 		panel_4.add(insertCategory, gbc_insertCategory);
 		insertCategory.setColumns(10);
 		
+		//Populate field from the data in database for specific room
 		JButton btnConfirm_3 = new JButton("Confirm");
 		btnConfirm_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -634,8 +635,10 @@ public class FrontDeskRep extends JFrame {
 				int roomId=Integer.parseInt(updateRoomNumber.getText());
 				boolean b =false;
 				try {
+					//get the tuple for the room in a hotel
 					ResultSet res = smt.executeQuery("SELECT * from Rooms where room_number="+roomId+" AND hotel_id=000"+hotelId);
 					while(res.next()){
+						//if room exists then populate the elements in the form
 						b= true;
 						updateCategory.setText(res.getString("category_name"));
 						updateMaxOccupancy.setText(Integer.toString(res.getInt("max_occupancy")));
@@ -644,8 +647,9 @@ public class FrontDeskRep extends JFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					b= false;
+					//if there's an error catch into exception
 				}
-				
+				//if the arguments were invalid display error message
 				lblInvalidArgs.setVisible(!b);
 			}
 		});
